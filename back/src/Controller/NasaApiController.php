@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\ImageOfTheDay;
 use App\Service\FetchApiNasa;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\View;
 
 class NasaApiController extends AbstractFOSRestController
 {
@@ -17,16 +18,15 @@ class NasaApiController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/lucky/number")
-     * @return Response
+     * @Get(path="/day")
+     * @View
      * @throws \Exception
      */
     public function number()
     {
-        $number = random_int(0, 100);
-        $this->fetchApiNasa->getImageOfTheDay();
-        return new Response(
-            '<html><body>Lucky number: '.$number.'</body></html>'
-        );
+        /** @var ImageOfTheDay $imageOfTheDay */
+        $imageOfTheDay = $this->fetchApiNasa->getImageOfTheDay();
+//        dump($imageOfTheDay);die();
+        return $imageOfTheDay;
     }
 }
