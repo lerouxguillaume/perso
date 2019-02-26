@@ -7,6 +7,7 @@
                 Home
             </b-navbar-brand>
             <b-nav-item href="#">Nasa</b-nav-item>
+            <b-nav-item href="#">Profil</b-nav-item>
         </b-navbar-nav>
     </b-navbar>
 </template>

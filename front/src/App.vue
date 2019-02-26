@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <Navbar/>
+    <ImageOfTheDay/>
   </div>
 </template>
 
 <script>
   import Navbar from "./components/Navbar";
+  import ImageOfTheDay from "./components/ImageOfTheDay";
   export default {
   name: 'app',
   components: {
+    ImageOfTheDay,
     Navbar,
   }
 }
