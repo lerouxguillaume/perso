@@ -18,15 +18,23 @@ class NasaApiController extends AbstractFOSRestController
     }
 
     /**
-     * @Get(path="/day")
+     * @Get(
+     *      path="/day/{date}",
+     *      requirements={
+     *          "date" = "^\s*(3[01]|[12][0-9]|0?[1-9])\-(1[012]|0?[1-9])\-((?:19|20)\d{2})\s*$"
+     *      },
+     *      defaults={"date" = null}
+     *      )
      * @View
+     * @param null $date
+     * @return ImageOfTheDay
      * @throws \Exception
      */
-    public function number()
+    public function imageOfTheDay($date = null)
     {
+        $dateTime = new \DateTime($date);
         /** @var ImageOfTheDay $imageOfTheDay */
-        $imageOfTheDay = $this->fetchApiNasa->getImageOfTheDay();
-//        dump($imageOfTheDay);die();
+        $imageOfTheDay = $this->fetchApiNasa->getImageOfTheDay($dateTime);
         return $imageOfTheDay;
     }
 }
