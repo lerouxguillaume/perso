@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Class ImageOfTheDay
@@ -15,6 +16,7 @@ class ImageOfTheDay
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Exclude()
      * @var int
      */
     private $id;
