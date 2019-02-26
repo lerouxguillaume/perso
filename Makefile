@@ -8,10 +8,13 @@ docker-stop:
 	docker-compose -f docker/docker-compose.yml stop
 
 bash-symfony:
-	docker exec -it -u dev sf4_php bash
+	docker exec -it -u dev php_guler bash
 
 bash-root:
-	docker exec -it sf4_php bash
+	docker exec -it php_guler bash
+
+bash-mysql:
+	docker exec -it mysql_guler bash
 
 
 ### Ansible ###

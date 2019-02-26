@@ -2,43 +2,61 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Class ImageOfTheDay
  * @package App\Entity
+ * @ORM\Entity()
  */
 class ImageOfTheDay
 {
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="date", nullable=false)
      * @var \DateTime
      */
     private $date;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     private $title;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     private $mediaType;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     private $serviceVersion;
 
     /**
+     * @ORM\Column(type="text", nullable=false)
      * @var string
      */
     private $explanation;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     private $url;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     private $copyright;
@@ -60,6 +78,14 @@ class ImageOfTheDay
                 ->setCopyright($object->copyright ?? null);
         }
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

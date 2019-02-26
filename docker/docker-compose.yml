@@ -1,28 +1,45 @@
 version: '3'
 services:
-    apache:
+    apache_guler:
         build: apache
-        container_name: sf4_apache
+        container_name: apache_guler
         ports:
             - 8080:80
         volumes:
             - ./config/vhosts:/etc/apache2/sites-enabled
             - ../back:/www
         depends_on:
-            - php
+            - php_guler
 
-    php:
+    php_guler:
         build: php
-        container_name: sf4_php
+        container_name: php_guler
         volumes:
             - ../back:/www
+        links:
+            - mysql_guler
 
-    vuejs:
+    #Database container
+    mysql_guler:
+        image: mysql:8.0.15
+        container_name: mysql_guler
+        command: mysqld --default-authentication-plugin=mysql_native_password
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: nasa
+            MYSQL_USER: mysql
+            MYSQL_PASSWORD: password
+
+
+    vuejs_guler:
         build:
             context: ./vuejs
             dockerfile: Dockerfile
             args:
                 - YOUR_APP_WEB_HTTP_PORT=8080
+        container_name: vuejs_guler
         ports:
             - "80:8080"
             - "8000:8000"  # only needed if using vue-cli UI
