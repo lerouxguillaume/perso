@@ -2,13 +2,19 @@ import Vue from 'vue'
 import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueMoment from 'vue-moment'
+import VueRouter from 'vue-router'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import ListNasaImages from "./components/ListNasaImages";
+import Profil from "./components/Profil";
+import Home from "./components/Home";
+// import NotFound from "./pages/NotFound";
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueMoment);
+Vue.use(VueRouter)
 
 var filter = function(text, length, clamp, soft){
   clamp = clamp || '...';
@@ -27,8 +33,21 @@ var filter = function(text, length, clamp, soft){
   return content.length > length ? content.slice(0, length) + clamp : content;
 };
 
+const routes = [
+  // { path: '*', component: NotFound },
+  { path: '/', component: Home },
+  { path: '/profile', component: Profil },
+  { path: '/nasa', component: ListNasaImages },
+
+]
+const router = new VueRouter({
+  routes // short for `routes: routes`
+})
+
+
 Vue.filter('truncate', filter);
 
 new Vue({
+  router,
   render: h => h(App),
 }).$mount('#app')

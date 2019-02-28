@@ -1,12 +1,7 @@
 <template>
-    <div class="list-images">
-        <div v-for="(image, index) in images">
-            <b-card-group v-if="index % 3 === 0" deck>
-                <NasaImage
-                        v-bind:image="image"
-                ></NasaImage>
-            </b-card-group>
-            <NasaImage v-else
+    <div class="row list-images">
+        <div v-for="image in images" class="col-md-4">
+            <NasaImage
                     v-bind:image="image"
             ></NasaImage>
         </div>
@@ -54,5 +49,6 @@
         flex-wrap: wrap;
         align-items: center;
         align-content: center;
+        margin: 20px;
     }
 </style>

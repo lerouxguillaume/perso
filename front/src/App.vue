@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar/>
-    <ListNasaImages/>
+    <router-view></router-view>
   </div>
 </template>
 

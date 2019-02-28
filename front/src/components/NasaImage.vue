@@ -1,9 +1,9 @@
 <template>
     <b-card no-body class="overflow-hidden" style="max-width: 540px; max-height: 540px;">
         <b-row no-gutters>
-            <b-col md="6">
+            <b-col md="6" class="image-card">
                 <b-card-img v-if="image.mediaType === 'image'" v-bind:src="image.url" class="rounded-0" />
-                <iframe v-else-if="image.mediaType === 'video'" :src="image.url" allowfullscreen></iframe>
+                <iframe v-else-if="image.mediaType === 'video'" :src="image.url" width="250"></iframe>
             </b-col>
             <b-col md="6">
                 <b-card-body v-bind:title="image.title">
@@ -38,5 +38,26 @@
     .card-text {
         font-size: 14px;
         text-align: left;
+        max-height: 120px;
+        overflow: fragments;
+    }
+    .card {
+        margin: 10px 0;
+        background-color: #222222;
+        color: white;
+    }
+    img {
+        max-height: 250px;
+        max-width: 250px;
+    }
+    iframe {
+        color: #222222;
+    }
+    .image-card {
+        align-self: center;
+    }
+    .row {
+        min-height: 250px;
+        flex-grow: 1;
     }
 </style>
