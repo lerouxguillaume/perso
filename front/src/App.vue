@@ -1,16 +1,18 @@
 <template>
   <div id="app">
     <Navbar/>
-    <ImageOfTheDay/>
+    <ListNasaImages/>
   </div>
 </template>
 
 <script>
   import Navbar from "./components/Navbar";
   import ImageOfTheDay from "./components/ImageOfTheDay";
+  import ListNasaImages from "./components/ListNasaImages";
   export default {
   name: 'app',
   components: {
+    ListNasaImages,
     ImageOfTheDay,
     Navbar,
   }

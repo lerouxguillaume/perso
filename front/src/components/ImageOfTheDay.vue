@@ -13,8 +13,6 @@
     export default {
         name: "ImageOfTheDay",
         data () {
-            console.log()
-
             return {
                 date : null,
                 title : null,
@@ -39,7 +37,6 @@
                 })
         }
     }
-
 </script>
 
 <style scoped>

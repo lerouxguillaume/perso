@@ -37,4 +37,29 @@ class NasaApiController extends AbstractFOSRestController
         $imageOfTheDay = $this->fetchApiNasa->getImageOfTheDay($dateTime);
         return $imageOfTheDay;
     }
+    /**
+     *
+     * @Get(
+     *      path="/day/last/{number}",
+     *      requirements={
+     *          "number" = "\d+"
+     *      }
+     *      )
+     * @View
+     * @param null $date
+     * @return array
+     * @throws \Exception
+     */
+    public function lastImagesOfTheDay(int $number)
+    {
+        $dateTime = new \DateTime('now');
+        $res = [];
+        while ($number > 0) {
+            $number--;
+            $res[] = $this->fetchApiNasa->getImageOfTheDay($dateTime);
+            $dateTime->modify('-1 day');
+        }
+
+        return $res;
+    }
 }
