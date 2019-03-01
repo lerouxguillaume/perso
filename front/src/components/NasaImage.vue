@@ -1,5 +1,5 @@
 <template>
-    <b-card no-body class="overflow-hidden" style="max-width: 540px; max-height: 540px;">
+    <b-card no-body class="overflow-hidden" style="max-width: 540px; max-height: 540px;" v-on:click="redirectTo">
         <b-row no-gutters>
             <b-col md="6" class="image-card">
                 <b-card-img v-if="image.mediaType === 'image'" v-bind:src="image.url" class="rounded-0" />
@@ -17,6 +17,10 @@
 </template>
 
 <script>
+
+    import * as router from "vue-router";
+    import * as moment from "moment";
+
     export default {
         name: "NasaImage",
         props: {
@@ -26,6 +30,16 @@
                 explanation: String,
                 url: String,
                 mediaType: String
+            }
+        },
+        data: () => {
+            return {
+                router: router
+            }
+        },
+        methods: {
+            redirectTo: function() {
+                this.$router.push({name: 'nasa_image_day', params: { day : (moment(this.image.date).format('DD-MM-YYYY')) }})
             }
         }
     }
@@ -43,8 +57,6 @@
     }
     .card {
         margin: 10px 0;
-        background-color: #222222;
-        color: white;
     }
     img {
         max-height: 250px;

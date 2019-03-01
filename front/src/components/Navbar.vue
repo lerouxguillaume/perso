@@ -1,6 +1,6 @@
 <template>
     <!-- Image and text -->
-    <b-navbar variant="dark" type="dark">
+    <b-navbar variant="black" type="dark">
         <b-navbar-nav>
             <b-navbar-brand to="/">
                 <img src="https://placekitten.com/g/30/30" class="d-inline-block align-top" alt="BV" />
@@ -19,5 +19,7 @@
 </script>
 
 <style scoped>
-
+    .bg-black {
+        background-color: black;
+    }
 </style>

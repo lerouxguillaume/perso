@@ -4,11 +4,12 @@ import BootstrapVue from 'bootstrap-vue'
 import VueMoment from 'vue-moment'
 import VueRouter from 'vue-router'
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './assets/custom.scss'
+
 import ListNasaImages from "./components/ListNasaImages";
 import Profil from "./components/Profil";
 import Home from "./components/Home";
+import ImageOfTheDay from "./components/ImageOfTheDay";
 // import NotFound from "./pages/NotFound";
 
 Vue.config.productionTip = false
@@ -35,14 +36,15 @@ var filter = function(text, length, clamp, soft){
 
 const routes = [
   // { path: '*', component: NotFound },
-  { path: '/', component: Home },
-  { path: '/profile', component: Profil },
-  { path: '/nasa', component: ListNasaImages },
+  { path: '/', name: 'homepage', component: Home },
+  { path: '/profile', name: 'profile', component: Profil },
+  { path: '/nasa', name: 'nasa_list_image', component: ListNasaImages },
+  { path: '/nasa/day/:day', name: 'nasa_image_day', component: ImageOfTheDay },
+];
 
-]
 const router = new VueRouter({
   routes // short for `routes: routes`
-})
+});
 
 
 Vue.filter('truncate', filter);
@@ -50,4 +52,4 @@ Vue.filter('truncate', filter);
 new Vue({
   router,
   render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');

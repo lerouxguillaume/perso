@@ -1,0 +1,10 @@
+// custom.scss
+
+// Define your variable overrides here
+$body-bg: #222222;
+$body-color: white;
+$card-bg: #222222;
+
+// Include Bootstrap and BootstrapVue SCSS files
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/index.scss';

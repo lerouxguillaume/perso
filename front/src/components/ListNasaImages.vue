@@ -1,6 +1,6 @@
 <template>
     <div class="row list-images">
-        <div v-for="image in images" class="col-md-4">
+        <div v-for="(image, key) in images" class="col-md-4" v-bind:key="key">
             <NasaImage
                     v-bind:image="image"
             ></NasaImage>
