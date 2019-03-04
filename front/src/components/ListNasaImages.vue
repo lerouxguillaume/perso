@@ -1,20 +1,24 @@
 <template>
-    <div class="row list-images">
-        <div v-for="(image, key) in images" class="col-md-4" v-bind:key="key">
-            <NasaImage
-                    v-bind:image="image"
-            ></NasaImage>
+    <div>
+        <div class="row list-images">
+            <NasaImageDay/>
+            <div v-for="(image, key) in images" class="col-md-4" v-bind:key="key" v-if="key > 0">
+                <NasaImageCard
+                        v-bind:image="image"
+                ></NasaImageCard>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import NasaImage from "./NasaImage";
+    import NasaImageCard from "./NasaImageCard";
     import axios from 'axios';
+    import NasaImageDay from "./NasaImageDay";
 
     export default {
         name: "ListNasaImages",
-        components: {NasaImage},
+        components: {NasaImageDay, NasaImageCard},
         data () {
             return {
                 images: []
@@ -22,7 +26,7 @@
         },
         mounted () {
             axios
-                .get(process.env.VUE_APP_API_URL+'/day/last/12')
+                .get(process.env.VUE_APP_API_URL+'/day/last/10')
                 .then((response) => {
                     let data = response.data;
                     data.forEach((element) => {

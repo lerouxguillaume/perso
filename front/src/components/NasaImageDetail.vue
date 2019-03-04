@@ -1,24 +1,27 @@
 <template>
-    <div v-if = "title !== null">
-        <b-card>
-            <b-media>
-                <iframe v-if="mediaType === 'video'" :src="url" allowfullscreen></iframe>
-                <b-img v-else-if="mediaType === 'image'" :src="url" slot="aside" blank-color="#ccc" alt="placeholder" />
-                <!--<img v-else-if="mediaType === 'image'" :src="url"></img>-->
-                <h3>{{ title }} ({{ date | moment("dddd, MMMM Do YYYY") }})</h3>
-                <div v-if="copyright" class="copyright">copyright:  <strong>{{ copyright }}</strong></div>
-                <div><p><i>{{ explanation }}</i></p></div>
-            </b-media>
-        </b-card>
+    <div class="card" v-if = "title !== null">
+        <div class="card-body" v-if="date !== null">
+            <div class="media">
+                <div class="d-flex mr-3 align-self-top">
+                    <img v-if="mediaType === 'image'" :src="url" alt="placeholder" class="">
+                    <iframe v-else-if="mediaType === 'video'" :src="url" width="720" height="405"></iframe>
+                </div>
+                <div class="media-body">
+                    <h1 class="mt-0">{{ title }}</h1>
+                    <div v-if="copyright" class="copyright">copyright:  <strong>{{ copyright }}</strong></div>
+                    <i>{{ date | moment("dddd, MMMM Do YYYY") }}</i>
+                    <p>{{ explanation }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
-    // import * as route from "vue-router";
 
     export default {
-        name: "ImageOfTheDay",
+        name: "NasaImageDetail",
         data () {
             return {
                 date : null,
@@ -49,6 +52,15 @@
 </script>
 
 <style scoped>
+    .card {
+        width: 80%;
+        margin: 50px 10%;
+        align-self: center;
+    }
+    img {
+        max-height: 720px;
+        max-width: 1000px;
+    }
     .copyright {
         margin-bottom: 30px;
     }

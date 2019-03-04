@@ -22,7 +22,7 @@
     import * as moment from "moment";
 
     export default {
-        name: "NasaImage",
+        name: "NasaImageCard",
         props: {
             image: {
                 date: null,
@@ -39,7 +39,7 @@
         },
         methods: {
             redirectTo: function() {
-                this.$router.push({name: 'nasa_image_day', params: { day : (moment(this.image.date).format('DD-MM-YYYY')) }})
+                this.$router.push({name: 'nasa_image_detail', params: { day : (moment(this.image.date).format('DD-MM-YYYY')) }})
             }
         }
     }

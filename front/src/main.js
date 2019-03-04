@@ -9,7 +9,7 @@ import './assets/custom.scss'
 import ListNasaImages from "./components/ListNasaImages";
 import Profil from "./components/Profil";
 import Home from "./components/Home";
-import ImageOfTheDay from "./components/ImageOfTheDay";
+import NasaImageDetail from "./components/NasaImageDetail";
 // import NotFound from "./pages/NotFound";
 
 Vue.config.productionTip = false
@@ -39,7 +39,7 @@ const routes = [
   { path: '/', name: 'homepage', component: Home },
   { path: '/profile', name: 'profile', component: Profil },
   { path: '/nasa', name: 'nasa_list_image', component: ListNasaImages },
-  { path: '/nasa/day/:day', name: 'nasa_image_day', component: ImageOfTheDay },
+  { path: '/nasa/day/:day', name: 'nasa_image_detail', component: NasaImageDetail },
 ];
 
 const router = new VueRouter({
