@@ -71,6 +71,9 @@
         margin: 10px 0;
         width: 100%;
     }
+    img {
+        height: 100%;
+    }
     iframe {
         color: #222222;
     }
