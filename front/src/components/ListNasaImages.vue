@@ -26,7 +26,7 @@
         },
         mounted () {
             axios
-                .get(process.env.VUE_APP_API_URL+'/day/last/10')
+                .get(process.env.VUE_APP_NASA_API_URL+'/day/last/10')
                 .then((response) => {
                     let data = response.data;
                     data.forEach((element) => {

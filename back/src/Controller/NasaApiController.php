@@ -6,8 +6,14 @@ use App\Entity\ImageOfTheDay;
 use App\Service\FetchApiNasa;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\View;
 
+/**
+ * Class NasaApiController
+ * @package App\Controller
+ * @Route("/nasa")
+ */
 class NasaApiController extends AbstractFOSRestController
 {
     private $fetchApiNasa;
