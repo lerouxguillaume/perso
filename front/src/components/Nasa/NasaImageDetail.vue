@@ -34,7 +34,7 @@
         },
         mounted () {
             axios
-                .get(process.env.VUE_APP_API_URL+'/day/'+ this.$route.params.day)
+                .get(process.env.VUE_APP_NASA_API_URL+'/day/'+ this.$route.params.day)
                 .then((response) => {
                     let data = response.data;
                     this.date = new Date(data.date);

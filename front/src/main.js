@@ -3,19 +3,24 @@ import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueMoment from 'vue-moment'
 import VueRouter from 'vue-router'
+import VueApexCharts from 'vue-apexcharts'
 
 import './assets/custom.scss'
 
-import ListNasaImages from "./components/ListNasaImages";
+import ListNasaImages from "./components/Nasa/ListNasaImages";
 import Profil from "./components/Profil";
 import Home from "./components/Home";
-import NasaImageDetail from "./components/NasaImageDetail";
-// import NotFound from "./pages/NotFound";
+import NasaImageDetail from "./components/Nasa/NasaImageDetail";
+import Trade from "./components/Trading/Trade";
+import NotFound from "./pages/NotFound";
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueMoment);
 Vue.use(VueRouter)
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
 
 var filter = function(text, length, clamp, soft){
   clamp = clamp || '...';
@@ -35,11 +40,12 @@ var filter = function(text, length, clamp, soft){
 };
 
 const routes = [
-  // { path: '*', component: NotFound },
   { path: '/', name: 'homepage', component: Home },
   { path: '/profile', name: 'profile', component: Profil },
+  { path: '/trade', name: 'trade', component: Trade },
   { path: '/nasa', name: 'nasa_list_image', component: ListNasaImages },
   { path: '/nasa/day/:day', name: 'nasa_image_detail', component: NasaImageDetail },
+  { path: '*', name: 'not_found',component: NotFound },
 ];
 
 const router = new VueRouter({
