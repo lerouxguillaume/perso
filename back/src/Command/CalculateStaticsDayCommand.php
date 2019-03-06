@@ -49,6 +49,7 @@ class CalculateStaticsDayCommand extends Command
         $todayTimestamp = strtotime('today midnight');
 
         $todayDate = (new \DateTime())->setTimestamp($todayTimestamp);
+        $yesterday = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 day');
         $weekAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 week');
         $monthAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 month');
         $trimesterAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-3 month');
@@ -57,6 +58,7 @@ class CalculateStaticsDayCommand extends Command
         $tenYearAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-10 year');
 
         $todayTimeSerie = null;
+        $yesterdayTimeSerie = null;
         $weekAgoTimeSerie = null;
         $monthAgoTimeSerie = null;
         $trimesterAgoTimeSerie = null;
@@ -73,6 +75,9 @@ class CalculateStaticsDayCommand extends Command
                 switch ($currentDatum->getTimestamp()) {
                     case $todayTimestamp:
                         $todayTimeSerie = $currentDatum;
+                        break;
+                    case $yesterday->getTimestamp():
+                        $yesterdayTimeSerie = $currentDatum;
                         break;
                     case $weekAgo->getTimestamp():
                         $weekAgoTimeSerie = $currentDatum;
@@ -107,8 +112,10 @@ class CalculateStaticsDayCommand extends Command
             $newDailyStats
                 ->setDay($todayDate)
                 ->setEntreprise($entreprise)
-                ->setDayVariance(0) //@TODO
             ;
+            if (!empty($yesterdayTimeSerie)) {
+                $newDailyStats->setDayVariance($this->getPercentIncrease($todayTimeSerie, $yesterdayTimeSerie));
+            }
             if (!empty($weekAgoTimeSerie)) {
                 $newDailyStats->setWeekVariance($this->getPercentIncrease($todayTimeSerie, $weekAgoTimeSerie));
             }
