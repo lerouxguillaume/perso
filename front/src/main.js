@@ -6,14 +6,7 @@ import VueRouter from 'vue-router'
 import VueApexCharts from 'vue-apexcharts'
 
 import './assets/custom.scss'
-
-import ListNasaImages from "./components/Nasa/ListNasaImages";
-import Profil from "./components/Profil";
-import Home from "./components/Home";
-import NasaImageDetail from "./components/Nasa/NasaImageDetail";
-import Trade from "./components/Trading/Trade";
-import NotFound from "./pages/NotFound";
-import TradeList from "./components/Trading/TradeList";
+import routes from './routes.js'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
@@ -39,16 +32,6 @@ var filter = function(text, length, clamp, soft){
 
   return content.length > length ? content.slice(0, length) + clamp : content;
 };
-
-const routes = [
-  { path: '/', name: 'homepage', component: Home },
-  { path: '/profile', name: 'profile', component: Profil },
-  { path: '/trading', name: 'trading_list', component: TradeList },
-  { path: '/trading/:company', name: 'trading_detail', component: Trade },
-  { path: '/nasa', name: 'nasa_list_image', component: ListNasaImages },
-  { path: '/nasa/day/:day', name: 'nasa_image_detail', component: NasaImageDetail },
-  { path: '*', name: 'not_found',component: NotFound },
-];
 
 const router = new VueRouter({
   routes // short for `routes: routes`
