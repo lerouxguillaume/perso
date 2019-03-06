@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\DailyStats;
 use App\Entity\Entreprise;
 use App\Entity\TimeSerie;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +33,12 @@ class FetchApiAlphaVantage
 
     public function getEntreprises()
     {
-        return $this->em->getRepository(Entreprise::class)->findAll();
+        $todayTimestamp = strtotime('today midnight');
+        $todayDate = (new \DateTime())->setTimestamp($todayTimestamp);
+
+        $dailyStats = $this->em->getRepository(DailyStats::class)->findBy(['day' => $todayDate]);
+
+        return $dailyStats;
     }
 
     public function getDailyCotes(string $symbol)
@@ -65,6 +71,11 @@ class FetchApiAlphaVantage
         $res = [];
         $tenyearAgoTimestamp = (new \DateTime())->setTimestamp(strtotime('today midnight'))
             ->modify('-10 year')->getTimestamp();
+        if (!isset($content['Time Series (Daily)'])) {
+            $this->logger->error('An error occured with the api call', [
+                'message' => $content
+            ]);
+        }
         foreach ($content['Time Series (Daily)'] as $time => $ohlc) {
             $currentTimestamp = (new \DateTime($time))->getTimestamp();
             if ($currentTimestamp >= $tenyearAgoTimestamp) {

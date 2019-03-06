@@ -21,7 +21,13 @@
                 // Note 'isActive' is left out and will not appear in the rendered table
                 fields: [
                     { key: 'raison_sociale', sortable: true },
-                    { key: 'code', sortable: true },
+                    { key: 'jour', sortable: true },
+                    { key: 'semaine', sortable: true },
+                    { key: 'mois', sortable: true },
+                    { key: 'trimestre', sortable: true },
+                    { key: 'annee', sortable: true },
+                    { key: 'cinq_ans', sortable: true },
+                    { key: 'dix_ans', sortable: true },
                     { key: 'actions' }
                 ],
                 items: [
@@ -41,8 +47,15 @@
                     for (let key in data) {
                         this.items.push({
                             isActive: true,
-                            'raison_sociale' : data[key].raison_sociale,
-                            'code' : data[key].code
+                            'raison_sociale' : data[key].entreprise.raison_sociale,
+                            'jour' : data[key].day_variance.toFixed(2) + ' %',
+                            'semaine' : data[key].week_variance.toFixed(2) + ' %',
+                            'mois' : data[key].month_variance.toFixed(2) + ' %',
+                            'trimestre' : data[key].trimester_variance.toFixed(2) + ' %',
+                            'annee' : data[key].year_variance.toFixed(2) + ' %',
+                            'cinq_ans' : data[key].five_year_variance.toFixed(2) + ' %',
+                            'dix_ans' : data[key].ten_year_variance.toFixed(2) + ' %',
+                            'code' : data[key].entreprise.code
                         })
                     }
                 })
