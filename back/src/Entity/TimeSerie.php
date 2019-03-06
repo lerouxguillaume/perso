@@ -7,8 +7,17 @@ class TimeSerie
     /** @var int */
     private $timestamp;
 
-    /** @var OHLCFormat */
-    private $ohlcFormat;
+    /** @var float */
+    private $open;
+
+    /** @var float */
+    private $close;
+
+    /** @var float */
+    private $high;
+
+    /** @var float */
+    private $low;
 
     /** @var int */
     private $volume;
@@ -32,20 +41,74 @@ class TimeSerie
     }
 
     /**
-     * @return OHLCFormat
+     * @return float
      */
-    public function getOhlcFormat()
+    public function getOpen()
     {
-        return $this->ohlcFormat;
+        return $this->open;
     }
 
     /**
-     * @param OHLCFormat $ohlcFormat
+     * @param float $open
      * @return TimeSerie
      */
-    public function setOhlcFormat($ohlcFormat): TimeSerie
+    public function setOpen($open): TimeSerie
     {
-        $this->ohlcFormat = $ohlcFormat;
+        $this->open = $open;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getClose()
+    {
+        return $this->close;
+    }
+
+    /**
+     * @param float $close
+     * @return TimeSerie
+     */
+    public function setClose($close): TimeSerie
+    {
+        $this->close = $close;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHigh()
+    {
+        return $this->high;
+    }
+
+    /**
+     * @param float $high
+     * @return TimeSerie
+     */
+    public function setHigh($high): TimeSerie
+    {
+        $this->high = $high;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLow()
+    {
+        return $this->low;
+    }
+
+    /**
+     * @param float $low
+     * @return TimeSerie
+     */
+    public function setLow($low): TimeSerie
+    {
+        $this->low = $low;
         return $this;
     }
 

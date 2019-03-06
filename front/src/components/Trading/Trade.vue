@@ -2,10 +2,10 @@
     <div>
         <div id="chart-box" v-if="seriesCandle !== null">
             <div id="chart-candlestick">
-                <apexchart type=candlestick height=400 :options="chartOptionsCandlestick" :series="seriesCandle" />
+                <apexchart height=400 :options="chartOptionsCandlestick" :series="seriesCandle" />
             </div>
             <div id="chart-bar">
-                <apexchart type=bar height=300 :options="chartOptionsBar" :series="seriesBar" />
+                <apexchart height=300 :options="chartOptionsBar" :series="seriesBar" />
             </div>
         </div>
     </div>
@@ -20,44 +20,41 @@
             return {
                 // Array will be automatically processed with visualization.arrayToDataTable function
                 seriesCandle: null,
-                seriesBar: [],
+                seriesBarValue: [],
+                seriesBarPercent: [],
                 chartOptionsCandlestick: {
+                    colors: ['#ff45ed'],
                     tooltip: {
                         theme: 'dark',
-                        type: 'candlestick',
-                        // custom: function({series, seriesIndex, dataPointIndex, w}) {
-                        //     console.log(series, seriesIndex, dataPointIndex, w)
-                        //     return '<div class="arrow_box">' +
-                        //         '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
-                        //         '</div>'
-                        // }
-                        // y: {
-                        //     formatter: undefined,
-                        //     title: {
-                        //         formatter: function (seriesName) {
-                        //             console.log(seriesName);
-                        //             return seriesName
-                        //         }
-                        //     }
-                        // },
-                        // y: {
-                        //     formatter: function (seriesName) {
-                        //         console.log(this);
-                        //         return seriesName
-                        //     },
-                        //     title: 'Size: '
-                        // },
+                        custom: function({series, seriesIndex, dataPointIndex, w}) {
+                            let o = w.globals.seriesCandleO[0][dataPointIndex]
+                            let h = w.globals.seriesCandleH[0][dataPointIndex]
+                            let l = w.globals.seriesCandleL[0][dataPointIndex]
+                            let c = w.globals.seriesCandleC[0][dataPointIndex]
+                            let relative = (parseFloat(c) * 100 / parseFloat(o) - 100).toFixed(2);
+                            return (
+                                '<div class="apexcharts-tooltip-candlestick">' +
+                                '<div>Open: <span class="value">' + o + '</span></div>' +
+                                '<div>High: <span class="value">' + h + '</span></div>' +
+                                '<div>Low: <span class="value">' + l + '</span></div>' +
+                                '<div>Close: <span class="value">' + c + '</span></div>' +
+                                '<div>Variation: <span class="value">' + relative + ' %</span></div>' +
+                                '</div>'
+                            )
+                        }
+                    },
+                    stroke: {
+                        width: 1,
                     },
                     chart: {
                         id: 'candles',
                         foreColor: '#fff',
-                        toolbar: {
-                            autoSelected: 'pan',
-                            show: true
-                        },
                         zoom: {
                             enabled: false
                         },
+                    },
+                    legend: {
+                        show: false
                     },
                     plotOptions: {
                         candlestick: {
@@ -65,6 +62,8 @@
                                 upward: '#228B22',
                                 downward: '#FF0000'
                             }
+                        },
+                        line: {
                         }
                     },
                     xaxis: {
@@ -72,11 +71,17 @@
                     }
                 },
                 chartOptionsBar: {
+                    tooltip: {
+                        enabled: true,
+                        theme: 'dark',
+                    },
                     chart: {
                         foreColor: '#fff',
+                        type: 'line',
+
                         brush: {
                             enabled: true,
-                            target: 'candles'
+                            target: 'candles',
                         },
                         selection: {
                             enabled: true,
@@ -94,7 +99,7 @@
                     },
                     plotOptions: {
                         bar: {
-                            columnWidth: '80%',
+                            columnWidth: '90%',
                             colors: {
                                 ranges: [{
                                     from: -1000,
@@ -107,10 +112,10 @@
                                 }],
 
                             },
-                        }
+                        },
                     },
                     stroke: {
-                        width: 0
+                        width: [0, 4]
                     },
                     xaxis: {
                         type: 'datetime',
@@ -118,36 +123,59 @@
                             offsetX: 13
                         }
                     },
-                    yaxis: {
+                    yaxis: [{
                         labels: {
                             show: true
-                        }
-                    }
+                        }},
+                        {
+                            opposite: true,
+                            min:40
+
+                        }]
                 }
             }
 
         },
         mounted () {
             axios
-                .get(process.env.VUE_APP_TRADE_API_URL+'/daily/AF')
+                .get(process.env.VUE_APP_TRADE_API_URL+'/daily/'+this.$route.params.company)
                 .then((response) => {
                     let data = response.data;
                     let candelbarData = [];
-                    let barData = [];
+                    let barAbsoluteData = [];
+                    let barVariableData = [];
+                    let lineData = [];
                     for (let key in data) {
                         let currentData = data[key];
-                        candelbarData.unshift([currentData.timestamp*1000, [currentData.ohlc_format.open, currentData.ohlc_format.high, currentData.ohlc_format.low, currentData.ohlc_format.close]])
-                        barData.unshift([currentData.timestamp*1000, currentData.ohlc_format.close - currentData.ohlc_format.open])
+                        candelbarData.unshift([currentData.timestamp*1000, [currentData.open, currentData.high, currentData.low, currentData.close]])
+                        barAbsoluteData.unshift([currentData.timestamp*1000, currentData.close - currentData.open])
+                        barVariableData.unshift([currentData.timestamp*1000, currentData.close *100 / currentData.open -100])
+                        lineData.unshift([currentData.timestamp*1000, currentData.close ])
                     }
-                    this.seriesCandle =  [{
-                        name : 'test',
-                        data : candelbarData
-                    }];
-                    this.seriesBar =  [{
-                        name : 'test-bar',
-                        data : barData
-                    }];
-                    // this.chartData.unshift(['date', 'cote'])
+                    this.seriesCandle =  [
+                        {
+                            name : 'test',
+                            type : 'candlestick',
+                            data : candelbarData
+                        },
+                        {
+                            name : 'variation_line',
+                            type: 'line',
+                            data : lineData
+                        }
+                    ];
+                    this.seriesBar =  [
+                        {
+                            name : 'variation_absolute',
+                            type: 'column',
+                            data : barAbsoluteData
+                        },
+                        // {
+                        //     name : 'variation_percent',
+                        //     type: 'bar',
+                        //     data : barVariableData
+                        // },
+                    ];
                 })
                 .catch(function (error) {
                     console.log(error);

@@ -2,12 +2,12 @@
 
 namespace App\Service;
 
-use App\Entity\ImageOfTheDay;
-use App\Entity\OHLCFormat;
+use App\Entity\Entreprise;
 use App\Entity\TimeSerie;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FetchApiAlphaVantage
 {
@@ -30,19 +30,29 @@ class FetchApiAlphaVantage
         $this->em = $em;
     }
 
+    public function getEntreprises()
+    {
+        return $this->em->getRepository(Entreprise::class)->findAll();
+    }
+
     public function getDailyCotes(string $symbol)
     {
+        /** @var Entreprise $entreprise */
+        $entreprise = $this->em->getRepository(Entreprise::class)->findOneBy(['code' => $symbol]);
+        if (empty($entreprise)) {
+            throw new NotFoundHttpException();
+        }
         $client = new Client();
         try {
             $response = $client->get('https://www.alphavantage.co/query', [
                 'query' => [
                     'function' => 'TIME_SERIES_DAILY',
-                    'symbol' => $symbol.'.PA',
+                    'symbol' => $entreprise->getCode().'.'.$entreprise->getTradingLocation(),
                     'apikey' => $this->apiKey,
                 ]
             ]);
             $this->logger->info(
-                'fetch daily cotes for : '. $symbol
+                'fetch daily cotes for : '. $entreprise->getRaisonSociale()
             );
         } catch (\Exception $e) {
             $this->logger->error('An error occured with the api call', [
@@ -53,17 +63,13 @@ class FetchApiAlphaVantage
         $content = json_decode($response->getBody()->getContents(), true);
         $res = [];
         foreach ($content['Time Series (Daily)'] as $time => $ohlc) {
-            $currentOhlc = new OHLCFormat();
-            $currentOhlc
+            $currentTimestamp = (new \DateTime($time))->getTimestamp();
+            $currentTimeSerie = new TimeSerie();
+            $currentTimeSerie
                 ->setOpen(floatval($ohlc['1. open']))
                 ->setHigh(floatval($ohlc['2. high']))
                 ->setLow(floatval($ohlc['3. low']))
                 ->setClose(floatval($ohlc['4. close']))
-            ;
-            $currentTimestamp = (new \DateTime($time))->getTimestamp();
-            $currentTimeSerie = new TimeSerie();
-            $currentTimeSerie
-                ->setOhlcFormat($currentOhlc)
                 ->setVolume($ohlc['5. volume'])
                 ->setTimestamp($currentTimestamp)
             ;

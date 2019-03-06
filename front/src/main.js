@@ -13,6 +13,7 @@ import Home from "./components/Home";
 import NasaImageDetail from "./components/Nasa/NasaImageDetail";
 import Trade from "./components/Trading/Trade";
 import NotFound from "./pages/NotFound";
+import TradeList from "./components/Trading/TradeList";
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
@@ -42,7 +43,8 @@ var filter = function(text, length, clamp, soft){
 const routes = [
   { path: '/', name: 'homepage', component: Home },
   { path: '/profile', name: 'profile', component: Profil },
-  { path: '/trade', name: 'trade', component: Trade },
+  { path: '/trading', name: 'trading_list', component: TradeList },
+  { path: '/trading/:company', name: 'trading_detail', component: Trade },
   { path: '/nasa', name: 'nasa_list_image', component: ListNasaImages },
   { path: '/nasa/day/:day', name: 'nasa_image_detail', component: NasaImageDetail },
   { path: '*', name: 'not_found',component: NotFound },
