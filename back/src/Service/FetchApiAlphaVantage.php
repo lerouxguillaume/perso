@@ -49,6 +49,7 @@ class FetchApiAlphaVantage
                     'function' => 'TIME_SERIES_DAILY',
                     'symbol' => $entreprise->getCode().'.'.$entreprise->getTradingLocation(),
                     'apikey' => $this->apiKey,
+                    'outputsize' => 'full',
                 ]
             ]);
             $this->logger->info(
@@ -62,18 +63,21 @@ class FetchApiAlphaVantage
         }
         $content = json_decode($response->getBody()->getContents(), true);
         $res = [];
+        $tenyearAgoTimestamp = (new \DateTime())->setTimestamp(strtotime('today midnight'))
+            ->modify('-10 year')->getTimestamp();
         foreach ($content['Time Series (Daily)'] as $time => $ohlc) {
             $currentTimestamp = (new \DateTime($time))->getTimestamp();
-            $currentTimeSerie = new TimeSerie();
-            $currentTimeSerie
-                ->setOpen(floatval($ohlc['1. open']))
-                ->setHigh(floatval($ohlc['2. high']))
-                ->setLow(floatval($ohlc['3. low']))
-                ->setClose(floatval($ohlc['4. close']))
-                ->setVolume($ohlc['5. volume'])
-                ->setTimestamp($currentTimestamp)
-            ;
-            $res[] = $currentTimeSerie;
+            if ($currentTimestamp >= $tenyearAgoTimestamp) {
+                $currentTimeSerie = new TimeSerie();
+                $currentTimeSerie
+                    ->setOpen(floatval($ohlc['1. open']))
+                    ->setHigh(floatval($ohlc['2. high']))
+                    ->setLow(floatval($ohlc['3. low']))
+                    ->setClose(floatval($ohlc['4. close']))
+                    ->setVolume($ohlc['5. volume'])
+                    ->setTimestamp($currentTimestamp);
+                $res[] = $currentTimeSerie;
+            }
         }
 
         return $res;
