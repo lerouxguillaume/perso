@@ -2,25 +2,93 @@
 
 namespace App\Entity;
 
+use JMS\Serializer\Annotation\Exclude;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Class TimeSerie
+ * @package App\Entity
+ * @ORM\Entity()
+ */
 class TimeSerie
 {
-    /** @var int */
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @Exclude()
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var Entreprise
+     * @ORM\ManyToOne(targetEntity="Entreprise")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $entreprise;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     * @var int
+     */
     private $timestamp;
 
-    /** @var float */
+    /**
+     * @ORM\Column(type="float", nullable=false)
+     * @var float
+     */
     private $open;
 
-    /** @var float */
+    /**
+     * @ORM\Column(type="float", nullable=false)
+     * @var float
+     */
     private $close;
 
-    /** @var float */
+    /**
+     * @ORM\Column(type="float", nullable=false)
+     * @var float
+     */
     private $high;
 
-    /** @var float */
+    /**
+     * @ORM\Column(type="float", nullable=false)
+     * @var float
+     */
     private $low;
 
-    /** @var int */
+    /**
+     * @ORM\Column(type="float", nullable=false)
+     * @var float
+     */
     private $volume;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Entreprise
+     */
+    public function getEntreprise()
+    {
+        return $this->entreprise;
+    }
+
+    /**
+     * @param Entreprise $entreprise
+     * @return TimeSerie
+     */
+    public function setEntreprise($entreprise): TimeSerie
+    {
+        $this->entreprise = $entreprise;
+        return $this;
+    }
 
     /**
      * @return int

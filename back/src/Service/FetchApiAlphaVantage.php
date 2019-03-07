@@ -90,7 +90,6 @@ class FetchApiAlphaVantage
                 $res[] = $currentTimeSerie;
             }
         }
-
         return $res;
     }
 }
