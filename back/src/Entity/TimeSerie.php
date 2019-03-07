@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class TimeSerie
  * @package App\Entity
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\TimeSerieRepository")
  */
 class TimeSerie
 {
@@ -25,6 +25,7 @@ class TimeSerie
      * @var Entreprise
      * @ORM\ManyToOne(targetEntity="Entreprise")
      * @ORM\JoinColumn(referencedColumnName="id")
+     * @Exclude()
      */
     private $entreprise;
 

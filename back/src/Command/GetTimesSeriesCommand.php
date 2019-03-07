@@ -46,19 +46,26 @@ class GetTimesSeriesCommand extends Command
     {
         $entreprises = $this->em->getRepository(Entreprise::class)->findAll();
         $todayTimestamp = strtotime('today midnight');
-
+        $batchSize = 100;
         /** @var Entreprise $entreprise */
         foreach ($entreprises as $entreprise) {
+            $lastTimeSerie = $this->em->getRepository(TimeSerie::class)->findLastTimeSerieTimestamp($entreprise) ?? 0;
+
             $output->writeln("Traitement de : ". $entreprise->getRaisonSociale());
             $currentData = $this->apiAlphaVantage->getDailyCotes($entreprise->getCode());
             /** @var TimeSerie $currentDatum */
-            foreach ($currentData as $currentDatum) {
-                if ($todayTimestamp !== $currentDatum->getTimestamp()) {
+            foreach ($currentData as $key => $currentDatum) {
+                if ($todayTimestamp !== $currentDatum->getTimestamp() && $lastTimeSerie < $currentDatum->getTimestamp()) {
                     $currentDatum->setEntreprise($entreprise);
                     $this->em->persist($currentDatum);
-                    $this->em->flush();
+                    if (($key % $batchSize) === 0) {
+                        $this->em->flush();
+                        $this->em->clear(); // Detaches all objects from Doctrine!
+                    }
                 }
             }
+            $this->em->flush();
+            $this->em->clear(); // Detaches all objects from Doctrine!
             sleep(20);
         }
     }
