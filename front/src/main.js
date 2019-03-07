@@ -16,7 +16,7 @@ Vue.use(VueApexCharts)
 
 Vue.component('apexchart', VueApexCharts)
 
-var filter = function(text, length, clamp, soft){
+var truncate = function(text, length, clamp, soft){
   clamp = clamp || '...';
   soft = soft || false;
 
@@ -33,12 +33,20 @@ var filter = function(text, length, clamp, soft){
   return content.length > length ? content.slice(0, length) + clamp : content;
 };
 
+var formatFloat = function (number, size) {
+  if (typeof number != "number") {
+    return 'NA';
+  }
+  return number.toFixed(size);
+}
+
 const router = new VueRouter({
   routes // short for `routes: routes`
 });
 
 
-Vue.filter('truncate', filter);
+Vue.filter('truncate', truncate);
+Vue.filter('formatFloat', formatFloat);
 
 new Vue({
   router,
