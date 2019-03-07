@@ -34,7 +34,7 @@ class FetchApiAlphaVantage
     public function getEntreprises()
     {
         /** @var Entreprise $entreprise */
-        $entreprise = $this->em->getRepository(Entreprise::class)->find(1);
+        $entreprises = $this->em->getRepository(Entreprise::class)->findAll();
 
         $todayTimestamp = strtotime('-1 day midnight'); //Résultats à J-1
         $yesterdayTimestamp = strtotime('-2 day midnight');
@@ -45,85 +45,89 @@ class FetchApiAlphaVantage
         $fiveYearAgoTimestamp = strtotime('-5 year midnight');
         $tenYearAgoTimestamp = strtotime('-10 year midnight');
 
-        $dailyStats = $this->em->getRepository(TimeSerie::class)->findBy([
-            'entreprise' => $entreprise,
-            'timestamp' => [
-                $todayTimestamp,
-                $yesterdayTimestamp,
-                $weekAgoTimestamp,
-                $monthAgoTimestamp,
-                $trimesterAgoTimestamp,
-                $yearAgoTimestamp,
-                $fiveYearAgoTimestamp,
-                $tenYearAgoTimestamp
-            ]
-        ]);
+        $res = [];
 
-        $currentDailyStat = new DailyStats();
+        foreach ($entreprises as $entreprise) {
+            $dailyStats = $this->em->getRepository(TimeSerie::class)->findBy([
+                'entreprise' => $entreprise,
+                'timestamp' => [
+                    $todayTimestamp,
+                    $yesterdayTimestamp,
+                    $weekAgoTimestamp,
+                    $monthAgoTimestamp,
+                    $trimesterAgoTimestamp,
+                    $yearAgoTimestamp,
+                    $fiveYearAgoTimestamp,
+                    $tenYearAgoTimestamp
+                ]
+            ]);
 
-        $currentDailyStat->setEntreprise($entreprise);
-        $todayTimeSerie = null;
-        $yesterdayTimeSerie = null;
-        $weekAgoTimeSerie = null;
-        $monthAgoTimeSerie = null;
-        $trimesterAgoTimeSerie = null;
-        $yearAgoTimeSerie = null;
-        $fiveYearAgoTimeSerie = null;
-        $tenYearAgoTimeSerie = null;
+            $currentDailyStat = new DailyStats();
 
-        /** @var TimeSerie $dailyStat */
-        foreach ($dailyStats as $dailyStat) {
-            switch ($dailyStat->getTimestamp()) {
-                case $todayTimestamp:
-                    $todayTimeSerie = $dailyStat;
-                    break;
-                case $yesterdayTimestamp:
-                    $yesterdayTimeSerie = $dailyStat;
-                    break;
-                case $weekAgoTimestamp:
-                    $weekAgoTimeSerie = $dailyStat;
-                    break;
-                case $monthAgoTimestamp:
-                    $monthAgoTimeSerie = $dailyStat;
-                    break;
-                case $trimesterAgoTimestamp:
-                    $trimesterAgoTimeSerie = $dailyStat;
-                    break;
-                case $yearAgoTimestamp:
-                    $yearAgoTimeSerie = $dailyStat;
-                    break;
-                case $fiveYearAgoTimestamp:
-                    $fiveYearAgoTimeSerie = $dailyStat;
-                    break;
-                case $tenYearAgoTimestamp:
-                    $tenYearAgoTimeSerie = $dailyStat;
-                    break;
+            $currentDailyStat->setEntreprise($entreprise);
+            $todayTimeSerie = null;
+            $yesterdayTimeSerie = null;
+            $weekAgoTimeSerie = null;
+            $monthAgoTimeSerie = null;
+            $trimesterAgoTimeSerie = null;
+            $yearAgoTimeSerie = null;
+            $fiveYearAgoTimeSerie = null;
+            $tenYearAgoTimeSerie = null;
+
+            /** @var TimeSerie $dailyStat */
+            foreach ($dailyStats as $dailyStat) {
+                switch ($dailyStat->getTimestamp()) {
+                    case $todayTimestamp:
+                        $todayTimeSerie = $dailyStat;
+                        break;
+                    case $yesterdayTimestamp:
+                        $yesterdayTimeSerie = $dailyStat;
+                        break;
+                    case $weekAgoTimestamp:
+                        $weekAgoTimeSerie = $dailyStat;
+                        break;
+                    case $monthAgoTimestamp:
+                        $monthAgoTimeSerie = $dailyStat;
+                        break;
+                    case $trimesterAgoTimestamp:
+                        $trimesterAgoTimeSerie = $dailyStat;
+                        break;
+                    case $yearAgoTimestamp:
+                        $yearAgoTimeSerie = $dailyStat;
+                        break;
+                    case $fiveYearAgoTimestamp:
+                        $fiveYearAgoTimeSerie = $dailyStat;
+                        break;
+                    case $tenYearAgoTimestamp:
+                        $tenYearAgoTimeSerie = $dailyStat;
+                        break;
+                }
             }
-        }
 
-        if (!empty($yesterdayTimeSerie)) {
-            $currentDailyStat->setDayVariance($this->getPercentIncrease($todayTimeSerie, $yesterdayTimeSerie));
+            if (!empty($yesterdayTimeSerie)) {
+                $currentDailyStat->setDayVariance($this->getPercentIncrease($todayTimeSerie, $yesterdayTimeSerie));
+            }
+            if (!empty($weekAgoTimeSerie)) {
+                $currentDailyStat->setWeekVariance($this->getPercentIncrease($todayTimeSerie, $weekAgoTimeSerie));
+            }
+            if (!empty($monthAgoTimeSerie)) {
+                $currentDailyStat->setMonthVariance($this->getPercentIncrease($todayTimeSerie, $monthAgoTimeSerie));
+            }
+            if (!empty($trimesterAgoTimeSerie)) {
+                $currentDailyStat->setTrimesterVariance($this->getPercentIncrease($todayTimeSerie, $trimesterAgoTimeSerie));
+            }
+            if (!empty($yearAgoTimeSerie)) {
+                $currentDailyStat->setYearVariance($this->getPercentIncrease($todayTimeSerie, $yearAgoTimeSerie));
+            }
+            if (!empty($fiveYearAgoTimeSerie)) {
+                $currentDailyStat->setFiveYearVariance($this->getPercentIncrease($todayTimeSerie, $fiveYearAgoTimeSerie));
+            }
+            if (!empty($tenYearAgoTimeSerie)) {
+                $currentDailyStat->setTenYearVariance($this->getPercentIncrease($todayTimeSerie, $tenYearAgoTimeSerie));
+            }
+            $res[] = $currentDailyStat;
         }
-        if (!empty($weekAgoTimeSerie)) {
-            $currentDailyStat->setWeekVariance($this->getPercentIncrease($todayTimeSerie, $weekAgoTimeSerie));
-        }
-        if (!empty($monthAgoTimeSerie)) {
-            $currentDailyStat->setMonthVariance($this->getPercentIncrease($todayTimeSerie, $monthAgoTimeSerie));
-        }
-        if (!empty($trimesterAgoTimeSerie)) {
-            $currentDailyStat->setTrimesterVariance($this->getPercentIncrease($todayTimeSerie, $trimesterAgoTimeSerie));
-        }
-        if (!empty($yearAgoTimeSerie)) {
-            $currentDailyStat->setYearVariance($this->getPercentIncrease($todayTimeSerie, $yearAgoTimeSerie));
-        }
-        if (!empty($fiveYearAgoTimeSerie)) {
-            $currentDailyStat->setFiveYearVariance($this->getPercentIncrease($todayTimeSerie, $fiveYearAgoTimeSerie));
-        }
-        if (!empty($tenYearAgoTimeSerie)) {
-            $currentDailyStat->setTenYearVariance($this->getPercentIncrease($todayTimeSerie, $tenYearAgoTimeSerie));
-        }
-
-        return $currentDailyStat;
+        return $res;
     }
 
     public function getDailyCotes(string $symbol)
