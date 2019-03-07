@@ -49,6 +49,7 @@ class GetTimesSeriesCommand extends Command
         $batchSize = 100;
         /** @var Entreprise $entreprise */
         foreach ($entreprises as $entreprise) {
+            $entreprise = $this->em->getRepository(Entreprise::class)->find($entreprise->getId());
             $lastTimeSerie = $this->em->getRepository(TimeSerie::class)->findLastTimeSerieTimestamp($entreprise) ?? 0;
 
             $output->writeln("Traitement de : ". $entreprise->getRaisonSociale());
@@ -60,7 +61,6 @@ class GetTimesSeriesCommand extends Command
                     $this->em->persist($currentDatum);
                     if (($key % $batchSize) === 0) {
                         $this->em->flush();
-                        $this->em->clear(); // Detaches all objects from Doctrine!
                     }
                 }
             }
