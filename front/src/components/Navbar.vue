@@ -28,12 +28,15 @@
             '$route' () {
                 this.breadcrumbList = this.$route.meta.breadcumb
             }
+        },
+        mounted () {
+            this.breadcrumbList = this.$route.meta.breadcumb
         }
     }
 </script>
 
 <style scoped>
-    .bg-black {
-        background-color: black;
+    .breadcrumb{
+        background-color: #222222;
     }
 </style>

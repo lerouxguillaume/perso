@@ -69,7 +69,7 @@ class CalculateStaticsDayCommand extends Command
         /** @var Entreprise $entreprise */
         foreach ($entreprises as $entreprise) {
             $output->writeln("Traitement de : ". $entreprise->getRaisonSociale());
-            $currentData = $this->apiAlphaVantage->getDailyCotes($entreprise->getCode());
+            $currentData = $this->apiAlphaVantage->fetchDailyCotes($entreprise->getCode());
             /** @var TimeSerie $currentDatum */
             foreach ($currentData as $currentDatum) {
                 switch ($currentDatum->getTimestamp()) {

@@ -16,6 +16,27 @@ class TimeSerieRepository extends ServiceEntityRepository
 
     /**
      * @param Entreprise $entreprise
+     * @param $timestamp
+     * @return mixed
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findClosestTimeSerie(Entreprise $entreprise, $timestamp)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->andWhere('t.timestamp <= :timestamp')
+            ->andWhere('t.entreprise = :entreprise')
+            ->setParameter('timestamp', $timestamp)
+            ->setParameter('entreprise', $entreprise->getId())
+            ->orderBy('t.timestamp', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery();
+
+        return current($qb->execute());
+    }
+
+    /**
+     * @param Entreprise $entreprise
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -30,6 +51,10 @@ class TimeSerieRepository extends ServiceEntityRepository
         return $qb->getSingleScalarResult();
     }
 
+    /**
+     * @param Entreprise $entreprise
+     * @return mixed
+     */
     public function findLastWeekTimeSerie(Entreprise $entreprise)
     {
         $weekAgoTimestamp = strtotime('-7 day midnight');
@@ -45,14 +70,18 @@ class TimeSerieRepository extends ServiceEntityRepository
         return $qb->execute();
     }
 
+    /**
+     * @param Entreprise $entreprise
+     * @return mixed
+     */
     public function findLastMonthTimeSerie(Entreprise $entreprise)
     {
-        $weekAgoTimestamp = strtotime('-1 month day midnight');
+        $monthAgoTimestamp = strtotime('-1 month midnight');
 
         $qb = $this->createQueryBuilder('t')
-            ->andWhere('t.timestamp >= :weekAgo')
+            ->andWhere('t.timestamp >= :monthAgo')
             ->andWhere('t.entreprise = :entreprise')
-            ->setParameter('weekAgo', $weekAgoTimestamp)
+            ->setParameter('monthAgo', $monthAgoTimestamp)
             ->setParameter('entreprise', $entreprise->getId())
             ->orderBy('t.timestamp', 'ASC')
             ->getQuery();
@@ -60,14 +89,17 @@ class TimeSerieRepository extends ServiceEntityRepository
         return $qb->execute();
     }
 
+    /**
+     * @param Entreprise $entreprise
+     * @return mixed
+     */
     public function findLastYearTimeSerie(Entreprise $entreprise)
     {
-        $weekAgoTimestamp = strtotime('-1 year day midnight');
-
+        $yearAgoTimestamp = strtotime('-1 year midnight');
         $qb = $this->createQueryBuilder('t')
-            ->andWhere('t.timestamp >= :weekAgo')
+            ->andWhere('t.timestamp >= :yearAgo')
             ->andWhere('t.entreprise = :entreprise')
-            ->setParameter('weekAgo', $weekAgoTimestamp)
+            ->setParameter('yearAgo', $yearAgoTimestamp)
             ->setParameter('entreprise', $entreprise->getId())
             ->orderBy('t.timestamp', 'ASC')
             ->getQuery();

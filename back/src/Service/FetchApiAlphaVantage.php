@@ -18,7 +18,7 @@ class FetchApiAlphaVantage
     /** @var EntityManagerInterface */
     private $em;
 
-    /** @var string  */
+    /** @var string */
     private $apiKey = 'GEA2QS5WI2IM8WOF';
 
     /**
@@ -50,61 +50,26 @@ class FetchApiAlphaVantage
             $fiveYearAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-5 year')->getTimestamp();
             $tenYearAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-10 year')->getTimestamp();
 
-            $dailyStats = $this->em->getRepository(TimeSerie::class)->findBy([
-                'entreprise' => $entreprise,
-                'timestamp' => [
-                    $todayTimestamp,
-                    $yesterdayTimestamp,
-                    $weekAgoTimestamp,
-                    $monthAgoTimestamp,
-                    $trimesterAgoTimestamp,
-                    $yearAgoTimestamp,
-                    $fiveYearAgoTimestamp,
-                    $tenYearAgoTimestamp
-                ]
-            ]);
 
             $currentDailyStat = new DailyStats();
 
             $currentDailyStat->setEntreprise($entreprise);
-            $todayTimeSerie = null;
-            $yesterdayTimeSerie = null;
-            $weekAgoTimeSerie = null;
-            $monthAgoTimeSerie = null;
-            $trimesterAgoTimeSerie = null;
-            $yearAgoTimeSerie = null;
-            $fiveYearAgoTimeSerie = null;
-            $tenYearAgoTimeSerie = null;
-
-            /** @var TimeSerie $dailyStat */
-            foreach ($dailyStats as $dailyStat) {
-                switch ($dailyStat->getTimestamp()) {
-                    case $todayTimestamp:
-                        $todayTimeSerie = $dailyStat;
-                        break;
-                    case $yesterdayTimestamp:
-                        $yesterdayTimeSerie = $dailyStat;
-                        break;
-                    case $weekAgoTimestamp:
-                        $weekAgoTimeSerie = $dailyStat;
-                        break;
-                    case $monthAgoTimestamp:
-                        $monthAgoTimeSerie = $dailyStat;
-                        break;
-                    case $trimesterAgoTimestamp:
-                        $trimesterAgoTimeSerie = $dailyStat;
-                        break;
-                    case $yearAgoTimestamp:
-                        $yearAgoTimeSerie = $dailyStat;
-                        break;
-                    case $fiveYearAgoTimestamp:
-                        $fiveYearAgoTimeSerie = $dailyStat;
-                        break;
-                    case $tenYearAgoTimestamp:
-                        $tenYearAgoTimeSerie = $dailyStat;
-                        break;
-                }
-            }
+            $todayTimeSerie = $this->em->getRepository(TimeSerie::class)
+                ->findClosestTimeSerie($entreprise, $todayTimestamp);
+            $yesterdayTimeSerie = $this->em->getRepository(TimeSerie::class)
+                ->findClosestTimeSerie($entreprise, $yesterdayTimestamp);
+            $weekAgoTimeSerie = $this->em->getRepository(TimeSerie::class)
+                ->findClosestTimeSerie($entreprise, $weekAgoTimestamp);
+            $monthAgoTimeSerie = $this->em->getRepository(TimeSerie::class)
+                ->findClosestTimeSerie($entreprise, $monthAgoTimestamp);
+            $trimesterAgoTimeSerie = $this->em->getRepository(TimeSerie::class)
+                ->findClosestTimeSerie($entreprise, $trimesterAgoTimestamp);
+            $yearAgoTimeSerie = $this->em->getRepository(TimeSerie::class)
+                ->findClosestTimeSerie($entreprise, $yearAgoTimestamp);
+            $fiveYearAgoTimeSerie = $this->em->getRepository(TimeSerie::class)
+                ->findClosestTimeSerie($entreprise, $fiveYearAgoTimestamp);
+            $tenYearAgoTimeSerie = $this->em->getRepository(TimeSerie::class)
+                ->findClosestTimeSerie($entreprise, $tenYearAgoTimestamp);
 
             if (!empty($yesterdayTimeSerie)) {
                 $currentDailyStat->setDayVariance($this->getPercentIncrease($todayTimeSerie, $yesterdayTimeSerie));
@@ -134,6 +99,16 @@ class FetchApiAlphaVantage
 
     public function getDailyCotes(string $symbol)
     {
+        $entreprise = $this->em->getRepository(Entreprise::class)->findOneBy(['code' => $symbol]);
+        $timeSeries = $this->em->getRepository(TimeSerie::class)->findLastYearTimeSerie($entreprise);
+        return [
+            'entreprise' => $entreprise,
+            'data' => $timeSeries
+        ];
+    }
+
+    public function fetchDailyCotes(string $symbol)
+    {
         /** @var Entreprise $entreprise */
         $entreprise = $this->em->getRepository(Entreprise::class)->findOneBy(['code' => $symbol]);
         if (empty($entreprise)) {
@@ -161,7 +136,7 @@ class FetchApiAlphaVantage
         $content = json_decode($response->getBody()->getContents(), true);
         $res = [];
         $tenyearAgoTimestamp = (new \DateTime())->setTimestamp(strtotime('today midnight'))
-            ->modify('-10 year -1 day')->getTimestamp();
+            ->modify('-10 year -1 week')->getTimestamp();
         if (!isset($content['Time Series (Daily)'])) {
             $this->logger->error('An error occured with the api call', [
                 'message' => $content

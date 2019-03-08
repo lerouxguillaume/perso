@@ -53,7 +53,7 @@ class GetTimesSeriesCommand extends Command
             $lastTimeSerie = $this->em->getRepository(TimeSerie::class)->findLastTimeSerieTimestamp($entreprise) ?? 0;
 
             $output->writeln("Traitement de : ". $entreprise->getRaisonSociale());
-            $currentData = $this->apiAlphaVantage->getDailyCotes($entreprise->getCode());
+            $currentData = $this->apiAlphaVantage->fetchDailyCotes($entreprise->getCode());
             /** @var TimeSerie $currentDatum */
             foreach ($currentData as $key => $currentDatum) {
                 if ($todayTimestamp !== $currentDatum->getTimestamp() && $lastTimeSerie < $currentDatum->getTimestamp()) {
