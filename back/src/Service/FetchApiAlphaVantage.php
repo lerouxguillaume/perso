@@ -36,18 +36,20 @@ class FetchApiAlphaVantage
         /** @var Entreprise $entreprise */
         $entreprises = $this->em->getRepository(Entreprise::class)->findAll();
 
-        $todayTimestamp = strtotime('-1 day midnight'); //Résultats à J-1
-        $yesterdayTimestamp = strtotime('-2 day midnight');
-        $weekAgoTimestamp = strtotime('-7 day midnight');
-        $monthAgoTimestamp = strtotime('-1 month midnight');
-        $trimesterAgoTimestamp = strtotime('-3 month midnight');
-        $yearAgoTimestamp = strtotime('-1 year midnight');
-        $fiveYearAgoTimestamp = strtotime('-5 year midnight');
-        $tenYearAgoTimestamp = strtotime('-10 year midnight');
 
         $res = [];
 
         foreach ($entreprises as $entreprise) {
+            $todayTimestamp = $this->em->getRepository(TimeSerie::class)
+                ->findLastTimeSerieTimestamp($entreprise);
+            $yesterdayTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 day')->getTimestamp();
+            $weekAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 week')->getTimestamp();
+            $monthAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 month')->getTimestamp();
+            $trimesterAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-3 month')->getTimestamp();
+            $yearAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 year')->getTimestamp();
+            $fiveYearAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-5 year')->getTimestamp();
+            $tenYearAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-10 year')->getTimestamp();
+
             $dailyStats = $this->em->getRepository(TimeSerie::class)->findBy([
                 'entreprise' => $entreprise,
                 'timestamp' => [
