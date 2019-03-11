@@ -1,0 +1,38 @@
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        oauth_token:                                   # Everyone can access the access token URL.
+            pattern: ^/oauth/v2/token
+            security: false
+                       # Anonymous access is not allowed
+        logged:
+#            pattern: ^/trading
+            fos_oauth: true                            # OAuth2 protected resource
+            stateless: true                            # Do no set session cookies
+            anonymous: false                           # Anonymous access is not allowed
+        main:
+            anonymous: true
+
+#        main:
+#            fos_oauth: true                            # OAuth2 protected resource
+#            stateless: true                            # Do no set session cookies
+#            anonymous: false                           # Anonymous access is not allowed
+
+            # activate different ways to authenticate
+
+            # http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: true
+            # https://symfony.com/doc/current/security/form_login_setup.html
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
