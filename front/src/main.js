@@ -2,53 +2,22 @@ import Vue from 'vue'
 import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueMoment from 'vue-moment'
-import VueRouter from 'vue-router'
 import VueApexCharts from 'vue-apexcharts'
-
+import store from './store/store'
 import './assets/custom.scss'
-import routes from './routes.js'
+import router from './routes.js'
+import './filter.js'
 
 Vue.config.productionTip = false
-Vue.use(BootstrapVue)
+
+Vue.use(BootstrapVue);
 Vue.use(VueMoment);
-Vue.use(VueRouter)
-Vue.use(VueApexCharts)
+Vue.use(VueApexCharts);
 
 Vue.component('apexchart', VueApexCharts)
 
-var truncate = function(text, length, clamp, soft){
-  clamp = clamp || '...';
-  soft = soft || false;
-
-  var node = document.createElement('div');
-  node.innerHTML = text;
-  var content = node.textContent;
-
-  if (soft) {
-    while (content[length] !== ' ' && length  > 0) {
-      length--;
-    }
-  }
-
-  return content.length > length ? content.slice(0, length) + clamp : content;
-};
-
-var formatFloat = function (number, size) {
-  if (typeof number != "number") {
-    return 'NA';
-  }
-  return number.toFixed(size);
-}
-
-const router = new VueRouter({
-  routes // short for `routes: routes`
-});
-
-
-Vue.filter('truncate', truncate);
-Vue.filter('formatFloat', formatFloat);
-
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app');
