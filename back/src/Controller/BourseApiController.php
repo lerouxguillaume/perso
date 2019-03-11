@@ -31,7 +31,6 @@ class BourseApiController extends AbstractFOSRestController
      */
     public function getEntreprises()
     {
-        dump($this->getUser());die();
         $response = $this->alphaAvantageApi->getEntreprises();
         return $response;
     }
