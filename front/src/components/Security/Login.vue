@@ -4,7 +4,7 @@
         <form>
             <label for="email" >E-Mail Address</label>
             <div>
-                <input id="email" type="email" v-model="email" required autofocus>
+                <input id="email" type="" v-model="email" required autofocus>
             </div>
             <div>
                 <label for="password" >Password</label>
@@ -21,32 +21,35 @@
     </div>
 </template>
 <script>
+    import { mapGetters, mapActions } from "vuex";
     export default {
-        name: "Login",
-        data(){
+        name: "login",
+        data() {
             return {
-                email : "",
-                password : ""
-            }
+                email: "",
+                password: "",
+            };
         },
-        methods : {
-            handleSubmit(e){
-                e.preventDefault()
-                if (this.password.length > 0) {
-                    this.$http.post('http://localhost:3000/login', {
-                        email: this.email,
-                        password: this.password
-                    })
-                        .then(response => {
-
-                        })
-                        .catch(function (error) {
-                            console.error(error.response);
-                        });
+        computed: {
+            ...mapGetters('auth', [
+                'authenticating',
+                'authenticationError',
+                'authenticationErrorCode'
+            ])
+        },
+        methods: {
+            ...mapActions('auth', [
+                'login'
+            ]),
+            handleSubmit() {
+                // Perform a simple validation that email and password have been typed in
+                if (this.email != '' && this.password != '') {
+                    this.login({email: this.email, password: this.password})
+                    this.password = ""
                 }
             }
         }
-    }
+    };
 </script>
 
 <style scoped>

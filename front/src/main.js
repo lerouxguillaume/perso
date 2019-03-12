@@ -3,10 +3,12 @@ import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueMoment from 'vue-moment'
 import VueApexCharts from 'vue-apexcharts'
-import store from './store/store'
 import './assets/custom.scss'
-import router from './routes.js'
+import router from './router.js'
 import './filter.js'
+import ApiService from "./services/api.service";
+import {TokenService} from "./services/storage.service";
+import store from './store'
 
 Vue.config.productionTip = false
 
@@ -15,6 +17,17 @@ Vue.use(VueMoment);
 Vue.use(VueApexCharts);
 
 Vue.component('apexchart', VueApexCharts)
+
+// Set the base URL of the API
+ApiService.init('http://localhost:8080');
+
+// If token exists set header
+if (TokenService.getToken()) {
+  ApiService.setHeader()
+}
+ApiService.mount401Interceptor();
+
+
 
 new Vue({
   router,

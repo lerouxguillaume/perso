@@ -52,8 +52,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import * as router from "vue-router";
+    import ApiService from "../../services/api.service";
 
     export default {
         name: "TradeList",
@@ -89,69 +88,28 @@
             }
         },
         mounted () {
-            // const params = new URLSearchParams();
-            // params.append('grant_type', 'password');
-            // params.append('client_id', '2_5krlfq0bbysc0k40004skw44ccgcgkgg0wkk48os0sgk00w8o0');
-            // params.append('client_secret', '15p2pchqrqg0ogs4g0c8w8kk4wcsw0so0scwkcksc408kk4o08');
-            // params.append('username', 'user');
-            // params.append('password', 'test');
-            // axios.post("http://localhost:8080/oauth/v2/token",params)
-            // let data = JSON.stringify({
-            //     grant_type: 'password',
-            //     client_id: '2_5krlfq0bbysc0k40004skw44ccgcgkgg0wkk48os0sgk00w8o0',
-            //     client_secret: '15p2pchqrqg0ogs4g0c8w8kk4wcsw0so0scwkcksc408kk4o08',
-            //     username: 'user',
-            //     password: 'test'
-            // })
-            // console.log(data)
-            axios({
-                method: 'post',
-                url: "http://localhost:8080/oauth/v2/token",
-                header: {
-                    // contentType: 'application/x-www-form-urlencoded'
-                },
-                data: {
-                    grant_type: 'password',
-                    client_id: '2_5krlfq0bbysc0k40004skw44ccgcgkgg0wkk48os0sgk00w8o0',
-                    client_secret: '15p2pchqrqg0ogs4g0c8w8kk4wcsw0so0scwkcksc408kk4o08',
-                    username: 'user',
-                    password: 'test'
-                }
-            })
+            ApiService.get(process.env.VUE_APP_TRADE_API_URL+'/entreprises')
                 .then((response) => {
-                    axios({
-                        method: 'get',
-                        url: process.env.VUE_APP_TRADE_API_URL+'/entreprises',
-                        headers: {
-                            Authorization: 'Bearer ' + response.data.access_token
-                        }
-                    })
-                        .then((response) => {
-                            let data = response.data;
-                            for (let key in data) {
-                                this.items.push({
-                                    isActive: true,
-                                    'raison_sociale' : data[key].entreprise.raison_sociale,
-                                    'jour' : data[key].day_variance,
-                                    'semaine' : data[key].week_variance,
-                                    'mois' : data[key].month_variance,
-                                    'trimestre' : data[key].trimester_variance,
-                                    'annee' : data[key].year_variance,
-                                    'cinq_ans' : data[key].five_year_variance,
-                                    'dix_ans' : data[key].ten_year_variance,
-                                    'code' : data[key].entreprise.code
-                                })
-                            }
+                    console.log(response)
+                    let data = response.data;
+                    for (let key in data) {
+                        this.items.push({
+                            isActive: true,
+                            'raison_sociale' : data[key].entreprise.raison_sociale,
+                            'jour' : data[key].day_variance,
+                            'semaine' : data[key].week_variance,
+                            'mois' : data[key].month_variance,
+                            'trimestre' : data[key].trimester_variance,
+                            'annee' : data[key].year_variance,
+                            'cinq_ans' : data[key].five_year_variance,
+                            'dix_ans' : data[key].ten_year_variance,
+                            'code' : data[key].entreprise.code
                         })
-                        .catch(function (error) {
-                            console.log(error);
-                        })
-                    console.log(response);
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
-                });
-
+                })
         }
     }
 </script>

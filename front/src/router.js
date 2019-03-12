@@ -7,6 +7,9 @@ import NotFound from "./pages/NotFound";
 import TradeList from "./components/Trading/TradeList";
 import Vue from 'vue'
 import VueRouter from "vue-router";
+import {TokenService} from "./services/storage.service";
+import Login from "./components/Security/Login";
+import axios from 'axios';
 
 Vue.use(VueRouter);
 
@@ -17,6 +20,7 @@ const router =  new VueRouter({
             name: 'homepage',
             component: Home,
             meta: {
+                public: true,  // Allow access to even if not logged in
                 breadcumb: [
                     {
                         text: 'Home',
@@ -26,10 +30,20 @@ const router =  new VueRouter({
             }
         },
         {
+            path: '/login',
+            name: 'login',
+            component: Login,
+            meta: {
+                public: true,  // Allow access to even if not logged in
+                onlyWhenLoggedOut: true
+            }
+        },
+        {
             path: '/profile',
             name: 'profile',
             component: Profil,
             meta: {
+                public: true,  // Allow access to even if not logged in
                 breadcumb: [
                     {
                         text: 'Home',
@@ -85,6 +99,7 @@ const router =  new VueRouter({
             name: 'nasa_list_image',
             component: ListNasaImages,
             meta: {
+                public: true,  // Allow access to even if not logged in
                 breadcumb: [
                     {
                         text: 'Home',
@@ -102,6 +117,7 @@ const router =  new VueRouter({
             name: 'nasa_image_detail',
             component: NasaImageDetail,
             meta: {
+                public: true,  // Allow access to even if not logged in
                 breadcumb: [
                     {
                         text: 'Home',
@@ -124,6 +140,26 @@ const router =  new VueRouter({
         },
     ]
 });
+
+router.beforeEach((to, from, next) => {
+    const isPublic = to.matched.some(record => record.meta.public)
+    const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
+    const loggedIn = !!TokenService.getToken();
+
+    if (!isPublic && !loggedIn) {
+        return next({
+            path:'/login',
+            query: {redirect: to.fullPath}  // Store the full path to redirect the user to after login
+        });
+    }
+
+    // Do not allow user to visit login page or register page if they are logged in
+    if (loggedIn && onlyWhenLoggedOut) {
+        return next('/')
+    }
+
+    next();
+})
 
 
 export default router;
