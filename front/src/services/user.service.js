@@ -38,7 +38,6 @@ const UserService = {
 
         try {
             const response = await ApiService.customRequest(requestData);
-            console.log(response)
             TokenService.saveToken(response.data.access_token);
             TokenService.saveRefreshToken(response.data.refresh_token);
             ApiService.setHeader();

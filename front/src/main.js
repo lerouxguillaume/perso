@@ -25,9 +25,8 @@ ApiService.init('http://localhost:8080');
 if (TokenService.getToken()) {
   ApiService.setHeader()
 }
+// If 401 try to refresh token
 ApiService.mount401Interceptor();
-
-
 
 new Vue({
   router,

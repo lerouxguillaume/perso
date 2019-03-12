@@ -83,14 +83,11 @@
             },
             onFiltered(filteredItems) {
                 // Trigger pagination to update the number of buttons/pages due to filtering
-                this.totalRows = filteredItems.length
-                this.currentPage = 1
             }
         },
         mounted () {
             ApiService.get(process.env.VUE_APP_TRADE_API_URL+'/entreprises')
                 .then((response) => {
-                    console.log(response)
                     let data = response.data;
                     for (let key in data) {
                         this.items.push({

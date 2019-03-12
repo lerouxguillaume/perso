@@ -12,9 +12,9 @@
 </template>
 
 <script>
-    import NasaImageCard from "./NasaImageCard";
     import axios from 'axios';
-    import NasaImageDay from "./NasaImageDay";
+    import NasaImageDay from "../../components/Nasa/NasaImageDay";
+    import NasaImageCard from "../../components/Nasa/NasaImageCard";
 
     export default {
         name: "ListNasaImages",

@@ -44,7 +44,6 @@ const ApiService = {
                     if (error.config.url.includes('/oauth/v2/token')) {
                         // Refresh token has failed. Logout the user
                         store.dispatch('auth/logout')
-                        console.log('toto')
                         throw error
                     } else {
                         // Refresh the access token
@@ -57,8 +56,6 @@ const ApiService = {
                                 data: error.config.data
                             })
                         } catch (e) {
-                            console.log(e)
-
                             // Refresh has failed - reject the original request
                             throw error
                         }

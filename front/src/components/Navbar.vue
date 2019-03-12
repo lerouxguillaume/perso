@@ -1,22 +1,30 @@
 <template>
     <div>
         <!-- Image and text -->
-        <b-navbar variant="black" type="dark">
-            <b-navbar-nav>
-                <b-navbar-brand to="/">
-                    <img src="https://placekitten.com/g/30/30" class="d-inline-block align-top" alt="BV" />
-                    Home
-                </b-navbar-brand>
-                <b-nav-item to="/nasa">Nasa</b-nav-item>
-                <b-nav-item to="/profile">Profil</b-nav-item>
-                <b-nav-item to="/trading">Trade</b-nav-item>
-                <b-nav-item-dropdown right v-if="loggedIn">
-                    <!-- Using button-content slot -->
-                    <template slot="button-content"><em>User</em></template>
-                    <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-                </b-nav-item-dropdown>
-                <b-nav-item to="/login" v-else right>Login</b-nav-item>
-            </b-navbar-nav>
+        <b-navbar toggleable="lg" type="dark" variant="dark">
+            <b-navbar-brand :to="{ name: 'homepage'}">Home</b-navbar-brand>
+
+            <b-navbar-toggle target="nav_collapse" />
+
+            <b-collapse is-nav id="nav_collapse">
+                <b-navbar-nav>
+                    <b-nav-item :to="{ name: 'nasa_list_image'}">Nasa</b-nav-item>
+                    <b-nav-item :to="{ name: 'trading_list'}">Trading</b-nav-item>
+                    <b-nav-item :to="{ name: 'profile'}">Profile</b-nav-item>
+                </b-navbar-nav>
+
+                <!-- Right aligned nav items -->
+                <b-navbar-nav class="ml-auto">
+                       <b-nav-item-dropdown right v-if="loggedIn">
+                        <!-- Using button-content slot -->
+                        <template slot="button-content"><em>User</em></template>
+                        <b-dropdown-item href="#">Profile</b-dropdown-item>
+                        <b-dropdown-item @click="logout">Signout</b-dropdown-item>
+                    </b-nav-item-dropdown>
+                    <b-nav-item to="login" v-else>Login</b-nav-item>
+
+                </b-navbar-nav>
+            </b-collapse>
         </b-navbar>
         <b-breadcrumb :items="breadcrumbList" />
     </div>
@@ -54,7 +62,7 @@
 </script>
 
 <style scoped>
-    .breadcrumb{
+    .breadcrumb {
         background-color: #222222;
     }
 </style>

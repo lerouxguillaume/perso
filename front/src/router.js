@@ -1,15 +1,14 @@
-import ListNasaImages from "./components/Nasa/ListNasaImages";
-import Profil from "./components/Profil";
-import Home from "./components/Home";
-import NasaImageDetail from "./components/Nasa/NasaImageDetail";
-import Trade from "./components/Trading/Trade";
+import ListNasaImages from "./pages/Nasa/ListNasaImages";
+import Profil from "./pages/Profil";
+import Home from "./pages/Home";
+import NasaImageDetail from "./pages/Nasa/NasaImageDetail";
+import Trade from "./pages/Trading/Trade";
 import NotFound from "./pages/NotFound";
-import TradeList from "./components/Trading/TradeList";
+import TradeList from "./pages/Trading/TradeList";
 import Vue from 'vue'
 import VueRouter from "vue-router";
 import {TokenService} from "./services/storage.service";
-import Login from "./components/Security/Login";
-import axios from 'axios';
+import Login from "./pages/Security/Login";
 
 Vue.use(VueRouter);
 
