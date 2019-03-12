@@ -1,10 +1,9 @@
 import ApiService from './api.service'
 import { TokenService } from './storage.service'
 
-const clientId = '3_1p7j32m4f3y8448skow4048w4goc0cgwookww48wcsw0gsk8g4';
-const clientSecret = '1z837xu8vfc0cowss004c4w0s0owcsckwsw04o4c0osso0o400';
+const clientId = process.env.VUE_APP_CLIENT_ID;
+const clientSecret = process.env.VUE_APP_CLIENT_SECRET;
 const tokenEndPoint = '/oauth/v2/token';
-
 class AuthenticationError extends Error {
     constructor(errorCode, message) {
         super(message);
