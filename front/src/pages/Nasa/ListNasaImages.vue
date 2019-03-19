@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <div class="row list-images">
+    <div class="row list-images">
+        <div class="col-md-12">
             <NasaImageDay/>
-            <div v-for="(image, key) in images" class="col-md-4" v-bind:key="key" v-if="key > 0">
-                <NasaImageCard
-                        v-bind:image="image"
-                ></NasaImageCard>
-            </div>
+        </div>
+        <div v-for="(image, key) in images" class="col-md-4" v-bind:key="key" v-if="key > 0">
+            <NasaImageCard
+                    v-bind:image="image"
+            ></NasaImageCard>
         </div>
     </div>
 </template>
@@ -53,6 +53,10 @@
         flex-wrap: wrap;
         align-items: center;
         align-content: center;
-        margin: 20px;
+        margin: 0 20px 20px;
+        background-color: black;
+        box-shadow: 10px 10px 24px #555;
+        border-radius: 10px;
+        color: white;
     }
 </style>

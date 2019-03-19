@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Image and text -->
-        <b-navbar toggleable="lg" type="dark" variant="dark">
+        <b-navbar toggleable="lg" type="dark" variant="primary">
             <b-navbar-brand :to="{ name: 'homepage'}">Home</b-navbar-brand>
 
             <b-navbar-toggle target="nav_collapse" />
@@ -63,6 +63,6 @@
 
 <style scoped>
     .breadcrumb {
-        background-color: #222222;
+        background-color: whitesmoke;
     }
 </style>

@@ -53,9 +53,13 @@
 
 <style scoped>
     .card {
+        color: white;
         width: 80%;
-        margin: 50px 10%;
+        margin: 0 10%;
         align-self: center;
+        background-color: black;
+        box-shadow: 10px 10px 24px #555;
+        border-radius: 10px;
     }
     img {
         max-height: 720px;

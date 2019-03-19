@@ -17,7 +17,6 @@
 </template>
 
 <script>
-
     import * as router from "vue-router";
     import * as moment from "moment";
     import axios from 'axios';
@@ -72,7 +71,8 @@
         width: 100%;
     }
     img {
-        height: 100%;
+        max-height: 200px;
+        object-fit: cover;
     }
     iframe {
         color: #222222;

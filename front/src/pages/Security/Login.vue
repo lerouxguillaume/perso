@@ -1,23 +1,15 @@
 <template>
-    <div>
-        <h4>Login</h4>
-        <form>
-            <label for="email" >E-Mail Address</label>
-            <div>
-                <input id="email" type="" v-model="email" required autofocus>
-            </div>
-            <div>
-                <label for="password" >Password</label>
-                <div>
-                    <input id="password" type="password" v-model="password" required>
-                </div>
-            </div>
-            <div>
-                <button type="submit" @click="handleSubmit">
-                    Login
-                </button>
-            </div>
-        </form>
+    <div class="login-container">
+        <h4>Identification</h4>
+        <b-form @submit="handleSubmit">
+            <b-form-group>
+                <b-form-input id="login" size="lg" type="text" placeholder="Login" v-model="email"/>
+            </b-form-group>
+            <b-form-group>
+                <b-form-input id="password" size="lg" type="password" placeholder="Password" v-model="password"/>
+            </b-form-group>
+            <b-button type="submit" variant="primary">Submit</b-button>
+        </b-form>
     </div>
 </template>
 <script>
@@ -53,5 +45,18 @@
 </script>
 
 <style scoped>
-
+    .login-container {
+        margin: 10% 30%;
+        padding: 10px;
+        min-height: 100px;
+        min-width: 300px;
+        background-color: white;
+        box-shadow: 10px 10px 24px #555;
+        border-radius: 10px;
+    }
+    button {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>

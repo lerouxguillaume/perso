@@ -1,5 +1,5 @@
 <template>
-    <b-card no-body class="overflow-hidden" style="max-width: 540px; max-height: 540px;" v-on:click="redirectTo">
+    <b-card no-body class="overflow-hidden" v-on:click="redirectTo">
         <b-row no-gutters>
             <b-col md="6" class="image-card">
                 <b-card-img v-if="image.mediaType === 'image'" v-bind:src="image.url" class="rounded-0" />
@@ -54,9 +54,6 @@
         text-align: left;
         max-height: 120px;
         overflow: fragments;
-    }
-    .card {
-        margin: 10px 0;
     }
     img {
         max-height: 250px;
