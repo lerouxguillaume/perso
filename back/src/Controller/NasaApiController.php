@@ -8,6 +8,8 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\View;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class NasaApiController
@@ -43,29 +45,43 @@ class NasaApiController extends AbstractFOSRestController
         $imageOfTheDay = $this->fetchApiNasa->getImageOfTheDay($dateTime);
         return $imageOfTheDay;
     }
+
     /**
-     *
      * @Get(
-     *      path="/day/last/{number}",
+     *      path="/search/{from}/{limit}",
      *      requirements={
-     *          "number" = "\d+"
-     *      }
+     *          "from" = "^\s*(3[01]|[12][0-9]|0?[1-9])\-(1[012]|0?[1-9])\-((?:19|20)\d{2})\s*$",
+     *          "limit" = "^\d+"
+     *      },
+     *      defaults={"from" = null}
      *      )
      * @View
-     * @param null $date
+     * @param Request $request
+     * @param string $from
+     * @param int $limit
      * @return array
      * @throws \Exception
      */
-    public function lastImagesOfTheDay(int $number)
+    public function searchImageNasa(Request $request, $from, $limit)
     {
-        $dateTime = new \DateTime('now');
-        $res = [];
-        while ($number > 0) {
-            $number--;
-            $res[] = $this->fetchApiNasa->getImageOfTheDay($dateTime);
-            $dateTime->modify('-1 day');
+        try {
+            $dateTime = new \DateTime($from);
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('Le format de la date '.$from.' n\est pas reconnu');
         }
 
-        return $res;
+        $imageOfTheDays = [];
+
+        while ($limit > 0) {
+            /** @var ImageOfTheDay $imageOfTheDay */
+            try {
+                $imageOfTheDays[] = $this->fetchApiNasa->getImageOfTheDay($dateTime);
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+            $dateTime->sub(new \DateInterval('P1D'));
+            $limit--;
+        }
+        return $imageOfTheDays;
     }
 }

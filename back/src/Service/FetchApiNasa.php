@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\ImageOfTheDay;
 use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\Exception\ServerException;
 use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client;
 
@@ -56,8 +57,8 @@ class FetchApiNasa
                     'code' => $e->getCode(),
                     'message' => $e->getMessage()
                 ]);
+                throw new \ErrorException($e->getMessage());
             }
-
             $content = json_decode($response->getBody()->getContents());
             $todayImage = new ImageOfTheDay($content);
             $this->em->persist($todayImage);

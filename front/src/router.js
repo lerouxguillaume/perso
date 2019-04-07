@@ -94,7 +94,7 @@ const router =  new VueRouter({
             }
         },
         {
-            path: '/nasa',
+            path: '/nasa/list/:page?',
             name: 'nasa_list_image',
             component: ListNasaImages,
             meta: {
