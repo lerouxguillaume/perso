@@ -116,7 +116,7 @@
     .list-images-container {
         margin: 0 5px;
     }
-    .list-images-container {
+    .list-images-wrapper {
         width: 100%;
     }
     .list-images {
