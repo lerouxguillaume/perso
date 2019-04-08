@@ -27,3 +27,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\EventListener\UserResolveListener:
+        arguments:
+            - '@fos_user.user_provider.username_email'
+            - '@security.password_encoder'
+        tags:
+            - { name: kernel.event_listener, event: trikoder.oauth2.user_resolve, method: onUserResolve }

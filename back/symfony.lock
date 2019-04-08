@@ -1,4 +1,7 @@
 {
+    "defuse/php-encryption": {
+        "version": "v2.2.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -159,6 +162,15 @@
             "ref": "384cec52df45f3bfd46a09930d6960a58872b268"
         }
     },
+    "lcobucci/jwt": {
+        "version": "3.2.5"
+    },
+    "league/event": {
+        "version": "2.2.0"
+    },
+    "league/oauth2-server": {
+        "version": "7.2.0"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
@@ -314,6 +326,9 @@
     "symfony/property-access": {
         "version": "v4.2.4"
     },
+    "symfony/psr-http-message-bridge": {
+        "version": "v1.0.2"
+    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -404,6 +419,9 @@
     "symfony/yaml": {
         "version": "v4.2.3"
     },
+    "trikoder/oauth2-bundle": {
+        "version": "v1.1.0"
+    },
     "twig/twig": {
         "version": "v2.6.2"
     },
@@ -415,6 +433,9 @@
     },
     "zendframework/zend-code": {
         "version": "3.3.1"
+    },
+    "zendframework/zend-diactoros": {
+        "version": "1.8.6"
     },
     "zendframework/zend-eventmanager": {
         "version": "3.2.1"

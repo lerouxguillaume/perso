@@ -3,7 +3,7 @@ import { TokenService } from './storage.service'
 
 const clientId = process.env.VUE_APP_CLIENT_ID;
 const clientSecret = process.env.VUE_APP_CLIENT_SECRET;
-const tokenEndPoint = '/oauth/v2/token';
+const tokenEndPoint = '/token';
 class AuthenticationError extends Error {
     constructor(errorCode, message) {
         super(message);
@@ -21,6 +21,8 @@ const UserService = {
      * @throws AuthenticationError
      **/
     login: async function(email, password) {
+        console.log(clientId)
+        console.log(clientSecret)
         const requestData = {
             method: 'post',
             url: tokenEndPoint,

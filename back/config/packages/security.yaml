@@ -1,7 +1,6 @@
 security:
     encoders:
         FOS\UserBundle\Model\UserInterface: sha512
-
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username_email
@@ -10,25 +9,21 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        oauth_token:                                   # Everyone can access the access token URL.
-            pattern: ^/oauth/v2/token
+
+        api_token:
+            pattern: ^/api/token$
             security: false
-                       # Anonymous access is not allowed
-        logged:
+        api:
             pattern: ^/trading
-            fos_oauth: true                            # OAuth2 protected resource
-            stateless: true                            # Do no set session cookies
+            security: true
+            stateless: true
+            oauth2: true
             anonymous: false                           # Anonymous access is not allowed
-            provider: fos_userbundle
+
         main:
             anonymous: true
             stateless: true                            # Do no set session cookies
             security: false
-
-#        main:
-#            fos_oauth: true                            # OAuth2 protected resource
-#            stateless: true                            # Do no set session cookies
-#            anonymous: false                           # Anonymous access is not allowed
 
             # activate different ways to authenticate
 
