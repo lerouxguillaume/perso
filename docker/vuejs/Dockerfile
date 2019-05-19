@@ -1,4 +1,4 @@
-FROM node:10.9-slim
+FROM node:10-slim
 
 # not mandatory if you EXPORT a fixed port. See below.
 ARG YOUR_APP_WEB_HTTP_PORT
