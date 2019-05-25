@@ -13,5 +13,5 @@ return [
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
-    FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],
+    Trikoder\Bundle\OAuth2Bundle\TrikoderOAuth2Bundle::class => ['all' => true],
 ];

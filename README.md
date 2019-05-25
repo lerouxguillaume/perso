@@ -12,7 +12,8 @@ installer localement les paquetes npm dans front (node v10) : a voir comment aut
 make start
 
 creer un client oauth:
-bin/console fos:oauth:create --grant-type=password --grant-type=refresh_token
+bin/console trikoder:oauth2:create-client --grant-type=password --grant-type=refresh_token
+
 creer un utilisateur:
 bin/console fos:user:create
 

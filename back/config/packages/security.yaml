@@ -10,13 +10,12 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        oauth_token:                                   # Everyone can access the access token URL.
-            pattern: ^/oauth/v2/token
-            security: false
-                       # Anonymous access is not allowed
+        api_token:
+          pattern: ^/api/token$
+          security: false
         logged:
             pattern: ^/trading
-            fos_oauth: true                            # OAuth2 protected resource
+            oauth2: true                            # OAuth2 protected resource
             stateless: true                            # Do no set session cookies
             anonymous: false                           # Anonymous access is not allowed
             provider: fos_userbundle
