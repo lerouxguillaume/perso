@@ -17,7 +17,8 @@ security:
             pattern: ^/trading
             oauth2: true                            # OAuth2 protected resource
             stateless: true                            # Do no set session cookies
-            security: true
+            anonymous: false                           # Anonymous access is not allowed
+            provider: fos_userbundle
         main:
             anonymous: true
             stateless: true                            # Do no set session cookies
