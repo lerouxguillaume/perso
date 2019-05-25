@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Debug\Debug;
 
+umask(0002); // This will let the permissions be 0775
 set_time_limit(0);
 
 require dirname(__DIR__).'/vendor/autoload.php';
