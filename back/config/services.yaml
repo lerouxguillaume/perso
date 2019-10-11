@@ -34,3 +34,8 @@ services:
             - '@security.password_encoder'
         tags:
             - { name: kernel.event_listener, event: trikoder.oauth2.user_resolve, method: onUserResolve }
+
+    App\Service\FetchApiNasa:
+        arguments:
+            $apiKey: '%env(API_NASA_KEY)%'
+            $baseUrl: '%env(API_NASA_BASE_URL)%'

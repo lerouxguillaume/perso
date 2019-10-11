@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\ImageOfTheDay;
 use App\Service\FetchApiNasa;
+use DateInterval;
+use DateTime;
+use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Route;
@@ -12,8 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * Class NasaApiController
- * @package App\Controller
+ * Class NasaApiController.
+ *
  * @Route("/nasa")
  */
 class NasaApiController extends AbstractFOSRestController
@@ -34,15 +37,19 @@ class NasaApiController extends AbstractFOSRestController
      *      defaults={"date" = null}
      *      )
      * @View
+     *
      * @param null $date
+     *
      * @return ImageOfTheDay
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function imageOfTheDay($date = null)
     {
-        $dateTime = new \DateTime($date);
+        $dateTime = new DateTime($date);
         /** @var ImageOfTheDay $imageOfTheDay */
         $imageOfTheDay = $this->fetchApiNasa->getImageOfTheDay($dateTime);
+
         return $imageOfTheDay;
     }
 
@@ -56,32 +63,36 @@ class NasaApiController extends AbstractFOSRestController
      *      defaults={"from" = null}
      *      )
      * @View
+     *
      * @param Request $request
-     * @param string $from
-     * @param int $limit
+     * @param string  $from
+     * @param int     $limit
+     *
      * @return array
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function searchImageNasa(Request $request, $from, $limit)
     {
         try {
-            $dateTime = new \DateTime($from);
-        } catch (\Exception $e) {
+            $dateTime = new DateTime($from);
+        } catch (Exception $e) {
             throw new BadRequestHttpException('Le format de la date '.$from.' n\est pas reconnu');
         }
 
         $imageOfTheDays = [];
 
         while ($limit > 0) {
-            /** @var ImageOfTheDay $imageOfTheDay */
+            /* @var ImageOfTheDay $imageOfTheDay */
             try {
                 $imageOfTheDays[] = $this->fetchApiNasa->getImageOfTheDay($dateTime);
-            } catch (\Exception $e) {
-                throw new \Exception($e->getMessage());
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage());
             }
-            $dateTime->sub(new \DateInterval('P1D'));
-            $limit--;
+            $dateTime->sub(new DateInterval('P1D'));
+            --$limit;
         }
+
         return $imageOfTheDays;
     }
 }

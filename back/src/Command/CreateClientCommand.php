@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Command;
@@ -14,15 +15,18 @@ use Trikoder\Bundle\OAuth2Bundle\Model\Client;
 use Trikoder\Bundle\OAuth2Bundle\Model\Grant;
 use Trikoder\Bundle\OAuth2Bundle\Model\RedirectUri;
 use Trikoder\Bundle\OAuth2Bundle\Model\Scope;
+
 final class CreateClientCommand extends Command
 {
     protected static $defaultName = 'trikoder:oauth2:create-client';
     private $clientManager;
+
     public function __construct(ClientManagerInterface $clientManager)
     {
         parent::__construct();
         $this->clientManager = $clientManager;
     }
+
     protected function configure()
     {
         $this
@@ -31,21 +35,24 @@ final class CreateClientCommand extends Command
                 'redirect-uri',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Sets redirect uri for client. Use this option multiple times to set multiple redirect URIs.',
+                'Sets redirect uri for client. 
+                Use this option multiple times to set multiple redirect URIs.',
                 []
             )
             ->addOption(
                 'grant-type',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Sets allowed grant type for client. Use this option multiple times to set multiple grant types.',
+                'Sets allowed grant type for client. 
+                Use this option multiple times to set multiple grant types.',
                 []
             )
             ->addOption(
                 'scope',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Sets allowed scope for client. Use this option multiple times to set multiple scopes.',
+                'Sets allowed scope for client.
+                 Use this option multiple times to set multiple scopes.',
                 []
             )
             ->addArgument(
@@ -60,6 +67,7 @@ final class CreateClientCommand extends Command
             )
         ;
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
@@ -71,8 +79,10 @@ final class CreateClientCommand extends Command
             [$client->getIdentifier(), $client->getSecret()],
         ];
         $io->table($headers, $rows);
+
         return 0;
     }
+
     private function buildClientFromInput(InputInterface $input): Client
     {
         $identifier = $input->getArgument('identifier') ?? hash('md5', random_bytes(16));
@@ -80,20 +90,27 @@ final class CreateClientCommand extends Command
         $client = new Client($identifier, $secret);
         $client->setActive(true);
         $redirectUris = array_map(
-            function (string $redirectUri): RedirectUri { return new RedirectUri($redirectUri); },
+            function (string $redirectUri): RedirectUri {
+                return new RedirectUri($redirectUri);
+            },
             $input->getOption('redirect-uri')
         );
         $client->setRedirectUris(...$redirectUris);
         $grants = array_map(
-            function (string $grant): Grant { return new Grant($grant); },
+            function (string $grant): Grant {
+                return new Grant($grant);
+            },
             $input->getOption('grant-type')
         );
         $client->setGrants(...$grants);
         $scopes = array_map(
-            function (string $scope): Scope { return new Scope($scope); },
+            function (string $scope): Scope {
+                return new Scope($scope);
+            },
             $input->getOption('scope')
         );
         $client->setScopes(...$scopes);
+
         return $client;
     }
 }

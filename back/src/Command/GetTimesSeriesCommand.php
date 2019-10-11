@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\DailyStats;
 use App\Entity\Entreprise;
 use App\Entity\TimeSerie;
 use App\Service\FetchApiAlphaVantage;
@@ -50,16 +49,19 @@ class GetTimesSeriesCommand extends Command
         /** @var Entreprise $entreprise */
         foreach ($entreprises as $entreprise) {
             $entreprise = $this->em->getRepository(Entreprise::class)->find($entreprise->getId());
-            $lastTimeSerie = $this->em->getRepository(TimeSerie::class)->findLastTimeSerieTimestamp($entreprise) ?? 0;
+            $lastTimeSerie = $this->em->getRepository(TimeSerie::class)
+                    ->findLastTimeSerieTimestamp($entreprise) ?? 0;
 
-            $output->writeln("Traitement de : ". $entreprise->getRaisonSociale());
+            $output->writeln('Traitement de : '.$entreprise->getRaisonSociale());
             $currentData = $this->apiAlphaVantage->fetchDailyCotes($entreprise->getCode());
             /** @var TimeSerie $currentDatum */
             foreach ($currentData as $key => $currentDatum) {
-                if ($todayTimestamp !== $currentDatum->getTimestamp() && $lastTimeSerie < $currentDatum->getTimestamp()) {
+                if ($todayTimestamp !== $currentDatum->getTimestamp() &&
+                    $lastTimeSerie < $currentDatum->getTimestamp()
+                ) {
                     $currentDatum->setEntreprise($entreprise);
                     $this->em->persist($currentDatum);
-                    if (($key % $batchSize) === 0) {
+                    if (0 === ($key % $batchSize)) {
                         $this->em->flush();
                     }
                 }

@@ -1,4 +1,6 @@
 {
+    "name": "guler/perso",
+    "description": "A personal project",
     "type": "project",
     "license": "proprietary",
     "require": {
@@ -51,7 +53,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -70,6 +73,15 @@
         }
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "jakub-onderka/php-parallel-lint": "^1.0",
+        "phpmd/phpmd": "^2.7",
+        "phpro/grumphp": "^0.16.1",
+        "phpstan/phpstan": "^0.11.16",
+        "povils/phpmnd": "^2.1",
+        "sensiolabs/security-checker": "^6.0",
+        "squizlabs/php_codesniffer": "^3.5",
         "symfony/var-dumper": "4.2.*"
     }
+
 }

@@ -1,0 +1,20 @@
+parameters:
+  bin_dir: "./vendor/bin"
+  git_dir: ".."
+  tasks:
+    composer: ~
+    gulp: ~
+    jsonlint: ~
+    phpcsfixer2:
+      config: '.php_cs'
+    phplint:
+      exclude: ['var', 'config']
+    phpstan: ~
+    phpmnd:
+      exclude: ['var/']
+    phpmd:
+      whitelist_patterns: []
+      exclude: []
+      ruleset: ['cleancode']
+      triggered_by: ['php']
+    securitychecker: ~

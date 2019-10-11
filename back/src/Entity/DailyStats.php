@@ -6,8 +6,8 @@ use JMS\Serializer\Annotation\Exclude;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class DailyStats
- * @package App\Entity
+ * Class DailyStats.
+ *
  * @ORM\Entity()
  */
 class DailyStats
@@ -17,6 +17,7 @@ class DailyStats
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Exclude()
+     *
      * @var int
      */
     private $id;
@@ -100,11 +101,13 @@ class DailyStats
 
     /**
      * @param \DateTime $day
+     *
      * @return DailyStats
      */
     public function setDay($day): DailyStats
     {
         $this->day = $day;
+
         return $this;
     }
 
@@ -118,11 +121,13 @@ class DailyStats
 
     /**
      * @param Entreprise $entreprise
+     *
      * @return DailyStats
      */
     public function setEntreprise($entreprise): DailyStats
     {
         $this->entreprise = $entreprise;
+
         return $this;
     }
 
@@ -136,11 +141,13 @@ class DailyStats
 
     /**
      * @param float $dayVariance
+     *
      * @return DailyStats
      */
     public function setDayVariance($dayVariance): DailyStats
     {
         $this->dayVariance = $dayVariance;
+
         return $this;
     }
 
@@ -154,11 +161,13 @@ class DailyStats
 
     /**
      * @param float $weekVariance
+     *
      * @return DailyStats
      */
     public function setWeekVariance($weekVariance): DailyStats
     {
         $this->weekVariance = $weekVariance;
+
         return $this;
     }
 
@@ -172,11 +181,13 @@ class DailyStats
 
     /**
      * @param float $monthVariance
+     *
      * @return DailyStats
      */
     public function setMonthVariance($monthVariance): DailyStats
     {
         $this->monthVariance = $monthVariance;
+
         return $this;
     }
 
@@ -190,11 +201,13 @@ class DailyStats
 
     /**
      * @param float $trimesterVariance
+     *
      * @return DailyStats
      */
     public function setTrimesterVariance($trimesterVariance): DailyStats
     {
         $this->trimesterVariance = $trimesterVariance;
+
         return $this;
     }
 
@@ -208,11 +221,13 @@ class DailyStats
 
     /**
      * @param float $yearVariance
+     *
      * @return DailyStats
      */
     public function setYearVariance($yearVariance): DailyStats
     {
         $this->yearVariance = $yearVariance;
+
         return $this;
     }
 
@@ -226,11 +241,13 @@ class DailyStats
 
     /**
      * @param float $fiveYearVariance
+     *
      * @return DailyStats
      */
     public function setFiveYearVariance($fiveYearVariance): DailyStats
     {
         $this->fiveYearVariance = $fiveYearVariance;
+
         return $this;
     }
 
@@ -244,11 +261,13 @@ class DailyStats
 
     /**
      * @param float $tenYearVariance
+     *
      * @return DailyStats
      */
     public function setTenYearVariance($tenYearVariance): DailyStats
     {
         $this->tenYearVariance = $tenYearVariance;
+
         return $this;
     }
 
@@ -262,11 +281,13 @@ class DailyStats
 
     /**
      * @param float $indiceConfiance
+     *
      * @return DailyStats
      */
     public function setIndiceConfiance($indiceConfiance): DailyStats
     {
         $this->indiceConfiance = $indiceConfiance;
+
         return $this;
     }
 }

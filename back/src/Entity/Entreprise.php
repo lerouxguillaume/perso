@@ -6,8 +6,8 @@ use JMS\Serializer\Annotation\Exclude;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Entreprise
- * @package App\Entity
+ * Class Entreprise.
+ *
  * @ORM\Entity()
  */
 class Entreprise
@@ -17,24 +17,28 @@ class Entreprise
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Exclude()
+     *
      * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     *
      * @var string
      */
     private $raison_sociale;
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     *
      * @var string
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     *
      * @var string
      */
     private $trading_location;
@@ -57,11 +61,13 @@ class Entreprise
 
     /**
      * @param string $raison_sociale
+     *
      * @return Entreprise
      */
     public function setRaisonSociale($raison_sociale): Entreprise
     {
         $this->raison_sociale = $raison_sociale;
+
         return $this;
     }
 
@@ -75,11 +81,13 @@ class Entreprise
 
     /**
      * @param string $code
+     *
      * @return Entreprise
      */
     public function setCode($code): Entreprise
     {
         $this->code = $code;
+
         return $this;
     }
 
@@ -93,11 +101,13 @@ class Entreprise
 
     /**
      * @param string $trading_location
+     *
      * @return Entreprise
      */
     public function setTradingLocation($trading_location): Entreprise
     {
         $this->trading_location = $trading_location;
+
         return $this;
     }
 }

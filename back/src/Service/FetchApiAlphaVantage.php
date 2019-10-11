@@ -5,7 +5,9 @@ namespace App\Service;
 use App\Entity\DailyStats;
 use App\Entity\Entreprise;
 use App\Entity\TimeSerie;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -23,6 +25,7 @@ class FetchApiAlphaVantage
 
     /**
      * FetchApiNasa constructor.
+     *
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger, EntityManagerInterface $em)
@@ -31,25 +34,35 @@ class FetchApiAlphaVantage
         $this->em = $em;
     }
 
+    /**
+     * @return array
+     *
+     * @throws Exception
+     */
     public function getEntreprises()
     {
         /** @var Entreprise $entreprise */
         $entreprises = $this->em->getRepository(Entreprise::class)->findAll();
-
 
         $res = [];
 
         foreach ($entreprises as $entreprise) {
             $todayTimestamp = $this->em->getRepository(TimeSerie::class)
                 ->findLastTimeSerieTimestamp($entreprise);
-            $yesterdayTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 day')->getTimestamp();
-            $weekAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 week')->getTimestamp();
-            $monthAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 month')->getTimestamp();
-            $trimesterAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-3 month')->getTimestamp();
-            $yearAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 year')->getTimestamp();
-            $fiveYearAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-5 year')->getTimestamp();
-            $tenYearAgoTimestamp = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-10 year')->getTimestamp();
-
+            $yesterdayTimestamp = (new DateTime())->setTimestamp($todayTimestamp)
+                ->modify('-1 day')->getTimestamp();
+            $weekAgoTimestamp = (new DateTime())->setTimestamp($todayTimestamp)
+                ->modify('-1 week')->getTimestamp();
+            $monthAgoTimestamp = (new DateTime())->setTimestamp($todayTimestamp)
+                ->modify('-1 month')->getTimestamp();
+            $trimesterAgoTimestamp = (new DateTime())->setTimestamp($todayTimestamp)
+                ->modify('-3 month')->getTimestamp();
+            $yearAgoTimestamp = (new DateTime())->setTimestamp($todayTimestamp)
+                ->modify('-1 year')->getTimestamp();
+            $fiveYearAgoTimestamp = (new DateTime())->setTimestamp($todayTimestamp)
+                ->modify('-5 year')->getTimestamp();
+            $tenYearAgoTimestamp = (new DateTime())->setTimestamp($todayTimestamp)
+                ->modify('-10 year')->getTimestamp();
 
             $currentDailyStat = new DailyStats();
 
@@ -81,29 +94,36 @@ class FetchApiAlphaVantage
                 $currentDailyStat->setMonthVariance($this->getPercentIncrease($todayTimeSerie, $monthAgoTimeSerie));
             }
             if (!empty($trimesterAgoTimeSerie)) {
-                $currentDailyStat->setTrimesterVariance($this->getPercentIncrease($todayTimeSerie, $trimesterAgoTimeSerie));
+                $currentDailyStat
+                    ->setTrimesterVariance($this->getPercentIncrease($todayTimeSerie, $trimesterAgoTimeSerie));
             }
             if (!empty($yearAgoTimeSerie)) {
-                $currentDailyStat->setYearVariance($this->getPercentIncrease($todayTimeSerie, $yearAgoTimeSerie));
+                $currentDailyStat
+                    ->setYearVariance($this->getPercentIncrease($todayTimeSerie, $yearAgoTimeSerie));
             }
             if (!empty($fiveYearAgoTimeSerie)) {
-                $currentDailyStat->setFiveYearVariance($this->getPercentIncrease($todayTimeSerie, $fiveYearAgoTimeSerie));
+                $currentDailyStat
+                    ->setFiveYearVariance($this->getPercentIncrease($todayTimeSerie, $fiveYearAgoTimeSerie));
             }
             if (!empty($tenYearAgoTimeSerie)) {
-                $currentDailyStat->setTenYearVariance($this->getPercentIncrease($todayTimeSerie, $tenYearAgoTimeSerie));
+                $currentDailyStat
+                    ->setTenYearVariance($this->getPercentIncrease($todayTimeSerie, $tenYearAgoTimeSerie));
             }
             $res[] = $currentDailyStat;
         }
+
         return $res;
     }
 
     public function getDailyCotes(string $symbol)
     {
+        /** @var Entreprise $entreprise */
         $entreprise = $this->em->getRepository(Entreprise::class)->findOneBy(['code' => $symbol]);
         $timeSeries = $this->em->getRepository(TimeSerie::class)->findLastYearTimeSerie($entreprise);
+
         return [
             'entreprise' => $entreprise,
-            'data' => $timeSeries
+            'data' => $timeSeries,
         ];
     }
 
@@ -122,28 +142,28 @@ class FetchApiAlphaVantage
                     'symbol' => $entreprise->getCode().'.'.$entreprise->getTradingLocation(),
                     'apikey' => $this->apiKey,
                     'outputsize' => 'full',
-                ]
+                ],
             ]);
             $this->logger->info(
-                'fetch daily cotes for : '. $entreprise->getRaisonSociale()
+                'fetch daily cotes for : '.$entreprise->getRaisonSociale()
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->error('An error occured with the api call', [
                 'code' => $e->getCode(),
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
         $content = json_decode($response->getBody()->getContents(), true);
         $res = [];
-        $tenyearAgoTimestamp = (new \DateTime())->setTimestamp(strtotime('today midnight'))
+        $tenyearAgoTimestamp = (new DateTime())->setTimestamp(strtotime('today midnight'))
             ->modify('-10 year -1 week')->getTimestamp();
         if (!isset($content['Time Series (Daily)'])) {
             $this->logger->error('An error occured with the api call', [
-                'message' => $content
+                'message' => $content,
             ]);
         }
         foreach ($content['Time Series (Daily)'] as $time => $ohlc) {
-            $currentTimestamp = (new \DateTime($time))->getTimestamp();
+            $currentTimestamp = (new DateTime($time))->getTimestamp();
             if ($currentTimestamp >= $tenyearAgoTimestamp) {
                 $currentTimeSerie = new TimeSerie();
                 $currentTimeSerie
@@ -156,11 +176,12 @@ class FetchApiAlphaVantage
                 $res[] = $currentTimeSerie;
             }
         }
+
         return $res;
     }
 
     private function getPercentIncrease(TimeSerie $new, TimeSerie $old)
     {
-        return $new->getClose()*100/$old->getClose()-100;
+        return $new->getClose() * 100 / $old->getClose() - 100;
     }
 }

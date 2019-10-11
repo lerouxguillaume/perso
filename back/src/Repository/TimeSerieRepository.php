@@ -17,7 +17,9 @@ class TimeSerieRepository extends ServiceEntityRepository
     /**
      * @param Entreprise $entreprise
      * @param $timestamp
+     *
      * @return mixed
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -37,7 +39,9 @@ class TimeSerieRepository extends ServiceEntityRepository
 
     /**
      * @param Entreprise $entreprise
-     * @return mixed
+     *
+     * @return TimeSerie
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findLastTimeSerieTimestamp(Entreprise $entreprise)
@@ -53,6 +57,7 @@ class TimeSerieRepository extends ServiceEntityRepository
 
     /**
      * @param Entreprise $entreprise
+     *
      * @return mixed
      */
     public function findLastWeekTimeSerie(Entreprise $entreprise)
@@ -72,6 +77,7 @@ class TimeSerieRepository extends ServiceEntityRepository
 
     /**
      * @param Entreprise $entreprise
+     *
      * @return mixed
      */
     public function findLastMonthTimeSerie(Entreprise $entreprise)
@@ -91,6 +97,7 @@ class TimeSerieRepository extends ServiceEntityRepository
 
     /**
      * @param Entreprise $entreprise
+     *
      * @return mixed
      */
     public function findLastYearTimeSerie(Entreprise $entreprise)

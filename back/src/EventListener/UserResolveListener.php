@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\EventListener;
 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -20,7 +19,7 @@ final class UserResolveListener
     private $userPasswordEncoder;
 
     /**
-     * @param UserProviderInterface $userProvider
+     * @param UserProviderInterface        $userProvider
      * @param UserPasswordEncoderInterface $userPasswordEncoder
      */
     public function __construct(UserProviderInterface $userProvider, UserPasswordEncoderInterface $userPasswordEncoder)

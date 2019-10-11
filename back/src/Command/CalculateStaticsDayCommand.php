@@ -6,6 +6,7 @@ use App\Entity\DailyStats;
 use App\Entity\Entreprise;
 use App\Entity\TimeSerie;
 use App\Service\FetchApiAlphaVantage;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,14 +49,14 @@ class CalculateStaticsDayCommand extends Command
 
         $todayTimestamp = strtotime('today midnight');
 
-        $todayDate = (new \DateTime())->setTimestamp($todayTimestamp);
-        $yesterday = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 day');
-        $weekAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 week');
-        $monthAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 month');
-        $trimesterAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-3 month');
-        $yearAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-1 year');
-        $fiveYearAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-5 year');
-        $tenYearAgo = (new \DateTime())->setTimestamp($todayTimestamp)->modify('-10 year');
+        $todayDate = (new DateTime())->setTimestamp($todayTimestamp);
+        $yesterday = (new DateTime())->setTimestamp($todayTimestamp)->modify('-1 day');
+        $weekAgo = (new DateTime())->setTimestamp($todayTimestamp)->modify('-1 week');
+        $monthAgo = (new DateTime())->setTimestamp($todayTimestamp)->modify('-1 month');
+        $trimesterAgo = (new DateTime())->setTimestamp($todayTimestamp)->modify('-3 month');
+        $yearAgo = (new DateTime())->setTimestamp($todayTimestamp)->modify('-1 year');
+        $fiveYearAgo = (new DateTime())->setTimestamp($todayTimestamp)->modify('-5 year');
+        $tenYearAgo = (new DateTime())->setTimestamp($todayTimestamp)->modify('-10 year');
 
         $todayTimeSerie = null;
         $yesterdayTimeSerie = null;
@@ -68,7 +69,7 @@ class CalculateStaticsDayCommand extends Command
 
         /** @var Entreprise $entreprise */
         foreach ($entreprises as $entreprise) {
-            $output->writeln("Traitement de : ". $entreprise->getRaisonSociale());
+            $output->writeln('Traitement de : '.$entreprise->getRaisonSociale());
             $currentData = $this->apiAlphaVantage->fetchDailyCotes($entreprise->getCode());
             /** @var TimeSerie $currentDatum */
             foreach ($currentData as $currentDatum) {
@@ -102,7 +103,7 @@ class CalculateStaticsDayCommand extends Command
 
             if (empty($todayTimeSerie)) {
                 $output->writeln(
-                    'impossible de trouver les infos du jour pour : '. $entreprise->getRaisonSociale()
+                    'impossible de trouver les infos du jour pour : '.$entreprise->getRaisonSociale()
                 );
                 continue;
             }
@@ -123,7 +124,9 @@ class CalculateStaticsDayCommand extends Command
                 $newDailyStats->setMonthVariance($this->getPercentIncrease($todayTimeSerie, $monthAgoTimeSerie));
             }
             if (!empty($trimesterAgoTimeSerie)) {
-                $newDailyStats->setTrimesterVariance($this->getPercentIncrease($todayTimeSerie, $trimesterAgoTimeSerie));
+                $newDailyStats->setTrimesterVariance(
+                    $this->getPercentIncrease($todayTimeSerie, $trimesterAgoTimeSerie)
+                );
             }
             if (!empty($yearAgoTimeSerie)) {
                 $newDailyStats->setYearVariance($this->getPercentIncrease($todayTimeSerie, $yearAgoTimeSerie));
@@ -140,8 +143,14 @@ class CalculateStaticsDayCommand extends Command
         }
     }
 
+    /**
+     * @param TimeSerie $new
+     * @param TimeSerie $old
+     *
+     * @return float|int
+     */
     private function getPercentIncrease(TimeSerie $new, TimeSerie $old)
     {
-        return $new->getClose()*100/$old->getClose()-100;
+        return $new->getClose() * 100 / $old->getClose() - 100;
     }
 }
