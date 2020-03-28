@@ -8,8 +8,10 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\View;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Swagger\Annotations as SWG;
 
 /**
  * Class NasaApiController
@@ -26,6 +28,21 @@ class NasaApiController extends AbstractFOSRestController
     }
 
     /**
+     * @SWG\Tag(name="Nasa API")
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the image of the day",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Items(ref=@Model(type=ImageOfTheDay::class, groups={"full"}))
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="date",
+     *     in="path",
+     *     type="string",
+     *     description="Date of the day"
+     * )
      * @Get(
      *      path="/day/{date}",
      *      requirements={

@@ -34,17 +34,4 @@ class BourseApiController extends AbstractFOSRestController
         $response = $this->alphaAvantageApi->getEntreprises();
         return $response;
     }
-
-    /**
-     * @Get(path="/daily/{symbol}")
-     * @View
-     * @param null $date
-     * @return ImageOfTheDay
-     * @throws \Exception
-     */
-    public function imageOfTheDay($symbol)
-    {
-        $response = $this->alphaAvantageApi->getDailyCotes($symbol);
-        return $response;
-    }
 }

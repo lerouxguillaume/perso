@@ -11,6 +11,7 @@
                     <b-nav-item :to="{ name: 'nasa_list_image'}">Nasa</b-nav-item>
                     <b-nav-item :to="{ name: 'trading_list'}">Trading</b-nav-item>
                     <b-nav-item :to="{ name: 'profile'}">Profile</b-nav-item>
+                    <b-nav-item :to="{ name: 'documents_list'}">Documents</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->

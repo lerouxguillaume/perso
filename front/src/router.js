@@ -9,6 +9,8 @@ import Vue from 'vue'
 import VueRouter from "vue-router";
 import {TokenService} from "./services/storage.service";
 import Login from "./pages/Security/Login";
+import DocumentList from "./pages/Document/DocumentList";
+import Document from "./pages/Document/Document";
 
 Vue.use(VueRouter);
 
@@ -50,6 +52,44 @@ const router =  new VueRouter({
                     },
                     {
                         text: 'Profile',
+                        active: true
+                    }
+                ]
+            }
+        },
+        {
+            path: '/documents',
+            name: 'documents_list',
+            component: DocumentList,
+            meta: {
+                breadcumb: [
+                    {
+                        text: 'Home',
+                        to: {name: 'homepage'}
+                    },
+                    {
+                        text: 'Documents',
+                        active: true
+                    }
+                ]
+            }
+        },
+        {
+            path: '/document/:id',
+            name: 'document',
+            component: Document,
+            meta: {
+                breadcumb: [
+                    {
+                        text: 'Home',
+                        to: {name: 'homepage'}
+                    },
+                    {
+                        text: 'Documents',
+                        to: {name: 'documents'}
+                    },
+                    {
+                        text: 'document',
                         active: true
                     }
                 ]

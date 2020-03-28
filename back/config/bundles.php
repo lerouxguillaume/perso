@@ -14,4 +14,5 @@ return [
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
     FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],
+    \Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
 ];

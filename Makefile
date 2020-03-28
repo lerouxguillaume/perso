@@ -13,6 +13,9 @@ docker-stop:
 bash-symfony:
 	docker exec -it -u dev php_guler bash
 
+bash-apache:
+	docker exec -it apache_guler bash
+
 bash-root:
 	docker exec -it php_guler bash
 
