@@ -6,7 +6,7 @@ const clientSecret = process.env.VUE_APP_CLIENT_SECRET;
 const tokenEndPoint = '/token';
 class AuthenticationError extends Error {
     constructor(errorCode, message) {
-        super(message);
+        super();
         this.name = this.constructor.name;
         this.message = message;
         this.errorCode = errorCode;
@@ -53,7 +53,7 @@ const UserService = {
      * Refresh the access token.
      **/
     refreshToken: async function() {
-        const refreshToken = TokenService.getRefreshToken()
+        const refreshToken = TokenService.getRefreshToken();
 
         const requestData = {
             method: 'post',
@@ -69,12 +69,12 @@ const UserService = {
         };
 
         try {
-            const response = await ApiService.customRequest(requestData)
+            const response = await ApiService.customRequest(requestData);
 
-            TokenService.saveToken(response.data.access_token)
-            TokenService.saveRefreshToken(response.data.refresh_token)
+            TokenService.saveToken(response.data.access_token);
+            TokenService.saveRefreshToken(response.data.refresh_token);
             // Update the header in ApiService
-            ApiService.setHeader()
+            ApiService.setHeader();
 
             return response.data.access_token
         } catch (error) {
@@ -90,9 +90,9 @@ const UserService = {
      **/
     logout() {
         // Remove the token and remove Authorization header from Api Service as well
-        TokenService.removeToken()
-        TokenService.removeRefreshToken()
-        ApiService.removeHeader()
+        TokenService.removeToken();
+        TokenService.removeRefreshToken();
+        ApiService.removeHeader();
 
         // NOTE: Again, we'll cover the 401 Interceptor a bit later.
         ApiService.unmount401Interceptor()

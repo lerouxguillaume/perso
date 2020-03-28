@@ -19,6 +19,7 @@
 
 <script>
     import axios from 'axios';
+    /* eslint-disable no-console */
 
     export default {
         name: "NasaImageDetail",

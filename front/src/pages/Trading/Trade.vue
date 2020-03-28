@@ -14,6 +14,7 @@
 <script>
     import axios from 'axios';
     import moment from 'moment';
+    /* eslint-disable no-console */
 
     export default {
         name: "Trade",
@@ -84,7 +85,6 @@
                 .then((response) => {
                     this.entreprise.raisonSociale = response.data.entreprise.raison_sociale;
                     let data = response.data.data;
-                    let lineData = [];
                     for (let key in data) {
                         let currentData = data[key];
                         this.data.unshift([currentData.timestamp*1000, currentData.close ])

@@ -34,6 +34,7 @@
     import NasaImageDay from "../../components/Nasa/NasaImageDay";
     import NasaImageCard from "../../components/Nasa/NasaImageCard";
     import * as moment from "moment";
+    /* eslint-disable no-console */
 
     export default {
         name: "ListNasaImages",

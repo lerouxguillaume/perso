@@ -62,7 +62,7 @@ const actions = {
                     commit('refreshTokenPromise', null)
                     commit('loginSuccess', response)
                 },
-                error => {
+                () => {
                     commit('refreshTokenPromise', null)
                 }
             )

@@ -43,12 +43,12 @@ const ApiService = {
                 if (error.request.status === 401) {
                     if (error.config.url.includes('/oauth/v2/token')) {
                         // Refresh token has failed. Logout the user
-                        store.dispatch('auth/logout')
+                        await store.dispatch('auth/logout');
                         throw error
                     } else {
                         // Refresh the access token
                         try{
-                            await store.dispatch('auth/refreshToken')
+                            await store.dispatch('auth/refreshToken');
                             // Retry the original request
                             return this.customRequest({
                                 method: error.config.method,

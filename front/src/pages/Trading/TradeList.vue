@@ -53,6 +53,7 @@
 
 <script>
     import ApiService from "../../services/api.service";
+    /* eslint-disable no-console */
 
     export default {
         name: "TradeList",
@@ -81,7 +82,7 @@
             info(item) {
                 this.$router.push({name: 'trading_detail', params: { company : item.code }})
             },
-            onFiltered(filteredItems) {
+            onFiltered() {
                 // Trigger pagination to update the number of buttons/pages due to filtering
             }
         },

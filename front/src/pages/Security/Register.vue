@@ -40,6 +40,8 @@
 </template>
 
 <script>
+    /* eslint-disable no-console */
+
     export default {
         name: "Register",
         props : ["nextUrl"],
