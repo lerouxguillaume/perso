@@ -19,7 +19,7 @@ Vue.use(VueApexCharts);
 Vue.component('apexchart', VueApexCharts)
 
 // Set the base URL of the API
-ApiService.init('http://localhost:8080');
+ApiService.init(process.env.VUE_APP_BASE_URL);
 
 // If token exists set header
 if (TokenService.getToken()) {
