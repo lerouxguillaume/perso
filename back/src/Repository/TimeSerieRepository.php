@@ -5,11 +5,11 @@ namespace App\Repository;
 use App\Entity\Entreprise;
 use App\Entity\TimeSerie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TimeSerieRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TimeSerie::class);
     }
@@ -18,8 +18,6 @@ class TimeSerieRepository extends ServiceEntityRepository
      * @param Entreprise $entreprise
      * @param $timestamp
      * @return mixed
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findClosestTimeSerie(Entreprise $entreprise, $timestamp)
     {
@@ -39,6 +37,7 @@ class TimeSerieRepository extends ServiceEntityRepository
      * @param Entreprise $entreprise
      * @return mixed
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
      */
     public function findLastTimeSerieTimestamp(Entreprise $entreprise)
     {

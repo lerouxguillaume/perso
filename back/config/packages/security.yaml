@@ -13,10 +13,10 @@ security:
         oauth_token:                                   # Everyone can access the access token URL.
             pattern: ^/oauth/v2/token
             security: false
-                       # Anonymous access is not allowed
+            # Anonymous access is not allowed
         logged:
             pattern: ^/trading
-            fos_oauth: true                            # OAuth2 protected resource
+            oauth2: true                            # OAuth2 protected resource
             stateless: true                            # Do no set session cookies
             anonymous: false                           # Anonymous access is not allowed
             provider: fos_userbundle
@@ -25,10 +25,10 @@ security:
             stateless: true                            # Do no set session cookies
             security: false
 
-#        main:
-#            fos_oauth: true                            # OAuth2 protected resource
-#            stateless: true                            # Do no set session cookies
-#            anonymous: false                           # Anonymous access is not allowed
+            #        main:
+            #            fos_oauth: true                            # OAuth2 protected resource
+            #            stateless: true                            # Do no set session cookies
+            #            anonymous: false                           # Anonymous access is not allowed
 
             # activate different ways to authenticate
 
@@ -41,5 +41,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+    # - { path: ^/admin, roles: ROLE_ADMIN }
+    # - { path: ^/profile, roles: ROLE_USER }

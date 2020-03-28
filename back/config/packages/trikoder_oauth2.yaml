@@ -1,0 +1,23 @@
+trikoder_oauth2:
+
+    authorization_server:
+        private_key: '%env(resolve:PRIVATE_KEY_PATH)%'
+
+        encryption_key: '%env(string:OAUTH2_ENCRYPTION_KEY)%'   # (Optional) Change this
+        # How long the issued access token should be valid for.
+        # The value should be a valid interval: http://php.net/manual/en/dateinterval.construct.php#refsect1-dateinterval.construct-parameters
+        access_token_ttl: PT1H
+
+        # How long the issued refresh token should be valid for.
+        # The value should be a valid interval: http://php.net/manual/en/dateinterval.construct.php#refsect1-dateinterval.construct-parameters
+        refresh_token_ttl: P1M
+
+    resource_server:
+        public_key: '%env(resolve:PUBLIC_KEY_PATH)%'
+
+    # Configures different persistence methods that can be used by the bundle for saving client and token data.
+    # Only one persistence method can be configured at a time.
+    persistence:
+        doctrine:
+            # Name of the entity manager that you wish to use for managing clients and tokens.
+            entity_manager: default # Required

@@ -62,6 +62,7 @@ const router =  new VueRouter({
             name: 'documents_list',
             component: DocumentList,
             meta: {
+                public: true,  // Allow access to even if not logged in
                 breadcumb: [
                     {
                         text: 'Home',
@@ -79,6 +80,7 @@ const router =  new VueRouter({
             name: 'document',
             component: Document,
             meta: {
+                public: true,  // Allow access to even if not logged in
                 breadcumb: [
                     {
                         text: 'Home',
@@ -86,7 +88,7 @@ const router =  new VueRouter({
                     },
                     {
                         text: 'Documents',
-                        to: {name: 'documents'}
+                        to: {name: 'documents_list'}
                     },
                     {
                         text: 'document',
