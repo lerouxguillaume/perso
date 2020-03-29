@@ -31,7 +31,7 @@
     /* eslint-disable no-console */
 
     export default {
-        name: "DocumentList",
+        name: "VideoList",
         data() {
             return {
                 // Note 'isActive' is left out and will not appear in the rendered table
@@ -48,20 +48,17 @@
             }
         },
         methods: {
-            info(item) {
-                this.$router.push({name: 'trading_detail', params: { company : item.code }})
-            },
             onFiltered() {
                 // Trigger pagination to update the number of buttons/pages due to filtering
             },
             onRowClicked(item) {
-                this.$router.push({name: 'document', params: { id : item.id }})
+                this.$router.push({name: 'video', params: { id : item.id }})
 
                 // Trigger pagination to update the number of buttons/pages due to filtering
             }
         },
         mounted () {
-            ApiService.get(process.env.VUE_APP_DOCUMENT_API_URL+'/documents')
+            ApiService.get(process.env.VUE_APP_DOCUMENT_API_URL+'/series')
                 .then((response) => {
                     let data = response.data;
                     for (let key in data) {
@@ -69,8 +66,6 @@
                             isActive: true,
                             'id' : data[key].id,
                             'name' : data[key].name,
-                            'uploadedAt' : data[key].uploaded_at,
-                            'type' : data[key].mime_type,
                         })
                     }
                 })

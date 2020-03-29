@@ -5,13 +5,14 @@ import VueMoment from 'vue-moment'
 import VueApexCharts from 'vue-apexcharts'
 import './assets/custom.scss'
 import router from './router.js'
+import VueVideoPlayer from 'vue-video-player'
 import './filter.js'
 import ApiService from "./services/api.service";
 import {TokenService} from "./services/storage.service";
 import store from './store'
 
 Vue.config.productionTip = false
-
+Vue.use(VueVideoPlayer);
 Vue.use(BootstrapVue);
 Vue.use(VueMoment);
 Vue.use(VueApexCharts);

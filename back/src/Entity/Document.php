@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class DailyStats
  * @package App\Entity
- * @ORM\Entity()
+ * @ORM\MappedSuperclass()
  */
-class Document
+abstract class Document
 {
     /**
      * @ORM\Id
@@ -43,14 +43,8 @@ class Document
     private $path;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $parent;
-
-    /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=false)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $private;
 

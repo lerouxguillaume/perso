@@ -80,18 +80,18 @@ const actions = {
 const mutations = {
     loginRequest(state) {
         state.authenticating = true;
-        state.authenticationError = ''
+        state.authenticationError = '';
         state.authenticationErrorCode = 0
     },
 
     loginSuccess(state, accessToken) {
-        state.accessToken = accessToken
+        state.accessToken = accessToken;
         state.authenticating = false;
     },
 
     loginError(state, {errorCode, errorMessage}) {
-        state.authenticating = false
-        state.authenticationErrorCode = errorCode
+        state.authenticating = false;
+        state.authenticationErrorCode = errorCode;
         state.authenticationError = errorMessage
     },
 
@@ -102,7 +102,7 @@ const mutations = {
     refreshTokenPromise(state, promise) {
         state.refreshTokenPromise = promise
     }
-}
+};
 
 export const auth = {
     namespaced: true,
@@ -110,4 +110,4 @@ export const auth = {
     getters,
     actions,
     mutations
-}
+};

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Document;
+use App\Entity\Serie;
+use App\Entity\Video;
 use App\Service\FileUploader;
 use App\Service\ThreadTest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,51 +68,74 @@ class DocumentController extends AbstractFOSRestController
      * @return Response
      * @throws \Exception
      */
-    public function postDocument(Request $request)
-    {
-        $tmpFile = $request->files->get('uploadedFile');
-        $document = $this->fileUploader->uploadFile($tmpFile, $this->getUser());
-
-        $this->entityManager->persist($document);
-        $this->entityManager->flush();
-
-        return $this->handleView(
-            $this->view(
-                [
-                    'status' => 'ok',
-                ],
-                Response::HTTP_CREATED
-            )
-        );
-    }
+//    public function postDocument(Request $request)
+//    {
+//        $tmpFile = $request->files->get('uploadedFile');
+//        $document = $this->fileUploader->uploadFile($tmpFile, $this->getUser());
+//
+//        $this->entityManager->persist($document);
+//        $this->entityManager->flush();
+//
+//        return $this->handleView(
+//            $this->view(
+//                [
+//                    'status' => 'ok',
+//                ],
+//                Response::HTTP_CREATED
+//            )
+//        );
+//    }
 
     /**
-     * @Get(path="/documents")
+     * @Get(path="/series")
      * @View
-     * @param Request $request
      * @return array
-     * @throws \Exception
      */
-    public function getDocuments()
+    public function getSeries()
     {
-        return $this->entityManager->getRepository(Document::class)->findAll();
+        return $this->entityManager->getRepository(Serie::class)->findAll();
     }
-
     /**
-     * @Get(path="/document/{id}")
+     * @Get(path="/serie/{id}")
      * @View
      * @param int $id
      * @return object|null
      */
-    public function getDocument(int $id)
+    public function getSerie(int $id)
     {
-        /** @var Document $document */
-        $document = $this->entityManager->getRepository(Document::class)->find($id);
+        /** @var Serie $serie */
+        $serie = $this->entityManager->getRepository(Serie::class)->find($id);
 
-        if (empty($document)) {
+        if (empty($serie)) {
             throw new NotFoundHttpException();
         }
-        return $document;
+        return $serie;
+    }
+    /**
+     * @Get(path="/videos")
+     * @View
+     * @return array
+     */
+    public function getVideos()
+    {
+        return $this->entityManager->getRepository(Video::class)->findAll();
+    }
+
+    /**
+     * @Get(path="/video/{id}")
+     * @View
+     * @param int $id
+     * @return object|null
+     */
+    public function getVideo(int $id)
+    {
+        /** @var Video $video */
+        $video = $this->entityManager->getRepository(Video::class)->find($id);
+
+        if (empty($video)) {
+            throw new NotFoundHttpException();
+        }
+        return $video;
     }
 
     /**
@@ -119,16 +144,16 @@ class DocumentController extends AbstractFOSRestController
      * @param int $id
      * @return object|null
      */
-    public function downloadDocument(int $id)
+    public function downloadVideo(int $id)
     {
-        /** @var Document $document */
-        $document = $this->entityManager->getRepository(Document::class)->find($id);
+        /** @var Video $video */
+        $video = $this->entityManager->getRepository(Video::class)->find($id);
 
-        if (empty($document)) {
+        if (empty($video)) {
             throw new NotFoundHttpException();
         }
-//        dump($document->getFilePath());die();
-        return new BinaryFileResponse(stripslashes($document->getFilePath()));
+
+        return new BinaryFileResponse(stripslashes($video->getFilePath()));
     }
 
 
