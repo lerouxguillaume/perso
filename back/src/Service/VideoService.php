@@ -47,18 +47,11 @@ class VideoService
      */
     private function prepareVideo(string $path)
     {
+        $ffmprobe = FFProbe::create();
+        $format = $ffmprobe->format($path)->get('format_name');
+        $resultFilename = $this->getEncodedFilename() . '.mp4';
 
-
-        $resultFilename = $this->getEncodedFilename().'.mp4';
-
-        exec('/usr/bin/ffmpeg -y -i \''.$path.'\' '.self::FILE_PATH.$resultFilename, $out, $res);
-        if($res != 0) {
-            error_log(var_export($out, true));
-            error_log(var_export($res, true));
-
-            throw new \Exception("Error!");
-        }
-
+        if (strpos($format, 'mp4') === false) {
 //        $format = new X264();
 //        $format->on('progress', function ($video, $format, $percentage) {
 //            echo "$percentage % transcoded";
@@ -66,6 +59,18 @@ class VideoService
 //        $ffmpeg = FFMpeg::create();
 //        $video = $ffmpeg->open($path);
 //        $video->save(new X264('aac'), self::FILE_PATH.$resultFilename);
+
+            exec('/usr/bin/ffmpeg -y -i \'' . $path . '\' ' . self::FILE_PATH . $resultFilename, $out, $res);
+            if ($res != 0) {
+                error_log(var_export($out, true));
+                error_log(var_export($res, true));
+
+                throw new \Exception("Error!");
+            }
+
+        } else {
+            copy($path, self::FILE_PATH . $resultFilename);
+        }
 
         return $resultFilename;
     }

@@ -78,11 +78,16 @@ class AddVideoCommand extends Command
         }
 
         try {
-            $video = $this->videoService->addVideo($path, $name, $episode, $serie);
+            $video = $this->videoService->addVideo($path, $name, $episode);
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());
             return;
         }
+
+        if (!empty($serie)) {
+            $video->setSerie($serie);
+        }
+
         $this->em->persist($video);
         $this->em->flush();
 
