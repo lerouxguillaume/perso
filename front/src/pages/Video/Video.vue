@@ -1,6 +1,12 @@
 <template>
     <div>
-        <video-player  class="vjs-custom-skin"
+        <video-player
+                        id="my_video_1"
+                        class="video-js vjs-default-skin"
+                        controls
+                        preload="none"
+                        width="640"
+                        height="268"
                        ref="videoPlayer"
                        :options="playerOptions"
                        :playsinline="true"
@@ -40,11 +46,6 @@
                     muted: false,
                     language: 'en',
                     playbackRates: [0.7, 1.0, 1.5, 2.0],
-                    sources: [{
-                        type: "video/mp4",
-                        src: this.currentEpisode ? process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+this.currentEpisode.id : '',
-                    }],
-                    poster: "/static/images/author.jpg",
                 }
             }
         },
@@ -64,7 +65,6 @@
                 .catch(function (error) {
                     console.log(error);
                 })
-            console.log('this is current player instance object', this.player)
         },
         computed: {
             player() {
@@ -76,27 +76,32 @@
                 this.currentEpisode = episode;
                 this.player.src({ type: "video/mp4", src: process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+this.currentEpisode.id });
                 this.player.reset()
-                console.log(process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+this.currentEpisode.id)
+                this.player.currentTime(0);
+                this.player.play();
+
             },
             // listen event
-            onPlayerPlay(player) {
-                console.log('player play!', player)
+            onPlayerPlay() {
+                // console.log('player play!', player)
             },
-            onPlayerPause(player) {
-                console.log('player pause!', player)
+            onPlayerPause() {
+                // console.log('player pause!', player)
             },
             // ...player event
 
             // or listen state event
-            playerStateChanged(playerCurrentState) {
-                console.log('player current update state', playerCurrentState)
+            playerStateChanged() {
+                // console.log('player current update state', playerCurrentState)
             },
             // player is ready
-            playerReadied(player) {
-                console.log('the player is readied', player)
+            playerReadied() {
+                // console.log('the player is readied', player)
                 // you can use it to do something...
                 // player.[methods]
             }
         }
     }
 </script>
+
+<style scoped>
+ </style>

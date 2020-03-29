@@ -20,6 +20,7 @@
     import * as router from "vue-router";
     import * as moment from "moment";
     import axios from 'axios';
+    /* eslint-disable no-console */
 
     export default {
         name: "NasaImageDay",
