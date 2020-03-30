@@ -109,7 +109,7 @@ class DocumentController extends AbstractFOSRestController
 //    }
 
     /**
-     * @FIXME : Look at that
+     * FIXME : Look at that
      * https://stackoverflow.com/questions/14559371/symfony2-video-streaming
      * @Get(path="/download/{id}")
      * @View
