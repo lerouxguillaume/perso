@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="video")
+ * @ORM\Table(name="document_video")
  * @ORM\InheritanceType("SINGLE_TABLE")
  */
 abstract class Video extends Document

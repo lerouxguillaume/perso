@@ -12,7 +12,18 @@ use FFMpeg\FFProbe;
  */
 class VideoService
 {
-    const FILE_PATH = '/tmp/';
+    /** @var string */
+    private $path;
+
+    /**
+     * FetchApiNasa constructor.
+     * @param string $filePath
+     */
+    public function __construct(string $filePath)
+    {
+        $this->path = $filePath;
+    }
+
 
     /**
      * @param string $path
@@ -56,7 +67,7 @@ class VideoService
 //        $video = $ffmpeg->open($path);
 //        $video->save(new X264('aac'), self::FILE_PATH.$resultFilename);
 
-            exec('/usr/bin/ffmpeg -y -i \'' . $path . '\' ' . self::FILE_PATH . $resultFilename, $out, $res);
+            exec('/usr/bin/ffmpeg -y -i \'' . $path . '\' ' . $this->path . $resultFilename, $out, $res);
             if ($res != 0) {
                 error_log(var_export($out, true));
                 error_log(var_export($res, true));
@@ -65,7 +76,7 @@ class VideoService
             }
 
         } else {
-            copy($path, self::FILE_PATH . $resultFilename);
+            copy($path, $this->path . $resultFilename);
         }
 
         return $resultFilename;
@@ -84,7 +95,7 @@ class VideoService
         $video
             ->setFileName($videoFilename)
             ->setUploadedAt(new \DateTime())
-            ->setPath(self::FILE_PATH)
+            ->setPath($this->path)
         ;
 
         return $video;
