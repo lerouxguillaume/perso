@@ -1,7 +1,6 @@
 <?php
 
-
-namespace App\Entity;
+namespace App\Entity\Documents;
 
 use App\Entity\Security\User;
 use JMS\Serializer\Annotation\Exclude;
@@ -9,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class DailyStats
- * @package App\Entity
  * @ORM\MappedSuperclass()
  */
 abstract class Document

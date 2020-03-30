@@ -1,22 +1,16 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Documents;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Video
- * @package App\Entity
- * @ORM\Entity()
+ * @ORM\Entity
+ * @ORM\Table(name="video")
+ * @ORM\InheritanceType("SINGLE_TABLE")
  */
-class Video extends Document
+abstract class Video extends Document
 {
-    /**
-     * @var int
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $episode;
-
     /**
      * @var int
      * @ORM\Column(type="integer", nullable=true)
@@ -40,31 +34,6 @@ class Video extends Document
      * @ORM\Column(type="string", nullable=true)
      */
     private $author;
-
-    /**
-     * @var Serie
-     * @ORM\ManyToOne(targetEntity="App\Entity\Serie", inversedBy="episodes")
-     * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
-     */
-    private $serie;
-
-    /**
-     * @return int
-     */
-    public function getEpisode(): int
-    {
-        return $this->episode;
-    }
-
-    /**
-     * @param int $episode
-     * @return Video
-     */
-    public function setEpisode(?int $episode): Video
-    {
-        $this->episode = $episode;
-        return $this;
-    }
 
     /**
      * @return int
@@ -135,24 +104,6 @@ class Video extends Document
     public function setAuthor(string $author): Video
     {
         $this->author = $author;
-        return $this;
-    }
-
-    /**
-     * @return Serie
-     */
-    public function getSerie(): Serie
-    {
-        return $this->serie;
-    }
-
-    /**
-     * @param Serie $serie
-     * @return Video
-     */
-    public function setSerie(Serie $serie): Video
-    {
-        $this->serie = $serie;
         return $this;
     }
 }

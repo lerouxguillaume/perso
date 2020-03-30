@@ -2,11 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\DailyStats;
-use App\Entity\Entreprise;
-use App\Entity\Serie;
-use App\Entity\TimeSerie;
-use App\Service\FetchApiAlphaVantage;
+use App\Entity\Documents\Episode;
+use App\Entity\Documents\Serie;
 use App\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -44,6 +41,7 @@ class AddVideoCommand extends Command
             ->setHelp('This command generate statistics for a given day, by default today')
             ->addArgument('path',  InputArgument::REQUIRED, 'Path to the file')
             ->addArgument('name',  InputArgument::REQUIRED, 'Name of the video')
+            ->addArgument('videoType',  InputArgument::REQUIRED, 'Type of the video')
             ->addArgument('serie',  InputArgument::OPTIONAL, 'Id of the serie related')
             ->addArgument('episode',  InputArgument::OPTIONAL, 'Episode number (required if part of a serie')
         ;
@@ -53,6 +51,7 @@ class AddVideoCommand extends Command
     {
         $path = $input->getArgument('path');
         $name = $input->getArgument('name');
+        $videoType = $input->getArgument('videoType');
         $serieId = $input->getArgument('serie');
         $episode = (int) $input->getArgument('episode');
         $serie = null;
@@ -78,14 +77,19 @@ class AddVideoCommand extends Command
         }
 
         try {
-            $video = $this->videoService->addVideo($path, $name, $episode);
+            $video = $this->videoService->addVideo($path, $name, $videoType);
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());
             return;
         }
 
-        if (!empty($serie)) {
-            $video->setSerie($serie);
+        if ($video instanceof Episode) {
+            if (!empty($serie)) {
+                $video
+                    ->setEpisode($episode)
+                    ->setSerie($serie)
+                ;
+            }
         }
 
         $this->em->persist($video);

@@ -1,17 +1,17 @@
 <template>
     <div>
         <video-player
-                        id="my_video_1"
-                        class="video-js vjs-default-skin"
-                        controls
-                        preload="none"
-                       ref="videoPlayer"
-                       :options="playerOptions"
-                       :playsinline="true"
-                       @play="onPlayerPlay($event)"
-                       @pause="onPlayerPause($event)"
-                       @ready="playerReadied"
-                       @statechanged="playerStateChanged($event)">
+                id="my_video_1"
+                class="video-js vjs-default-skin"
+                controls
+                preload="none"
+                ref="videoPlayer"
+                :options="playerOptions"
+                :playsinline="true"
+                @play="onPlayerPlay($event)"
+                @pause="onPlayerPause($event)"
+                @ready="playerReadied"
+                @statechanged="playerStateChanged($event)">
         </video-player>
         <div>
             <b-button v-for="(episode, key) in episodes" class="col-md-4" v-bind:key="key" @click="onSelectEpisode(episode)">
@@ -26,7 +26,7 @@
     import ApiService from "../../services/api.service";
 
     export default {
-        name: "Video",
+        name: "Serie",
         currentEpisode: null,
         props: {
             options: {
@@ -103,4 +103,4 @@
 </script>
 
 <style scoped>
- </style>
+</style>

@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Documents;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;
-use JMS\Serializer\Annotation\Exclude;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Serie
  * @package App\Entity
  * @ORM\Entity()
+ * @ORM\Table(name="document_serie")
  */
 class Serie
 {
@@ -47,21 +46,11 @@ class Serie
     private $season;
 
     /**
-     * @var Video[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="serie")
+     * @var Episode[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Documents\Episode", mappedBy="serie")
      * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
      */
     private $episodes;
-
-    /**
-     * Serie constructor.
-     * @param Video[] $episodes
-     */
-    public function __construct()
-    {
-        $this->episodes = new PersistentCollection();
-    }
-
 
     /**
      * @return int
@@ -144,7 +133,7 @@ class Serie
     }
 
     /**
-     * @return Video[]
+     * @return PersistentCollection
      */
     public function getEpisodes() : PersistentCollection
     {
@@ -162,10 +151,10 @@ class Serie
     }
 
     /**
-     * @param Video $episode
+     * @param Episode $episode
      * @return $this
      */
-    public function addEpisode(Video $episode): Serie
+    public function addEpisode(Episode $episode): Serie
     {
         $this->episodes->add($episode);
         return $this;

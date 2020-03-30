@@ -2,11 +2,9 @@
 
 namespace App\Service;
 
-use App\Entity\Serie;
-use App\Entity\Video;
-use FFMpeg\FFMpeg;
+use App\Entity\Documents\Video;
+use App\Entity\Documents\VideoFactory;
 use FFMpeg\FFProbe;
-use FFMpeg\Format\Video\X264;
 
 /**
  * Class VideoService
@@ -19,21 +17,19 @@ class VideoService
     /**
      * @param string $path
      * @param string $name
-     * @param int|null $episode
-     * @param Serie|null $serie
+     * @param int $videoType
      * @return Video
      * @throws \Exception
      */
-    public function addVideo(string $path, string $name, int $episode = null)
+    public function addVideo(string $path, string $name, int $videoType)
     {
-        $video = $this->addVideoFile($path);
+        $video = $this->addVideoFile($path, $videoType);
 
         $ffmprobe = FFProbe::create();
         $duration = $ffmprobe->format($video->getFilePath())->get('duration');
 
         $video
             ->setDuration($duration)
-            ->setEpisode($episode)
             ->setName($name)
         ;
 
@@ -77,13 +73,14 @@ class VideoService
 
     /**
      * @param string $path
+     * @param int $videoType
      * @return Video
      * @throws \Exception
      */
-    public function addVideoFile(string $path)
+    public function addVideoFile(string $path, int $videoType)
     {
         $videoFilename = $this->prepareVideo($path);
-        $video = new Video();
+        $video = VideoFactory::Video($videoType);
         $video
             ->setFileName($videoFilename)
             ->setUploadedAt(new \DateTime())

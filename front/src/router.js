@@ -10,7 +10,8 @@ import VueRouter from "vue-router";
 import {TokenService} from "./services/storage.service";
 import Login from "./pages/Security/Login";
 import VideoList from "./pages/Video/VideoList";
-import Video from "./pages/Video/Video";
+import Serie from "./pages/Video/Serie";
+import Movie from "./pages/Video/Movie";
 
 Vue.use(VueRouter);
 
@@ -76,9 +77,9 @@ const router =  new VueRouter({
             }
         },
         {
-            path: '/video/:id',
-            name: 'video',
-            component: Video,
+            path: '/serie/:id',
+            name: 'serie',
+            component: Serie,
             meta: {
                 public: true,  // Allow access to even if not logged in
                 breadcumb: [
@@ -91,7 +92,29 @@ const router =  new VueRouter({
                         to: {name: 'video_list'}
                     },
                     {
-                        text: 'video',
+                        text: 'serie',
+                        active: true
+                    }
+                ]
+            }
+        },
+        {
+            path: '/movie/:id',
+            name: 'movie',
+            component: Movie,
+            meta: {
+                public: true,  // Allow access to even if not logged in
+                breadcumb: [
+                    {
+                        text: 'Home',
+                        to: {name: 'homepage'}
+                    },
+                    {
+                        text: 'Videos',
+                        to: {name: 'video_list'}
+                    },
+                    {
+                        text: 'movie',
                         active: true
                     }
                 ]
