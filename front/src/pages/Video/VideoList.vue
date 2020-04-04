@@ -1,7 +1,7 @@
 <template>
     <div id="table-entreprise">
         <b-tabs content-class="mt-3">
-            <b-tab title="First" active><p>Serie</p>
+            <b-tab title="Series" active><p>Series</p>
                 <b-container fluid>
                     <!-- User Interface controls -->
                     <b-row>
@@ -24,7 +24,7 @@
                     </b-table>
                 </b-container>
             </b-tab>
-            <b-tab title="Second"><p>Movies</p>
+            <b-tab title="Movies"><p>Movies</p>
                 <b-container fluid>
                     <!-- User Interface controls -->
                     <b-row>

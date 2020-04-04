@@ -1,18 +1,6 @@
 <template>
     <div>
-        <video-player
-                id="my_video_1"
-                class="video-js vjs-default-skin"
-                controls
-                preload="none"
-                ref="videoPlayer"
-                :options="playerOptions"
-                :playsinline="true"
-                @play="onPlayerPlay($event)"
-                @pause="onPlayerPause($event)"
-                @ready="playerReadied"
-                @statechanged="playerStateChanged($event)">
-        </video-player>
+        <Video :src="src"></Video>
         <div>
             <b-button v-for="(episode, key) in episodes" class="col-md-4" v-bind:key="key" @click="onSelectEpisode(episode)">
                 {{  episode.name }}
@@ -24,29 +12,21 @@
 <script>
     /* eslint-disable no-console */
     import ApiService from "../../services/api.service";
+    import Video from "./Video";
 
     export default {
         name: "Serie",
-        currentEpisode: null,
-        props: {
-            options: {
-                type: Object,
-                default() {
-                    return {};
-                }
-            }
-        },
+        components: {Video},
         data() {
             return {
+                currentEpisode: null,
                 episodes : [],
-                playerOptions: {
-                    // videojs options
-                    muted: false,
-                    language: 'en',
-                    playbackRates: [0.7, 1.0, 1.5, 2.0],
-                    aspectRatio:"640:267",
-                }
             }
+        },
+        computed: {
+            src() {
+                return this.currentEpisode !== null ? this.currentEpisode.src : null;
+            } ,
         },
         mounted() {
             ApiService.get(process.env.VUE_APP_DOCUMENT_API_URL+'/serie/'+this.$route.params.id)
@@ -58,6 +38,7 @@
                             'episode' : episode.episode,
                             'name' : episode.name,
                             'duration' : episode.duration,
+                            'src' : process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+this.currentEpisode.id,
                         })
                     })
                 })
@@ -65,39 +46,10 @@
                     console.log(error);
                 })
         },
-        computed: {
-            player() {
-                return this.$refs.videoPlayer.player
-            }
-        },
         methods: {
             onSelectEpisode(episode) {
                 this.currentEpisode = episode;
-                this.player.src({ type: "video/mp4", src: process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+this.currentEpisode.id });
-                this.player.reset()
-                this.player.currentTime(0);
-                this.player.play();
-
             },
-            // listen event
-            onPlayerPlay() {
-                // console.log('player play!', player)
-            },
-            onPlayerPause() {
-                // console.log('player pause!', player)
-            },
-            // ...player event
-
-            // or listen state event
-            playerStateChanged() {
-                // console.log('player current update state', playerCurrentState)
-            },
-            // player is ready
-            playerReadied() {
-                // console.log('the player is readied', player)
-                // you can use it to do something...
-                // player.[methods]
-            }
         }
     }
 </script>

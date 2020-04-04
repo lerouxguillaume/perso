@@ -1,44 +1,36 @@
 <template>
     <div>
         <video-player
-                        id="my_video_1"
-                        class="video-js vjs-default-skin"
-                        controls
-                        preload="none"
-                       ref="videoPlayer"
-                       :options="playerOptions"
-                       :playsinline="true"
-                       @play="onPlayerPlay($event)"
-                       @pause="onPlayerPause($event)"
-                       @ready="playerReadied"
-                       @statechanged="playerStateChanged($event)">
+                id="my_video_1"
+                class="video-js vjs-default-skin"
+                controls
+                preload="none"
+                ref="videoPlayer"
+                :options="playerOptions"
+                :playsinline="true"
+                @play="onPlayerPlay($event)"
+                @pause="onPlayerPause($event)"
+                @ready="playerReadied"
+                @statechanged="playerStateChanged($event)">
         </video-player>
-        <div>
-            <b-button v-for="(episode, key) in episodes" class="col-md-4" v-bind:key="key" @click="onSelectEpisode(episode)">
-                {{  episode.name }}
-            </b-button>
-        </div>
     </div>
 </template>
 
 <script>
     /* eslint-disable no-console */
-    import ApiService from "../../services/api.service";
-
     export default {
         name: "Video",
         currentEpisode: null,
         props: {
-            options: {
-                type: Object,
+            src: {
+                type: String,
                 default() {
-                    return {};
+                    return null;
                 }
             }
         },
         data() {
             return {
-                episodes : [],
                 playerOptions: {
                     // videojs options
                     muted: false,
@@ -48,22 +40,14 @@
                 }
             }
         },
-        mounted() {
-            ApiService.get(process.env.VUE_APP_DOCUMENT_API_URL+'/serie/'+this.$route.params.id)
-                .then((response) => {
-                    let data = response.data;
-                    data['episodes'].forEach(episode => {
-                        this.episodes.push({
-                            'id' : episode.id,
-                            'episode' : episode.episode,
-                            'name' : episode.name,
-                            'duration' : episode.duration,
-                        })
-                    })
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+        watch: {
+            src : function (newVal) {
+                console.log(newVal)
+                this.player.src({ type: "video/mp4", src: newVal});
+                this.player.reset();
+                this.player.currentTime(0);
+                this.player.play();
+            }
         },
         computed: {
             player() {
@@ -71,14 +55,6 @@
             }
         },
         methods: {
-            onSelectEpisode(episode) {
-                this.currentEpisode = episode;
-                this.player.src({ type: "video/mp4", src: process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+this.currentEpisode.id });
-                this.player.reset()
-                this.player.currentTime(0);
-                this.player.play();
-
-            },
             // listen event
             onPlayerPlay() {
                 // console.log('player play!', player)
@@ -103,4 +79,4 @@
 </script>
 
 <style scoped>
- </style>
+</style>
