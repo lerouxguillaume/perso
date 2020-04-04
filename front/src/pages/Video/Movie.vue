@@ -11,6 +11,7 @@
                 @play="onPlayerPlay($event)"
                 @pause="onPlayerPause($event)"
                 @ready="playerReadied"
+                @loadedmetadata="loadedmetadata($event)"
                 @statechanged="playerStateChanged($event)">
         </video-player>
     </div>
@@ -65,7 +66,8 @@
         },
         methods: {
             // listen event
-            onPlayerPlay() {
+            onPlayerPlay(player) {
+                console.log('the player is readied', player.duration())
                 // console.log('player play!', player)
             },
             onPlayerPause() {
@@ -78,10 +80,13 @@
                 // console.log('player current update state', playerCurrentState)
             },
             // player is ready
-            playerReadied() {
-                // console.log('the player is readied', player)
+            playerReadied(player) {
+                console.log('the player is readied', player.duration())
                 // you can use it to do something...
                 // player.[methods]
+            },
+            loadedmetadata (event) {
+                console.log(event);
             }
         }
     }
