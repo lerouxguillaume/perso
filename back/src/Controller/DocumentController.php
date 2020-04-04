@@ -11,6 +11,7 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\View;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SplFileObject;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -31,9 +32,12 @@ class DocumentController extends AbstractFOSRestController
      */
     private $entityManager;
 
+    private $logger;
+
     public function __construct(
-        EntityManagerInterface $entityManager) {
+        EntityManagerInterface $entityManager, LoggerInterface $logger) {
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -106,7 +110,7 @@ class DocumentController extends AbstractFOSRestController
             throw new NotFoundHttpException();
         }
 
-        $response = new VideoStream($video->getFilePath());
+        $response = new VideoStream($video->getFilePath(), $this->logger);
         $response->start();
     }
 

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Service;
+use Psr\Log\LoggerInterface;
+
 /**
  * Description of VideoStream
  *
@@ -15,10 +17,13 @@ class VideoStream
     private $start  = -1;
     private $end    = -1;
     private $size   = 0;
+    private $logger;
 
-    function __construct($filePath)
+    function __construct($filePath, LoggerInterface $logger)
     {
         $this->path = $filePath;
+        $this->logger = $logger;
+
     }
 
     /**
@@ -51,7 +56,9 @@ class VideoStream
 
             $c_start = $this->start;
             $c_end = $this->end;
-
+            $this->logger->info('Stream logger', [
+                'server' => $_SERVER
+            ]);
             list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
             if (strpos($range, ',') !== false) {
                 header('HTTP/1.1 416 Requested Range Not Satisfiable');
