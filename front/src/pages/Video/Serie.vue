@@ -38,7 +38,7 @@
                             'episode' : episode.episode,
                             'name' : episode.name,
                             'duration' : episode.duration,
-                            'src' : process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+this.episode.id,
+                            'src' : process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+ episode.id,
                         })
                     })
                 })
