@@ -42,7 +42,6 @@
         },
         watch: {
             src : function (newVal) {
-                console.log(newVal)
                 this.player.src({ type: "video/mp4", src: newVal});
                 this.player.reset();
                 this.player.currentTime(0);
