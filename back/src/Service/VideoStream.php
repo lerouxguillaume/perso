@@ -45,7 +45,7 @@ class VideoStream
         $this->start = 0;
         $this->size  = filesize($this->path);
         $this->end   = $this->size - 1;
-        header("Accept-Ranges: 0-".$this->end);
+        header("Accept-Ranges: bytes");
 
         if (isset($_SERVER['HTTP_RANGE'])) {
 
