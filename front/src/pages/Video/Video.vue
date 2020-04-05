@@ -20,7 +20,7 @@
 <script>
     /* eslint-disable no-console */
     import KEY_CODES from "bootstrap-vue/esm/utils/key-codes";
-
+    require('videojs-mobile-ui');
     export default {
         name: "Video",
         currentEpisode: null,
@@ -50,7 +50,6 @@
                 // this.player.reset();
                 this.player.play();
                 // this.player.focus();
-                console.log(document.activeElement);
             }
         },
         computed: {
@@ -59,6 +58,7 @@
             }
         },
         mounted(){
+            this.player.mobileUi();
             window.playerEvents = this;
             this.player.on('dblclick', this.playerDbClick);
             this.player.on('keydown', this.keyPressed);
