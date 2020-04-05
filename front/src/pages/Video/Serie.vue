@@ -1,11 +1,17 @@
 <template>
     <div>
         <Video :src="src"></Video>
-        <div>
-            <b-button v-for="(episode, key) in episodes" class="col-md-4" v-bind:key="key" @click="onSelectEpisode(episode)">
-                {{  episode.name }}
-            </b-button>
-        </div>
+        <b-pagination
+                :total-rows="rows"
+                :per-page="1"
+                first-text="⏮"
+                prev-text="⏪"
+                next-text="⏩"
+                last-text="⏭"
+                class="mt-4"
+                @input="onSelectEpisode"
+                align="center"
+        ></b-pagination>
     </div>
 </template>
 
@@ -21,12 +27,16 @@
             return {
                 currentEpisode: null,
                 episodes : [],
+                currentEpisodeNumber : 1,
             }
         },
         computed: {
             src() {
                 return this.currentEpisode !== null ? this.currentEpisode.src : null;
-            } ,
+            },
+            rows() {
+                return this.episodes.length;
+            },
         },
         mounted() {
             ApiService.get(process.env.VUE_APP_DOCUMENT_API_URL+'/serie/'+this.$route.params.id)
@@ -40,6 +50,15 @@
                             'duration' : episode.duration,
                             'src' : process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+ episode.id,
                         })
+                    });
+                    this.episodes.sort((a,b) => {
+                        let comparison = 0;
+                        if (a.episode > b.episode) {
+                            comparison = 1;
+                        } else if (a.episode < b.episode) {
+                            comparison = -1;
+                        }
+                        return comparison;
                     })
                 })
                 .catch(function (error) {
@@ -48,7 +67,8 @@
         },
         methods: {
             onSelectEpisode(episode) {
-                this.currentEpisode = episode;
+                let current = this.episodes[episode-1];
+                this.currentEpisode = typeof current === 'undefined' ? null : current
             },
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="video-container">
         <video-player
                 id="my_video_1"
                 class="video-js vjs-default-skin"
@@ -37,6 +37,7 @@
                     language: 'en',
                     playbackRates: [0.7, 1.0, 1.5, 2.0],
                     aspectRatio:"640:267",
+
                 }
             }
         },
@@ -78,4 +79,13 @@
 </script>
 
 <style scoped>
+    .video-container {
+        display: flex;
+        margin: 20px;
+        justify-content: center;
+    }
+    .video-player {
+        width: 50%;
+        height: auto;
+    }
 </style>
