@@ -10,3 +10,21 @@ $card-bg: black;
 
 @import "~video.js/dist/video-js.css";
 //@import "player";
+
+
+/* CUSTOM BUTTONS */
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  font-size: 20px;
+}
+.icon-angle-left:before {
+  content: "\f104";
+}
+.icon-angle-right:before {
+  content: "\f105";
+}

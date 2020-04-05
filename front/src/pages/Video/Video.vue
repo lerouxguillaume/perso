@@ -20,7 +20,8 @@
 <script>
     /* eslint-disable no-console */
     import KEY_CODES from "bootstrap-vue/esm/utils/key-codes";
-    require('videojs-mobile-ui');
+    import videojs from 'video.js';
+
     export default {
         name: "Video",
         currentEpisode: null,
@@ -58,10 +59,40 @@
             }
         },
         mounted(){
-            this.player.mobileUi();
             window.playerEvents = this;
             this.player.on('dblclick', this.playerDbClick);
             this.player.on('keydown', this.keyPressed);
+            var Button = videojs.getComponent('Button');
+
+            // Extend default
+            var PrevButton = videojs.extend(Button, {
+                //constructor: function(player, options) {
+                constructor: function() {
+                    Button.apply(this, arguments);
+                    //this.addClass('vjs-chapters-button');
+                    this.addClass('icon-angle-left');
+                    this.controlText("Previous");
+                },
+                handleClick: this.backward
+            });
+            videojs.registerComponent('PrevButton', PrevButton);
+
+            // Extend default
+            var NextButton = videojs.extend(Button, {
+                //constructor: function(player, options) {
+                constructor: function() {
+                    Button.apply(this, arguments);
+                    //this.addClass('vjs-chapters-button');
+                    this.addClass('icon-angle-right');
+                    this.controlText("Previous");
+                },
+                handleClick: this.forward
+            });
+            videojs.registerComponent('NextButton', NextButton);
+            this.player.getChild('controlBar').addChild('PrevButton', {}, 0);
+            this.player.getChild('controlBar').addChild('NextButton', {}, 2);
+            // this.player.on('click', 'icon-angle-right', this.forward);
+            // this.player.on('keydown', this.keyPressed);
         },
         methods: {
             // listen event
@@ -83,6 +114,12 @@
                 // you can use it to do something...
                 // player.[methods]
             },
+            backward() {
+                this.player.currentTime(this.player.currentTime() - 30);
+            },
+            forward() {
+                this.player.currentTime(this.player.currentTime() + 30);
+            },
             playerDbClick() {
                 if (this.player.isFullscreen()) {
                     this.player.exitFullscreen();
@@ -103,7 +140,7 @@
                         this.player.currentTime(this.player.currentTime() - 30);
                         break;
                     case KEY_CODES.RIGHT :
-                        this.player.currentTime(this.player.currentTime() + 30);
+                        this.forward();
                         break;
                     case KEY_CODES.UP :
                         this.player.volume(this.player.volume() + 0.1);
@@ -126,5 +163,35 @@
     .video-player {
         width: 50%;
         height: auto;
+    }
+    .video-holder {
+        background: #1b1b1b;
+        padding: 10px
+    }
+
+    /* CUSTOM BUTTONS */
+    [class^="icon-"]:before,
+    [class*=" icon-"]:before {
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        display: inline-block;
+        text-decoration: inherit;
+        background-color: rebeccapurple !important;
+    }
+    .icon-angle-left:before {
+        content: "\f104";
+    }
+    .icon-angle-right:before {
+        content: "\f105";
+    }
+
+    .video-js .icon-angle-right, .video-js .icon-angle-left {
+        cursor: pointer;
+        -webkit-box-flex: none;
+        -moz-box-flex: none;
+        -webkit-flex: none;
+        -ms-flex: none;
+        flex: none;
     }
 </style>
