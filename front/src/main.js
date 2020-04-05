@@ -10,6 +10,7 @@ import './filter.js'
 import ApiService from "./services/api.service";
 import {TokenService} from "./services/storage.service";
 import store from './store'
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 Vue.use(VueVideoPlayer);

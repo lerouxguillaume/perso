@@ -11,6 +11,7 @@
                 @pause="onPlayerPause($event)"
                 @ready="playerReadied"
                 @statechanged="playerStateChanged($event)"
+                @click="playerDbClick($event)"
         >
         </video-player>
     </div>
@@ -49,6 +50,7 @@
                 // this.player.reset();
                 this.player.play();
                 // this.player.focus();
+                console.log(document.activeElement);
             }
         },
         computed: {
