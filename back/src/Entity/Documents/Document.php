@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation\Exclude;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class DailyStats
+ * Class Document
  * @ORM\MappedSuperclass()
  */
 abstract class Document

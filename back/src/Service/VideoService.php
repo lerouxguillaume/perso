@@ -28,13 +28,12 @@ class VideoService
     /**
      * @param string $path
      * @param string $name
-     * @param int $videoType
      * @return Video
      * @throws \Exception
      */
-    public function addVideo(string $path, string $name, int $videoType)
+    public function addVideo(string $path, string $name)
     {
-        $video = $this->addVideoFile($path, $videoType);
+        $video = $this->addVideoFile($path);
 
         $ffmprobe = FFProbe::create();
         $duration = $ffmprobe->format($video->getFilePath())->get('duration');
@@ -84,14 +83,13 @@ class VideoService
 
     /**
      * @param string $path
-     * @param int $videoType
      * @return Video
      * @throws \Exception
      */
-    public function addVideoFile(string $path, int $videoType)
+    public function addVideoFile(string $path)
     {
         $videoFilename = $this->prepareVideo($path);
-        $video = VideoFactory::Video($videoType);
+        $video = new Video();
         $video
             ->setFileName($videoFilename)
             ->setUploadedAt(new \DateTime())

@@ -9,8 +9,17 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="document_episode")
  */
-class Episode extends Video
+class Episode
 {
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    private $id;
+
     /**
      * @var int
      * @ORM\Column(type="integer", nullable=true)
@@ -23,6 +32,20 @@ class Episode extends Video
      * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
      */
     private $serie;
+
+    /**
+     * @var Video
+     * @ORM\OneToOne(targetEntity="App\Entity\Documents\Video")
+     */
+    private $video;
+
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     /**
      * @return int
@@ -57,6 +80,24 @@ class Episode extends Video
     public function setSerie(Serie $serie): Episode
     {
         $this->serie = $serie;
+        return $this;
+    }
+
+    /**
+     * @return Video
+     */
+    public function getVideo(): Video
+    {
+        return $this->video;
+    }
+
+    /**
+     * @param Video $video
+     * @return Episode
+     */
+    public function setVideo(Video $video): Episode
+    {
+        $this->video = $video;
         return $this;
     }
 }

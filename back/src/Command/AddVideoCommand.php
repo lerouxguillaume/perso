@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Documents\Episode;
 use App\Entity\Documents\Serie;
+use App\Entity\Documents\VideoFactory;
 use App\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -77,22 +78,27 @@ class AddVideoCommand extends Command
         }
 
         try {
-            $video = $this->videoService->addVideo($path, $name, $videoType);
+            $video = $this->videoService->addVideo($path, $name);
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());
             return;
         }
 
-        if ($video instanceof Episode) {
+        $content = VideoFactory::Video($videoType);
+        $content
+            ->setName($name)
+            ->setVideo($video)
+        ;
+        if ($content instanceof Episode) {
             if (!empty($serie)) {
-                $video
+                $content
                     ->setEpisode($episode)
                     ->setSerie($serie)
                 ;
             }
         }
 
-        $this->em->persist($video);
+        $this->em->persist($content);
         $this->em->flush();
 
         $output->writeln('OK :)');

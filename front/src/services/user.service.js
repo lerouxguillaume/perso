@@ -25,7 +25,7 @@ const UserService = {
             method: 'post',
             url: tokenEndPoint,
             data: {
-                grant_type: 'client_credentials',
+                grant_type: 'password',
                 username: email,
                 password: password
             },

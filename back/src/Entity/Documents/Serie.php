@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="document_serie")
  */
-class Serie
+class Serie extends Content
 {
     /**
      * @ORM\Id
@@ -20,24 +20,6 @@ class Serie
      * @var int
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var string
-     */
-    private $author;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -58,60 +40,6 @@ class Serie
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return Serie
-     */
-    public function setName(string $name): Serie
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     * @return Serie
-     */
-    public function setDescription(string $description): Serie
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAuthor(): string
-    {
-        return $this->author;
-    }
-
-    /**
-     * @param string $author
-     * @return Serie
-     */
-    public function setAuthor(string $author): Serie
-    {
-        $this->author = $author;
-        return $this;
     }
 
     /**

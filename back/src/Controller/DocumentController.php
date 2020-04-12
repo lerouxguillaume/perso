@@ -19,9 +19,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
- * Class NasaApiController
+ * Class DocumentController
  * @package App\Controller
  * @Route("/documents")
  */
@@ -34,10 +37,13 @@ class DocumentController extends AbstractFOSRestController
 
     private $logger;
 
+    private $tokenStorage;
+
     public function __construct(
-        EntityManagerInterface $entityManager, LoggerInterface $logger) {
+        EntityManagerInterface $entityManager, LoggerInterface $logger, Security $security) {
         $this->entityManager = $entityManager;
         $this->logger = $logger;
+        $this->tokenStorage = $security;
     }
 
     /**
@@ -45,8 +51,13 @@ class DocumentController extends AbstractFOSRestController
      * @View
      * @return array
      */
-    public function getSeries()
+    public function getSeries(Request $request)
     {
+        $user = $this->getUser();
+        dump($user);
+        die();
+        if ($this->getUser()) {
+        }
         return $this->entityManager->getRepository(Serie::class)->findAll();
     }
 

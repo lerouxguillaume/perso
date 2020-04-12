@@ -82,13 +82,9 @@
             },
             onSerieClicked(item) {
                 this.$router.push({name: 'serie', params: { id : item.id }})
-
-                // Trigger pagination to update the number of buttons/pages due to filtering
             },
             onMovieClicked(item) {
-                this.$router.push({name: 'movie', params: { id : item.id }})
-
-                // Trigger pagination to update the number of buttons/pages due to filtering
+                this.$router.push({name: 'movie', params: { id : item.video.id }})
             }
         },
         mounted () {
@@ -114,6 +110,7 @@
                             isActive: true,
                             'id' : data[key].id,
                             'name' : data[key].name,
+                            'video' : data[key].video,
                         })
                     }
                 })
