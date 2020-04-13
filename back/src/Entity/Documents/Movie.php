@@ -2,6 +2,7 @@
 
 namespace App\Entity\Documents;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,7 +37,7 @@ class Movie extends Content
     /**
      * @return Video
      */
-    public function getVideo(): Video
+    public function getVideo(): ?Video
     {
         return $this->video;
     }

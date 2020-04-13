@@ -123,24 +123,6 @@ abstract class Document
     }
 
     /**
-     * @return string
-     */
-    public function getParent(): ?string
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param string $parent
-     * @return Document
-     */
-    public function setParent(string $parent): Document
-    {
-        $this->parent = $parent;
-        return $this;
-    }
-
-    /**
      * @return bool
      */
     public function isPrivate(): ?bool

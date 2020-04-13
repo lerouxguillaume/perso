@@ -18,7 +18,7 @@
 <script>
     /* eslint-disable no-console */
     import ApiService from "../../services/api.service";
-    import Video from "./Video";
+    import Video from "../../components/Video/Video";
 
     export default {
         name: "Serie",
@@ -48,7 +48,7 @@
                             'episode' : episode.episode,
                             'name' : episode.name,
                             'duration' : episode.duration,
-                            'src' : process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+ episode.id,
+                            'src' : process.env.VUE_APP_DOCUMENT_API_URL+'/video/serie/'+ episode.id,
                         })
                     });
                     this.episodes.sort((a,b) => {

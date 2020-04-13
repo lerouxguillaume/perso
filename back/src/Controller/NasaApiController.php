@@ -4,21 +4,17 @@ namespace App\Controller;
 
 use App\Entity\ImageOfTheDay;
 use App\Service\FetchApiNasa;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
-use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\Route;
-use FOS\RestBundle\Controller\Annotations\View;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Swagger\Annotations as SWG;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class NasaApiController
  * @package App\Controller
  * @Route("/nasa")
  */
-class NasaApiController extends AbstractFOSRestController
+class NasaApiController extends AbstractController
 {
     private $fetchApiNasa;
 
@@ -28,29 +24,13 @@ class NasaApiController extends AbstractFOSRestController
     }
 
     /**
-     * @SWG\Tag(name="Nasa API")
-     * @SWG\Response(
-     *     response=200,
-     *     description="Returns the image of the day",
-     *     @SWG\Schema(
-     *         type="object",
-     *         @SWG\Items(ref=@Model(type=ImageOfTheDay::class, groups={"full"}))
-     *     )
-     * )
-     * @SWG\Parameter(
-     *     name="date",
-     *     in="path",
-     *     type="string",
-     *     description="Date of the day"
-     * )
-     * @Get(
+     * @Route(
      *      path="/day/{date}",
      *      requirements={
      *          "date" = "^\s*(3[01]|[12][0-9]|0?[1-9])\-(1[012]|0?[1-9])\-((?:19|20)\d{2})\s*$"
      *      },
      *      defaults={"date" = null}
      *      )
-     * @View
      * @param null $date
      * @return ImageOfTheDay
      * @throws \Exception
@@ -64,7 +44,7 @@ class NasaApiController extends AbstractFOSRestController
     }
 
     /**
-     * @Get(
+     * @Route(
      *      path="/search/{from}/{limit}",
      *      requirements={
      *          "from" = "^\s*(3[01]|[12][0-9]|0?[1-9])\-(1[012]|0?[1-9])\-((?:19|20)\d{2})\s*$",
@@ -72,7 +52,6 @@ class NasaApiController extends AbstractFOSRestController
      *      },
      *      defaults={"from" = null}
      *      )
-     * @View
      * @param Request $request
      * @param string $from
      * @param int $limit

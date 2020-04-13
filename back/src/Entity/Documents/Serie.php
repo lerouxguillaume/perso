@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Serie
  * @package App\Entity
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\SerieRepository")
  * @ORM\Table(name="document_serie")
  */
 class Serie extends Content

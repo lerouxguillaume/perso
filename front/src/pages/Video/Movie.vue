@@ -8,7 +8,7 @@
 <script>
     /* eslint-disable no-console */
     import ApiService from "../../services/api.service";
-    import Video from "./Video";
+    import Video from "../../components/Video/Video";
 
     export default {
         name: "Movie",
@@ -26,7 +26,7 @@
                     let data = response.data;
                     this.id = data.id;
                     this.name = data.name;
-                    this.src = process.env.VUE_APP_DOCUMENT_API_URL+'/download/'+this.id ;
+                    this.src = process.env.VUE_APP_DOCUMENT_API_URL+'/video/smovie/'+this.id ;
                 })
                 .catch(function (error) {
                     console.log(error);

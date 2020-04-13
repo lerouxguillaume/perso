@@ -2,19 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\ImageOfTheDay;
 use App\Service\FetchApiAlphaVantage;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
-use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\Route;
-use FOS\RestBundle\Controller\Annotations\View;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class NasaApiController
  * @package App\Controller
  * @Route("/trading")
  */
-class BourseApiController extends AbstractFOSRestController
+class BourseApiController extends AbstractController
 {
     /** @var FetchApiAlphaVantage */
     private $alphaAvantageApi;
@@ -25,8 +22,7 @@ class BourseApiController extends AbstractFOSRestController
     }
 
     /**
-     * @Get(path="/entreprises")
-     * @View
+     * @Route(path="/entreprises")
      * @return array
      */
     public function getEntreprises()

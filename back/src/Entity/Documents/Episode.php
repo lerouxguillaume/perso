@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Episode
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -27,6 +26,12 @@ class Episode
     private $episode;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $name;
+
+    /**
      * @var Serie
      * @ORM\ManyToOne(targetEntity="App\Entity\Documents\Serie", inversedBy="episodes")
      * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
@@ -35,7 +40,7 @@ class Episode
 
     /**
      * @var Video
-     * @ORM\OneToOne(targetEntity="App\Entity\Documents\Video")
+     * @ORM\OneToOne(targetEntity="App\Entity\Documents\Video", cascade={"ALL"}, orphanRemoval=true)
      */
     private $video;
 
@@ -80,6 +85,24 @@ class Episode
     public function setSerie(Serie $serie): Episode
     {
         $this->serie = $serie;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return Episode
+     */
+    public function setName(string $name): Episode
+    {
+        $this->name = $name;
         return $this;
     }
 

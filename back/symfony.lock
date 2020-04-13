@@ -2,6 +2,23 @@
     "alchemy/binary-driver": {
         "version": "v5.2.0"
     },
+    "api-platform/api-pack": {
+        "version": "v1.2.2"
+    },
+    "api-platform/core": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "a93061567140e386f107be75340ac2aee3f86cbf"
+        },
+        "files": [
+            "config/packages/api_platform.yaml",
+            "config/routes/api_platform.yaml",
+            "src/Entity/.gitignore"
+        ]
+    },
     "defuse/php-encryption": {
         "version": "v2.2.1"
     },
@@ -84,14 +101,8 @@
     "exsyst/swagger": {
         "version": "v0.4.1"
     },
-    "friendsofsymfony/rest-bundle": {
-        "version": "2.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.2",
-            "ref": "258300d52be6ad59b32a888d5ddafbf9638540ff"
-        }
+    "fig/link-util": {
+        "version": "1.1.0"
     },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
@@ -246,6 +257,9 @@
     "psr/http-message": {
         "version": "1.0.1"
     },
+    "psr/link": {
+        "version": "1.0.0"
+    },
     "psr/log": {
         "version": "1.1.0"
     },
@@ -299,6 +313,9 @@
     },
     "symfony/event-dispatcher": {
         "version": "v4.2.3"
+    },
+    "symfony/expression-language": {
+        "version": "v4.4.7"
     },
     "symfony/filesystem": {
         "version": "v4.2.3"
@@ -428,6 +445,9 @@
     "symfony/security-http": {
         "version": "v4.2.4"
     },
+    "symfony/serializer": {
+        "version": "v4.4.7"
+    },
     "symfony/stopwatch": {
         "version": "v4.2.3"
     },
@@ -482,6 +502,9 @@
     "symfony/var-exporter": {
         "version": "v4.2.3"
     },
+    "symfony/web-link": {
+        "version": "v4.4.7"
+    },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
         "recipe": {
@@ -517,9 +540,6 @@
     },
     "webmozart/assert": {
         "version": "1.7.0"
-    },
-    "willdurand/jsonp-callback-validator": {
-        "version": "v1.1.0"
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"

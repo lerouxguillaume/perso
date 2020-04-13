@@ -1,55 +1,33 @@
 <?php
 
+namespace App\DTO;
 
-namespace App\Entity\Documents;
-
-use App\Entity\Security\User;
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * Class Content
- * @ORM\MappedSuperclass()
- */
-abstract class Content
+abstract class ContentDto
 {
-
     /**
-     * @ORM\Column(type="string", nullable=false)
      * @var string
      */
     private $name;
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=true)
      */
     private $genre;
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=true)
      */
     private $description;
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=true)
      */
     private $author;
 
     /**
      * @var string
-     * @ORM\Column(type="boolean", nullable=true)
      */
     private $visibility;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="App\Entity\Security\User")
-     * @ORM\JoinColumn(referencedColumnName="id")
-     *
-     */
-    private $owner;
 
     /**
      * @return string
@@ -61,9 +39,9 @@ abstract class Content
 
     /**
      * @param string $name
-     * @return Content
+     * @return ContentDto
      */
-    public function setName(string $name): Content
+    public function setName(string $name): ContentDto
     {
         $this->name = $name;
         return $this;
@@ -79,9 +57,9 @@ abstract class Content
 
     /**
      * @param string $genre
-     * @return Content
+     * @return ContentDto
      */
-    public function setGenre(?string $genre): Content
+    public function setGenre(?string $genre): ContentDto
     {
         $this->genre = $genre;
         return $this;
@@ -97,9 +75,9 @@ abstract class Content
 
     /**
      * @param string $description
-     * @return Content
+     * @return ContentDto
      */
-    public function setDescription(?string $description): Content
+    public function setDescription(?string $description): ContentDto
     {
         $this->description = $description;
         return $this;
@@ -115,9 +93,9 @@ abstract class Content
 
     /**
      * @param string $author
-     * @return Content
+     * @return ContentDto
      */
-    public function setAuthor(?string $author): Content
+    public function setAuthor(?string $author): ContentDto
     {
         $this->author = $author;
         return $this;
@@ -128,34 +106,16 @@ abstract class Content
      */
     public function getVisibility(): bool
     {
-        return $this->visibility ?? false;
+        return $this->visibility;
     }
 
     /**
      * @param bool $visibility
-     * @return bool
+     * @return ContentDto
      */
-    public function setVisibility(bool $visibility): Content
+    public function setVisibility(bool $visibility): ContentDto
     {
         $this->visibility = $visibility;
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    /**
-     * @param User $owner
-     * @return Content
-     */
-    public function setOwner(User $owner): Content
-    {
-        $this->owner = $owner;
         return $this;
     }
 }

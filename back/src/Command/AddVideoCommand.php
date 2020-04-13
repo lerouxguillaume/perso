@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Documents\Episode;
+use App\Entity\Documents\Movie;
 use App\Entity\Documents\Serie;
 use App\Entity\Documents\VideoFactory;
 use App\Service\VideoService;
@@ -86,7 +87,6 @@ class AddVideoCommand extends Command
 
         $content = VideoFactory::Video($videoType);
         $content
-            ->setName($name)
             ->setVideo($video)
         ;
         if ($content instanceof Episode) {
@@ -96,6 +96,8 @@ class AddVideoCommand extends Command
                     ->setSerie($serie)
                 ;
             }
+        } elseif ($content instanceof Movie) {
+            $content->setName($name);
         }
 
         $this->em->persist($content);
