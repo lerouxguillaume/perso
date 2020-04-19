@@ -2,9 +2,7 @@ import ListNasaImages from "./pages/Nasa/ListNasaImages";
 import Profil from "./pages/Profil";
 import Home from "./pages/Home";
 import NasaImageDetail from "./pages/Nasa/NasaImageDetail";
-import Trade from "./pages/Trading/Trade";
 import NotFound from "./pages/NotFound";
-import TradeList from "./pages/Trading/TradeList";
 import Vue from 'vue'
 import VueRouter from "vue-router";
 import {TokenService} from "./services/storage.service";
@@ -115,44 +113,6 @@ const router =  new VueRouter({
                     },
                     {
                         text: 'movie',
-                        active: true
-                    }
-                ]
-            }
-        },
-        {
-            path: '/trading',
-            name: 'trading_list',
-            component: TradeList,
-            meta: {
-                breadcumb: [
-                    {
-                        text: 'Home',
-                        to: {name: 'homepage'}
-                    },
-                    {
-                        text: 'companies',
-                        active: true
-                    }
-                ]
-            }
-        },
-        {
-            path: '/trading/:company',
-            name: 'trading_detail',
-            component: Trade,
-            meta: {
-                breadcumb: [
-                    {
-                        text: 'Home',
-                        to: {name: 'homepage'}
-                    },
-                    {
-                        text: 'companies',
-                        to: {name: 'trading_list'}
-                    },
-                    {
-                        text: 'company',
                         active: true
                     }
                 ]

@@ -1,25 +1,14 @@
 <?php
 
-
-namespace App\Controller;
-
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\DTO\ContentDto;
+namespace App\Dto;
 
 /**
  * Class MovieDto
  * @package App\Controller
- * @ApiResource(
- *     shortName="Movie",
- *     collectionOperations={"get"},
- *     itemOperations={"get"}
- * )
  */
 class MovieDto extends ContentDto
 {
     /**
-     * @ApiProperty(identifier=true)
      * @var int
      */
     private $id;

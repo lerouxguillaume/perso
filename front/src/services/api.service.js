@@ -8,6 +8,7 @@ const ApiService = {
 
     init(baseURL) {
         axios.defaults.baseURL = baseURL;
+        axios.defaults.headers.common["Accept"] = 'application/vnd.api+json';
     },
 
     setHeader() {
@@ -16,10 +17,11 @@ const ApiService = {
 
     removeHeader() {
         axios.defaults.headers.common = {}
+        axios.defaults.headers.common["Accept"] = 'application/vnd.api+json';
     },
 
-    get(resource) {
-        return axios.get(resource)
+    get(resource, params) {
+        return axios.get(resource, params)
     },
 
     post(resource, data) {

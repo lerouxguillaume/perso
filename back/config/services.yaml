@@ -38,3 +38,6 @@ services:
             - '@security.password_encoder'
         tags:
             - { name: kernel.event_listener, event: trikoder.oauth2.user_resolve, method: onUserResolve }
+
+    App\DataProvider\ContentDataProvider:
+        $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection

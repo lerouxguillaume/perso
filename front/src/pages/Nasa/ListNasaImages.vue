@@ -1,15 +1,15 @@
 <template>
     <div class="row list-images">
-        <div class="col-md-12">
-            <NasaImageDay/>
+        <div class="col-md-12" v-if="images.length > 0">
+            <NasaImageDay :image="imageOfTheDay"/>
         </div>
         <div class="list-images-wrapper">
-            <span href="#" role="button" v-if="baseDate < maxDate" @click="previous" aria-controls="carousel-1___BV_inner_" class="carousel-control-prev">
+            <span href="#" role="button" v-if="page > 1" @click="previous" class="carousel-control-prev">
                 <span aria-hidden="true" class="carousel-control-prev-icon"></span>
                 <span class="sr-only">Previous Slide</span>
             </span>
             <b-row class="list-images-container" v-if="images.length > 0">
-                <div v-for="(image, key) in images" class="col-md-4" v-bind:key="key">
+                <div v-for="(image, key) in otherImages" class="col-md-4" v-bind:key="key">
                     <NasaImageCard
                             v-bind:image="image"
                     >
@@ -21,7 +21,7 @@
                     <b-spinner label="Spinning"></b-spinner>
                 </div>
             </b-row>
-            <span href="#" role="button" @click="next" aria-controls="carousel-1___BV_inner_" class="carousel-control-next">
+            <span href="#" role="button" @click="next" class="carousel-control-next">
                 <span aria-hidden="true" class="carousel-control-next-icon"></span>
                 <span class="sr-only">Next Slide</span>
             </span>
@@ -41,57 +41,65 @@
         components: {NasaImageDay, NasaImageCard},
         data () {
             return {
-                limit : 9,
-                page: this.$route.params.page === undefined ? 0 : this.$route.params.page,
+                page: this.$route.params.page === undefined ? 1 : this.$route.params.page,
                 maxDate : moment().subtract(2, "days"),
-                images: []
+                images: [],
             }
         },
         computed: {
-            baseDate: function () {
-                return moment().subtract(1 + (this.limit*this.page), "days");
+            imageOfTheDay () {
+                return this.images.length > 0 ? this.images[0] : null
+            },
+            otherImages () {
+                return this.images.length > 0 ? this.images.slice(1, this.images.length) : null
             }
         },
         methods: {
             previous () {
                 this.page--;
                 this.$router.push({name: 'nasa_list_image', params: { page : this.page }})
-                this.images = loadData(this.page, this.limit);
+                this.images = loadData(this.page);
             },
             next () {
                 this.page++;
                 this.$router.push({name: 'nasa_list_image', params: { page : this.page }})
-                this.images = loadData(this.page, this.limit);
+                this.images = loadData(this.page);
             }
         },
         mounted () {
-            this.images = loadData(this.page, this.limit);
+            this.images = loadData(this.page);
         }
     }
 
     /**
      * @param page
-     * @param limit
      * @returns {Array}
      */
-    function loadData(page, limit) {
-        let datetime = moment().subtract(1 + (limit*page), "days");
+    function loadData(page) {
         let res = [];
+        let param = {
+            'headers' : {
+                'Accept' : 'application/vnd.api+json'
+            },
+            'params' : {
+                'order[date]': 'desc',
+                'page': page
+            }
+        };
         axios
-            .get(process.env.VUE_APP_NASA_API_URL+'/search/'+moment(datetime).format('DD-MM-YYYY')+'/'+limit)
+            .get(process.env.VUE_APP_API+'/image_of_the_days', param)
             .then((response) => {
                 let data = response.data;
-                data.forEach((element) => {
+                data.data.forEach((element) => {
+                    element = element.attributes;
                     let currentImage = {};
                     currentImage.date = new Date(element.date);
                     currentImage.title = element.title;
                     currentImage.explanation = element.explanation;
                     currentImage.url = element.url;
-                    currentImage.mediaType = element.media_type;
+                    currentImage.mediaType = element.mediaType;
                     res.push(currentImage)
-
                 });
-
             })
             .catch(function (error) {
                 console.log(error);

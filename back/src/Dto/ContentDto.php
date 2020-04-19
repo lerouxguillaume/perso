@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO;
+namespace App\Dto;
 
 abstract class ContentDto
 {
@@ -106,7 +106,7 @@ abstract class ContentDto
      */
     public function getVisibility(): bool
     {
-        return $this->visibility;
+        return $this->visibility ?? false;
     }
 
     /**

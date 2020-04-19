@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Documents\Video;
 use App\Entity\Documents\VideoFactory;
 use FFMpeg\FFProbe;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class VideoService
@@ -14,14 +15,17 @@ class VideoService
 {
     /** @var string */
     private $path;
+    /** @var UrlGeneratorInterface */
+    private $router;
 
     /**
      * FetchApiNasa constructor.
      * @param string $filePath
      */
-    public function __construct(string $filePath)
+    public function __construct(string $filePath, UrlGeneratorInterface $router)
     {
         $this->path = $filePath;
+        $this->router = $router;
     }
 
 
@@ -97,6 +101,11 @@ class VideoService
         ;
 
         return $video;
+    }
+
+    public function generateUrl(Video $video)
+    {
+        return $this->router->generate('videoDownload', ['id' => $video->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**

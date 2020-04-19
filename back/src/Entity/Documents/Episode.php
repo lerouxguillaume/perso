@@ -2,12 +2,22 @@
 
 namespace App\Entity\Documents;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
+use App\Dto\EpisodeDto;
 
 /**
  * Class Episode
  * @ORM\Entity()
  * @ORM\Table(name="document_episode")
+ * @ApiResource(
+ *     shortName="Episode",
+ *     collectionOperations={},
+ *     itemOperations={"get"={"security"="object.getSerie().getVisibility() == true or object.getSerie().getOwner() == user"}},
+ *     output=EpisodeDto::class
+ * )
  */
 class Episode
 {
@@ -15,6 +25,7 @@ class Episode
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ApiProperty(identifier=true)
      * @var int
      */
     private $id;

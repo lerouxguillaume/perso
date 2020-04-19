@@ -1,25 +1,16 @@
 <?php
 
+namespace App\Dto;
 
-namespace App\DTO;
-
-
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Documents\Serie;
 
 /**
  * Class MovieDto
  * @package App\Controller
- * @ApiResource(
- *     shortName="Episode",
- *     collectionOperations={},
- *     itemOperations={"get"}
- * )
  */
 class EpisodeDto
 {
     /**
-     * @ApiProperty(identifier=true)
      * @var int
      */
     private $id;
@@ -35,7 +26,7 @@ class EpisodeDto
     private $name;
 
     /**
-     * @var SerieDto
+     * @var string
      */
     private $serie;
 
@@ -99,18 +90,18 @@ class EpisodeDto
     }
 
     /**
-     * @return SerieDto
+     * @return Serie
      */
-    public function getSerie(): ?SerieDto
+    public function getSerie()
     {
         return $this->serie;
     }
 
     /**
-     * @param SerieDto $serie
+     * @param Serie $serie
      * @return EpisodeDto
      */
-    public function setSerie(SerieDto $serie): EpisodeDto
+    public function setSerie($serie): EpisodeDto
     {
         $this->serie = $serie;
         return $this;

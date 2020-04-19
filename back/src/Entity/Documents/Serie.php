@@ -2,14 +2,23 @@
 
 namespace App\Entity\Documents;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Dto\SerieDto;
 
 /**
  * Class Serie
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SerieRepository")
  * @ORM\Table(name="document_serie")
+ * @ApiResource(
+ *     shortName="Serie",
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"={"security"="object.getVisibility() == true or object.getOwner() == user"}},
+ *     output=SerieDto::class
+ * )
  */
 class Serie extends Content
 {
@@ -17,6 +26,7 @@ class Serie extends Content
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ApiProperty(identifier=true)
      * @var int
      */
     private $id;
@@ -28,7 +38,7 @@ class Serie extends Content
     private $season;
 
     /**
-     * @var Episode[]
+     * @var PersistentCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Documents\Episode", mappedBy="serie")
      * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
      */
@@ -69,10 +79,10 @@ class Serie extends Content
     }
 
     /**
-     * @param Video[] $episodes
+     * @param PersistentCollection $episodes
      * @return Serie
      */
-    public function setEpisodes(array $episodes): Serie
+    public function setEpisodes(PersistentCollection $episodes): Serie
     {
         $this->episodes = $episodes;
         return $this;

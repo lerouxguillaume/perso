@@ -9,7 +9,6 @@
             <b-collapse is-nav id="nav_collapse">
                 <b-navbar-nav>
                     <b-nav-item :to="{ name: 'nasa_list_image'}">Nasa</b-nav-item>
-                    <b-nav-item :to="{ name: 'trading_list'}">Trading</b-nav-item>
                     <b-nav-item :to="{ name: 'video_list'}">Video</b-nav-item>
                     <b-nav-item :to="{ name: 'profile'}">Profile</b-nav-item>
                 </b-navbar-nav>

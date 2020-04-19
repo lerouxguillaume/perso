@@ -2,12 +2,17 @@
 
 namespace App\Repository;
 
+use App\Entity\Documents\Content;
+use App\Entity\Documents\Movie;
 use App\Entity\Documents\Serie;
+use App\Entity\Security\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
 
-class SerieRepository extends ServiceEntityRepository
+class MovieRepository extends ServiceEntityRepository
 {
     use AccessiblyCriteriaTrait;
 
@@ -16,7 +21,7 @@ class SerieRepository extends ServiceEntityRepository
 
     public function __construct(ManagerRegistry $registry, Security $security)
     {
-        parent::__construct($registry, Serie::class);
+        parent::__construct($registry, Movie::class);
 
         $this->security = $security;
     }

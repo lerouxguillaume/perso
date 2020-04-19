@@ -21,14 +21,15 @@ const UserService = {
      * @throws AuthenticationError
      **/
     login: async function(email, password) {
+        let loginData = new FormData();
+        loginData.append("grant_type", 'password');
+        loginData.append('username', email);
+        loginData.append('password', password);
+
         const requestData = {
             method: 'post',
             url: tokenEndPoint,
-            data: {
-                grant_type: 'password',
-                username: email,
-                password: password
-            },
+            data: loginData,
             auth: {
                 username: clientId,
                 password: clientSecret
@@ -45,6 +46,7 @@ const UserService = {
 
             return response.data.access_token
         } catch (error) {
+            // eslint-disable-next-line no-console
             throw new AuthenticationError(error.response.status, error.response.data.detail)
         }
     },
@@ -54,14 +56,14 @@ const UserService = {
      **/
     refreshToken: async function() {
         const refreshToken = TokenService.getRefreshToken();
+        let refreshTokenData = new FormData();
+        refreshTokenData.append('grant_type', 'refresh_token');
+        refreshTokenData.append('refresh_token', refreshToken);
 
         const requestData = {
             method: 'post',
             url: tokenEndPoint,
-            data: {
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken
-            },
+            data: refreshTokenData,
             auth: {
                 username: clientId,
                 password: clientSecret

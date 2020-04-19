@@ -21,6 +21,7 @@
     /* eslint-disable no-console */
     import KEY_CODES from "bootstrap-vue/esm/utils/key-codes";
     import videojs from 'video.js';
+    import {TokenService} from "../../services/storage.service";
 
     export default {
         name: "Video",
@@ -47,6 +48,11 @@
         },
         watch: {
             src : function (newVal) {
+                let token = TokenService.getToken();
+                if (token !== "") {
+                    newVal += "?access_token="+token
+                }
+
                 this.player.src({ type: "video/mp4", src: newVal});
                 // this.player.reset();
                 this.player.play();

@@ -1,25 +1,19 @@
 <?php
 
-
-namespace App\DTO;
+namespace App\Dto;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Class SerieDto
- * @package App\DTO
- * @ApiResource(
- *     shortName="Serie",
- *     collectionOperations={"get"},
- *     itemOperations={"get"}
- * )
+ * @package App\Dto
  */
 class SerieDto extends ContentDto
 {
     /**
-     * @ApiProperty(identifier=true)
      * @var int
+     * @ApiProperty(identifier=true)
      */
     private $id;
 
@@ -29,7 +23,7 @@ class SerieDto extends ContentDto
     private $season;
 
     /**
-     * @var EpisodeDto[]
+     * @var Collection
      */
     private $episodes;
 
@@ -70,18 +64,18 @@ class SerieDto extends ContentDto
     }
 
     /**
-     * @return EpisodeDto[]
+     * @return Collection
      */
-    public function getEpisodes(): ?array
+    public function getEpisodes(): ?Collection
     {
         return $this->episodes;
     }
 
     /**
-     * @param EpisodeDto[] $episodes
+     * @param Collection $episodes
      * @return SerieDto
      */
-    public function setEpisodes(?array $episodes): SerieDto
+    public function setEpisodes(?Collection $episodes): SerieDto
     {
         $this->episodes = $episodes;
         return $this;

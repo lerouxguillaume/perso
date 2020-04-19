@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueMoment from 'vue-moment'
-import VueApexCharts from 'vue-apexcharts'
 import './assets/custom.scss'
 import router from './router.js'
 import VueVideoPlayer from 'vue-video-player'
@@ -15,9 +14,6 @@ Vue.config.productionTip = false
 Vue.use(VueVideoPlayer);
 Vue.use(BootstrapVue);
 Vue.use(VueMoment);
-Vue.use(VueApexCharts);
-
-Vue.component('apexchart', VueApexCharts)
 
 // Set the base URL of the API
 ApiService.init(process.env.VUE_APP_BASE_URL);

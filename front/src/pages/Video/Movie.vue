@@ -21,12 +21,12 @@
             }
         },
         mounted() {
-            ApiService.get(process.env.VUE_APP_DOCUMENT_API_URL+'/video/'+this.$route.params.id)
+            ApiService.get(process.env.VUE_APP_API+'/movies/'+this.$route.params.id)
                 .then((response) => {
-                    let data = response.data;
+                    let data = response.data.data.attributes;
                     this.id = data.id;
                     this.name = data.name;
-                    this.src = process.env.VUE_APP_DOCUMENT_API_URL+'/video/smovie/'+this.id ;
+                    this.src = data.videoUrl;
                 })
                 .catch(function (error) {
                     console.log(error);

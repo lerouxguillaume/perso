@@ -2,13 +2,23 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * Class ImageOfTheDay
  * @package App\Entity
  * @ORM\Entity()
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ * )
+ * @ApiFilter(DateFilter::class, properties={"date"})
+ * @ApiFilter(OrderFilter::class, properties={"date"}, arguments={"orderParameterName"="order"})
  */
 class ImageOfTheDay
 {

@@ -25,6 +25,8 @@
         components: {Video},
         data() {
             return {
+                id: null,
+                name: null,
                 currentEpisode: null,
                 episodes : [],
                 currentEpisodeNumber : 1,
@@ -39,18 +41,24 @@
             },
         },
         mounted() {
-            ApiService.get(process.env.VUE_APP_DOCUMENT_API_URL+'/serie/'+this.$route.params.id)
+            ApiService.get(process.env.VUE_APP_API+'/series/'+this.$route.params.id)
                 .then((response) => {
-                    let data = response.data;
-                    data['episodes'].forEach(episode => {
-                        this.episodes.push({
+                    let data = response.data.data.attributes;
+                    this.id = data.id;
+                    this.name = data.name;
+
+                    let episodes = [];
+                    data.episodes.forEach(function (item) {
+                        let episode = item.data.attributes;
+                        episodes.push({
                             'id' : episode.id,
                             'episode' : episode.episode,
                             'name' : episode.name,
                             'duration' : episode.duration,
-                            'src' : process.env.VUE_APP_DOCUMENT_API_URL+'/video/serie/'+ episode.id,
+                            'src' : episode.videoUrl,
                         })
-                    });
+                    })
+                    this.episodes = episodes;
                     this.episodes.sort((a,b) => {
                         let comparison = 0;
                         if (a.episode > b.episode) {
