@@ -19,12 +19,12 @@
 <script>
 
     import * as router from "vue-router";
-    import * as moment from "moment";
 
     export default {
         name: "NasaImageCard",
         props: {
             image: {
+                id: Number,
                 date: null,
                 title: String,
                 explanation: String,
@@ -39,7 +39,7 @@
         },
         methods: {
             redirectTo: function() {
-                this.$router.push({name: 'nasa_image_detail', params: { day : (moment(this.image.date).format('DD-MM-YYYY')) }})
+                this.$router.push({name: 'nasa_image_detail', params: { id : this.image.id }})
             }
         }
     }

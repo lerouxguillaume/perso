@@ -35,14 +35,14 @@
         },
         mounted () {
             axios
-                .get(process.env.VUE_APP_NASA_API_URL+'/day/'+ this.$route.params.day)
+                .get(process.env.VUE_APP_API+'/image_of_the_days/'+ this.$route.params.id)
                 .then((response) => {
-                    let data = response.data;
+                    let data = response.data.data.attributes;
                     this.date = new Date(data.date);
                     this.title = data.title;
                     this.explanation = data.explanation;
                     this.url = data.url;
-                    this.mediaType = data.media_type;
+                    this.mediaType = data.mediaType;
                     this.copyright = data.copyright;
                 })
                 .catch(function (error) {

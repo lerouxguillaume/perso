@@ -93,6 +93,7 @@
                 data.data.forEach((element) => {
                     element = element.attributes;
                     let currentImage = {};
+                    currentImage.id = element._id;
                     currentImage.date = new Date(element.date);
                     currentImage.title = element.title;
                     currentImage.explanation = element.explanation;

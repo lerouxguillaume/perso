@@ -137,7 +137,7 @@ const router =  new VueRouter({
             }
         },
         {
-            path: '/nasa/day/:day',
+            path: '/nasa/day/:id',
             name: 'nasa_image_detail',
             component: NasaImageDetail,
             meta: {

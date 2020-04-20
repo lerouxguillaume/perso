@@ -17,9 +17,6 @@
 </template>
 
 <script>
-    import * as moment from "moment";
-    /* eslint-disable no-console */
-
     export default {
         name: "NasaImageDay",
         props: {
@@ -27,7 +24,7 @@
         },
         methods: {
             redirectTo: function() {
-                this.$router.push({name: 'nasa_image_detail', params: { day : (moment(this.date).format('DD-MM-YYYY')) }})
+                this.$router.push({name: 'nasa_image_detail', params: { id : this.image.id }})
             }
         },
     }
