@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Documents\Video;
+use App\Security\AuthenticateUrlProvider;
+use App\Security\Voter\VideoVoter;
 use App\Service\VideoStream;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -10,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Class DocumentController
@@ -19,34 +20,39 @@ use Symfony\Component\Security\Core\Security;
  */
 class DocumentController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
+    /** @var LoggerInterface */
     private $logger;
 
-    private $tokenStorage;
+    /** @var EntityManagerInterface  */
+    private $entityManager;
 
+    /** @var AuthenticateUrlProvider */
+    private $authenticateUrlProvider;
+
+    /**
+     * DocumentController constructor.
+     * @param LoggerInterface $logger
+     * @param EntityManagerInterface $entityManager
+     * @param AuthenticateUrlProvider $authenticateUrlProvider
+     */
     public function __construct(
-        EntityManagerInterface $entityManager, LoggerInterface $logger, Security $security) {
-        $this->entityManager = $entityManager;
+        LoggerInterface $logger,
+        EntityManagerInterface $entityManager,
+        AuthenticateUrlProvider $authenticateUrlProvider
+    ){
         $this->logger = $logger;
-        $this->tokenStorage = $security;
+        $this->entityManager = $entityManager;
+        $this->authenticateUrlProvider = $authenticateUrlProvider;
     }
 
     /**
-     * @TODO Security
      * @Route(name="videoDownload", path="/video/{id}")
      * @param int $id
      * @return void
      */
     public function downloadVideo(Request $request, int $id)
     {
-        if ($accessToken = $request->get('access_token')) {
-            dump($accessToken);
-            die();
-        }
+        $this->authenticateUrlProvider->authenticateUser($request);
 
         /** @var Video $video */
         $video = $this->entityManager->getRepository(Video::class)->find($id);
@@ -54,7 +60,10 @@ class DocumentController extends AbstractController
             throw new NotFoundHttpException();
         }
 
+        $this->denyAccessUnlessGranted(VideoVoter::VIEW, $video);
+
         $response = new VideoStream($video->getFilePath(), $this->logger);
+
         $response->start();
     }
 }

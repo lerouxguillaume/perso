@@ -28,7 +28,6 @@ class VideoService
         $this->router = $router;
     }
 
-
     /**
      * @param string $path
      * @param string $name

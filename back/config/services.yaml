@@ -26,6 +26,10 @@ services:
         tags: ['controller.service_arguments']
 
 
+    App\Security\AuthenticateUrlProvider:
+        arguments:
+            $httpMessageFactory : "@sensio_framework_extra.psr7.http_message_factory"
+
     App\Service\VideoService:
         arguments:
             - '%env(FILE_PATH)%'
