@@ -52,6 +52,11 @@ class FetchApiNasa
                 $this->logger->info(
                     'fetch image of the day : '. $day->format('d/m/Y')
                 );
+                if ($remaining = $response->getHeader('X-RateLimit-Remaining')) {
+                    if (current($remaining) <= 0) {
+                        throw new \OverflowException();
+                    }
+                }
             } catch (\Exception $e) {
                 $this->logger->error('An error occured with the api call', [
                     'code' => $e->getCode(),
