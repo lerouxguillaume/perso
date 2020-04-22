@@ -62,7 +62,7 @@ class ImageOfTheDay
     private $explanation;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     private $url;
