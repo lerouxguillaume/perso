@@ -49,7 +49,7 @@
         watch: {
             src : function (newVal) {
                 let token = TokenService.getToken();
-                if (token !== "") {
+                if (token) {
                     newVal += "?access_token="+token
                 }
 

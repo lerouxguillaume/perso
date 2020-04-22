@@ -48,7 +48,6 @@
             },
             movieProvider(ctx, callback) {
                 // eslint-disable-next-line no-console
-                console.log(ctx)
                 let params = {
                     'params' : {
                         size : ctx.perPage,

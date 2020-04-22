@@ -45,7 +45,7 @@ class VideoVoter extends Voter
     {
         $user = $token->getUser();
 
-        if (!$user instanceof User) {
+        if ($user !== 'anon.' && !$user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
         }
@@ -62,7 +62,7 @@ class VideoVoter extends Voter
         throw new \LogicException('This code should not be reached!');
     }
 
-    private function canView(Video $video, ?User $user): bool
+    private function canView(Video $video, $user): bool
     {
         $movieRepository = $this->em->getRepository(Movie::class);
         $episodeRepository = $this->em->getRepository(Episode::class);
