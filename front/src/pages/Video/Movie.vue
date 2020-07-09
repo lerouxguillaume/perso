@@ -23,7 +23,7 @@
         mounted() {
             ApiService.get(process.env.VUE_APP_API+'/movies/'+this.$route.params.id)
                 .then((response) => {
-                    let data = response.data.data.attributes;
+                    let data = response.data;
                     this.id = data.id;
                     this.name = data.name;
                     this.src = data.videoUrl;

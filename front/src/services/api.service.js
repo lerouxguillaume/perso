@@ -8,16 +8,14 @@ const ApiService = {
 
     init(baseURL) {
         axios.defaults.baseURL = baseURL;
-        axios.defaults.headers.common["Accept"] = 'application/vnd.api+json';
     },
 
     setHeader() {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${TokenService.getToken()}`
+        axios.defaults.headers.common["Authorization"] = `Bearer ${TokenService.getToken()}`;
     },
 
     removeHeader() {
-        axios.defaults.headers.common = {}
-        axios.defaults.headers.common["Accept"] = 'application/vnd.api+json';
+        axios.defaults.headers.common = {};
     },
 
     get(resource, params) {

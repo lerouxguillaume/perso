@@ -50,14 +50,14 @@
                     }
                 };
                 ApiService.get(process.env.VUE_APP_API + '/series', params)
-                    .then(data => {
+                    .then(response => {
                         let items = [];
-                        data.data.data.forEach(function (datum) {
-                            let attribute = datum.attributes;
+                        this.totalMovies = response.data['hydra:totalItems'];
 
+                        response.data['hydra:member'].forEach(function (datum) {
                             let item = {
-                                'id': attribute.id,
-                                'name': attribute.name
+                                'id': datum.id,
+                                'name': datum.name
                             }
                             items.push(item)
                         })
